@@ -43,7 +43,7 @@ Seek {
 	*new{ "You can not have an instance of this".error;
 	}
 
-	*calculate{ arg entity, targetPos = MyVector2D[10,13]; //^force
+	*calculate{ arg entity, targetPos = RealVector[10,13]; //^force
 		   var desiredVelocity; //, maxSpeed = 30;
 		
 		//seek steering behaviour
@@ -59,7 +59,7 @@ Arrive { //Deceleration{slow = 3, normal = 2, fast = 1};
 	*new{ "You can not have an instance of this".error;
 	}
 
-	*calculate{ arg entity, targetPos = MyVector2D[10,13], deceleration = 2, tweak = 0.3; //^force
+	*calculate{ arg entity, targetPos = RealVector[10,13], deceleration = 2, tweak = 0.3; //^force
 		   	   var desiredVelocity, toTarget, speed, dist;
 		
 			toTarget = targetPos - entity.position;
@@ -81,7 +81,7 @@ Arrive { //Deceleration{slow = 3, normal = 2, fast = 1};
 				^(desiredVelocity - entity.velocity); //.debug("resulting force");
 				},
 				{
-				^MyVector2D[0,0];
+				^RealVector[0,0];
 				}
 			);
 			
@@ -111,7 +111,7 @@ PathFollowing{ //Deceleration{slow = 3, normal = 2, fast = 1};
 	}
 }
 
-//MyVector2D[10, 10].distanceSq(MyVector2D[10.5, 10.5])
+//RealVector[10, 10].distanceSq(RealVector[10.5, 10.5])
 //************\\
 //related classes
 

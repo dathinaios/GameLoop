@@ -83,7 +83,7 @@ MobileEntity : Entity { var <>velocity, <>controller;
 		position = entityParams.get['world'].center;
 		radius = 1.0;
 		mass = 1;
-		velocity = MyVector2D[0,0];
+		velocity = RealVector[0,0];
 	}
 	
 	integrateEuler{ arg force = 0;
@@ -122,8 +122,8 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 		position = entityParams.get['world'].center;
 		radius = 1.0;
 		mass = 1;
-		velocity = MyVector2D[0,0];	//TODO: not elegant. All these vars are initialised here and at the Mobile entity.
-		side = MyVector2D[-1,0].normalize;
+		velocity = RealVector[0,0];	//TODO: not elegant. All these vars are initialised here and at the Mobile entity.
+		side = RealVector[-1,0].normalize;
 		maxSpeed = 100;
 		maxForce = 40;
 		maxTurnRate = 2;

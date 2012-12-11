@@ -19,8 +19,8 @@ inf.do{
 
 f = { var path, position, width;
 				width = A.t.entityManager.center[0]*2;
-				position = MyVector2D[rrand(2.0, width), rrand(2.0, width)];
-				path = Path(Array.fill(rrand(8.0, 20.0),{MyVector2D[position[0] + rrand(-1, 1.0), position[1] + rrand(-1, 1.0)]}),true);
+				position = RealVector[rrand(2.0, width), rrand(2.0, width)];
+				path = Path(Array.fill(rrand(8.0, 20.0),{RealVector[position[0] + rrand(-1, 1.0), position[1] + rrand(-1, 1.0)]}),true);
 				EntityParams([
 								'world', A.t.entityManager, 'position', position,
 								'radius', 0.4, 'rel', 0.1, 'maxSpeed', rrand(5.0, 40.0),

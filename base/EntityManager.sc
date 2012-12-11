@@ -102,7 +102,7 @@ EntityManager{
 	center{ var width, height;
 		width = spatialIndex.sceneWidth;
 		height = spatialIndex.sceneHeight;
-		^MyVector2D[width * 0.5, height*0.5];
+		^RealVector[width * 0.5, height*0.5];
 	}
 
 }
@@ -292,7 +292,7 @@ EntityManager2 {
 	center{ var width, height;
 		width = spatialIndex.sceneWidth;
 		height = spatialIndex.sceneHeight;
-		^MyVector2D[width * 0.5, height*0.5];
+		^RealVector[width * 0.5, height*0.5];
 	}
 
 }

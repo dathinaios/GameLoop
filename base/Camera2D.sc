@@ -107,26 +107,26 @@ applyTransformation{ arg entity;
 	yMinusy = entPos[1] - position[1];
 	x = (xMinusx * thetaCos) - (yMinusy * thetaSin);
 	y = (xMinusx * thetaSin) + (yMinusy * thetaCos);
-	^MyVector2D[x,y];
+	^RealVector[x,y];
 }
 
 moveFwd{arg amount = 0.02; var theta, x, y;
 	theta = entityParams.get['theta'];
 	y = theta.cos;
 	x = theta.sin;
-	position = position + (amount *MyVector2D[x, y]);
+	position = position + (amount *RealVector[x, y]);
 }
 
 moveBack{arg amount = 0.02; var theta, x, y;
 	theta = entityParams.get['theta'];
 	y = theta.cos;
 	x = theta.sin;
-	position = position - (amount *MyVector2D[x, y]);
+	position = position - (amount *RealVector[x, y]);
 }
 
 
 moveLeft{arg amount = 0.23; 
-	position = position - MyVector2D[amount, 0]
+	position = position - RealVector[amount, 0]
 }
 
 rotateLeft{arg amount = 0.001pi;
@@ -161,7 +161,7 @@ Camera2DCtrl : Controller{
 						theta = entityParams.get['theta'];
 						y = theta.cos;
 						x = theta.sin;
-						^(entity.velocity + (amount *MyVector2D[x, y].normalize));
+						^(entity.velocity + (amount *RealVector[x, y].normalize));
 					}
 					{back}
 					{ 	
@@ -169,22 +169,22 @@ Camera2DCtrl : Controller{
 						theta = entityParams.get['theta'];
 						y = theta.cos;
 						x = theta.sin;
-						^(entity.velocity - (amount *MyVector2D[x, y].normalize));
+						^(entity.velocity - (amount *RealVector[x, y].normalize));
 					}
 					{rotLeft}
 					{ 	Camera2D.rotLeft_(false);
 						entityParams.set('theta', entityParams.get['theta'] - rotAmount);
-						^MyVector2D[0,0]
+						^RealVector[0,0]
 					}
 					{rotRight}
 					{ 	Camera2D.rotRight_(false);
 						entityParams.set('theta', entityParams.get['theta'] + rotAmount);
-						^MyVector2D[0,0]
+						^RealVector[0,0]
 					};
 				},
 				{
 					entity.velocity = entity.velocity * 0.5;
-					^MyVector2D[0,0]
+					^RealVector[0,0]
 				}
 			)
 	}
