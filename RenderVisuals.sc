@@ -32,9 +32,7 @@ RenderVisuals { var dimensions, <obstacleArray, gridSize, cellSize, w;
 				
 				obstacleArray.size.do { arg index; var spaceIn, currentObst, curRadPix, curWidth, obstacle, obstacPos; 
 					obstacle = obstacleArray[index]; //get the current object
-					obstacPos = if(obstacle.class == Camera2DVRep,
-									{A.t.entityManager.center},
-									{Camera2D.applyTransformation(obstacle)+A.t.entityManager.center});
+					obstacPos = obstacle.position;
 					Pen.width = obstacle.penWidth;
 					Pen.color = obstacle.color.alpha_(0.7);
 					Pen.beginPath;

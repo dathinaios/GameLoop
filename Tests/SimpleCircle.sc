@@ -3,7 +3,7 @@
 SimpleCircleEnt : Vehicle { var  >collisionFunc, <>type;
 	
 	initHook1 { 
-		controller =SimpleCircleController(this, entityParams);
+		controller = SimpleCircleController(this, entityParams);
 	}
 
 	collision { arg entList; colliding = true;
@@ -19,7 +19,9 @@ SimpleCircleRep : EntityRepresentation { var <penWidth = 1.5;
 	^super.newCopyArgs(entity, entityParams).init
 	}
 
-	init {  this.getData;
+	init { 
+		position = entity.position;
+		radius = entity.radius;
 	/*	color = Color.white; 
 			collisionColor = Color.white;*/
 		color = entityParams.get['color'] ?? Color.white; 
@@ -29,9 +31,13 @@ SimpleCircleRep : EntityRepresentation { var <penWidth = 1.5;
 	color { if(entity.colliding, {^collisionColor },{^color})
 	}
 
-	getData{ 
+	update { arg entity, message; 
 		position = entity.position;
 		radius = entity.radius;
+		/*
+		switch 
+		{message == 'collision'} {this.collision};
+		*/
 	}
 	
 	draw{arg rect; Pen.strokeOval(rect)}

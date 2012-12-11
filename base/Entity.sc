@@ -1,7 +1,5 @@
 /*
-	TODO remove the reps instance variable and use the dependancy mechanism that is built in to SC instead.
 	TODO Could the EntityParams live in entity only instead of passing it around like crazy or is that bad programming methodology?
-
 	TODO page 69 of Ai book. Event handling for communication between objects.
 	TODO If I get the variables names in an array and then iterate over that and get the values wouldn't it be more efficient than iterating over the whole entityParams Dictionary?
 	TODO The represtnation manager is used only for the visuals. That does not make sense in terms of the overall design.
@@ -74,8 +72,6 @@ Entity {
 		this.changed; //this change should be dealt in the representation to activate them//reps.do{arg i; i.activate};
 		//TODO: this should be dealt in the dependants as a response to the above changed message!!
 		this.dependants.do{arg i; i.activate};
-
-	
 	}
 
 }     

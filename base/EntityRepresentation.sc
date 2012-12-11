@@ -1,23 +1,14 @@
-
-
-
-
 EntityRepresentation { var entity, entityParams;
 
 	*new { arg  entity, entityParams;  
 	^super.newCopyArgs(entity, entityParams)
 	} 
 
-
-	update { arg entity, message; // the dependancy passes in the changed and any additional arguments // (will use symbols for that and a switch statement) to respond in different ways.
-
-		this.getData;
+	// the dependancy passes in the changed and any additional arguments 
+	update { arg entity, message; 
+		switch //a typical use of a .changed notification (could be case for multiple)
+		{message == \collision} {this.collision};
 	} 
-	
-	//the method to collect relevant data from the entity
-	getData{ "getData should be implemented in subclass".error;
-	}
-	
 	
 	run { // method to run the representaion without adding to the manager.
 		  // Usefull for compensating for the bundle time.
