@@ -1,7 +1,7 @@
 
 //FIXME: Redesign the Singleton. as it is I could initialize a camera without entityParams argument.
 
-
+/*
 Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <instance;
 
 *new{ arg entityParams;
@@ -39,7 +39,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <instance;
 *initialize{ arg manager;
 	if(instance.isNil,
 		{
-		instance = this.new(EntityParams(['world', manager, 'theta', 0, 'mass', 0.1, 'maxSpeed', 5/*7*/]));
+		instance = this.new(EntityParams(['world', manager, 'theta', 0, 'mass', 0.1, 'maxSpeed', 5]));
 		instance.attach(Camera2DVRep(instance, instance.entityParams)); 
 		instance.activate;
 		 ^instance;
@@ -196,7 +196,7 @@ Camera2DVRep : VisualRep{
 	draw{arg rect; Pen.strokeRect(rect)}
 
 }
-
+*/
 
 /*	
 		{Camera2D.instance.moveFwd(0.4)}).setShortCut ("i", true);

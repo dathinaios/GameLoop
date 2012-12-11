@@ -1,22 +1,15 @@
 
-Controller { var entity, entityParams;
+Controller { var entity, <forceFunc;
 	
-	*new { arg entity, entityParams; 
-		^super.newCopyArgs(entity, entityParams)
+	*new { arg entity, forceFunc; 
+		^super.newCopyArgs(entity, forceFunc).init
 	}
-	
-	getForce { this.subclassResponsibility("getForce");
-	}
-	
-	entityParams{
-		this.subclassResponsibility("entityParams")
-	}
-}
 
-FlexibleController : Controller { var <>forceFunc;
-
-	init{forceFunc = {RealVector[0,0]}}
+	init{
+		forceFunc  = forceFunc ?? {{ arg entity; RealVector[0.0]}};
+	}
 	
 	getForce { arg entity; ^forceFunc.value(entity);
 	}
-}  
+
+}

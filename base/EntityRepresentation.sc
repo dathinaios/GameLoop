@@ -1,7 +1,7 @@
 EntityRepresentation { var entity, entityParams;
 
-	*new { arg  entity, entityParams;  
-	^super.newCopyArgs(entity, entityParams)
+	*new { arg  entity;  
+	^super.newCopyArgs(entity)
 	} 
 
 	// the dependancy passes in the changed and any additional arguments 

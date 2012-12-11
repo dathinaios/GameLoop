@@ -8,35 +8,31 @@
 */
 
 Entity {
-		var <entityParams, <>world, <>position, <>radius, <>mass;
+		var <>world, <>position, <>radius, <>mass;
 		var <dt, <id; //we Do not need the param reps anymore since we are using the dependants mechanism
 		var <>colliding;
 
-	*new{ arg entityParams;
-		  ^super.newCopyArgs(entityParams).initHook1.initVars.init.initHook2;		
+	*new{ arg world, position, radius, mass;
+		  ^super.newCopyArgs(world, 
+		  					 position, 
+		  					 radius, 
+		  				     mass
+		  ).initHook1.init.initHook2;		
 	}
 
-	init{ 	//first get all variables provided by the EntityParameter instance
-			entityParams.get.pairsDo{
-					arg name, value; 
-					this.tryPerform(name.asSetter, value); 
-			};
+	init{ 	
+			position = position ?? {world.center};
+			radius = radius ?? {1.0}; 
+			mass = mass ?? {1.0};
 			//Now intialise some extra variables
 			dt = world.dt;
-			//reps = List.new;
 			//define a unique id for the entity
 			id = UniqueID.next;
 			//set colliding to false for start
 			colliding = false;
 			//Main.elapsedTime.debug("I'm alive!!")
 	}
-	
-	initVars{ //initialise variables
-				position = entityParams.get['world'].center; //TODO find a more elegant way to intiate the world variable. Do it for the subclasses too!
-				radius = 1.0;
-				mass = 1;
-	}
-	
+
 	initHook1{
 		//for particular initialisations in a subclass
 		//before all the other inits
@@ -78,14 +74,21 @@ Entity {
 
 MobileEntity : Entity { var <>velocity, <>controller;
 
-	initVars{
-		//initialise variables
-		position = entityParams.get['world'].center;
-		radius = 1.0;
-		mass = 1;
-		velocity = RealVector[0,0];
+	*new{ arg world, position, radius, mass, velocity, controller;
+		  ^super.newCopyArgs(world, 
+		  					 position, 
+		  					 radius, 
+		  				     mass,
+		  				     velocity,
+		  				     controller
+		  ).initHook1.init.initHook2;		
 	}
-	
+
+	init{
+		super.init;
+		velocity = velocity ?? {RealVector[0,0]};
+		controller = controller ?? {Controller.new};
+	}
 	integrateEuler{ arg force = 0;
 		velocity = velocity + ((force/mass) * dt);
 			//Main.elapsedTime.postln;
@@ -117,19 +120,29 @@ MobileEntity : Entity { var <>velocity, <>controller;
 Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTurnRate; 
 					  	 //var steering;
 	
-	initVars{
-		//initialise variables
-		position = entityParams.get['world'].center;
-		radius = 1.0;
-		mass = 1;
-		velocity = RealVector[0,0];	//TODO: not elegant. All these vars are initialised here and at the Mobile entity.
-		side = RealVector[-1,0].normalize;
-		maxSpeed = 100;
-		maxForce = 40;
-		maxTurnRate = 2;
+	*new{ arg world, position, radius, mass, velocity, controller,
+			  heading, side, maxSpeed, maxForce, maxTurnRate;
+		  ^super.newCopyArgs(world, 
+		  					 position, 
+		  					 radius, 
+		  				     mass,
+		  				     velocity,
+		  				     controller,
+		  				     heading,
+		  				     side,
+		  				     maxSpeed,
+		  				     maxForce,
+		  				     maxTurnRate
+		  ).initHook1.init.initHook2;		
+	}
+	
+	init{
+		super.init;
+		maxSpeed = maxSpeed ?? {100};
+		maxForce = maxForce ?? {40};
+		maxTurnRate = maxTurnRate ?? {2};
 	}
 
-	
 	integrateEuler{ arg force = 0; //TODO: Do I need an accelaration variable?
 		//calculate velocity
 		velocity = velocity + ((force/mass) * dt);
@@ -150,6 +163,8 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 		//force = steering.calculate;
 		this.integrateEuler(controller.getForce(this));
 		this.changed; //update all active views
+		//"update inside vehicle".postln;
+		//this.position.postln;
 	}
 
 }

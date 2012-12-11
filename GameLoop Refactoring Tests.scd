@@ -18,25 +18,27 @@ inf.do{
 }.play(A.t.mainClock);
 
 f = { var path, position, width;
-				width = A.t.entityManager.center[0]*2;
-				position = RealVector[rrand(2.0, width), rrand(2.0, width)];
-				path = Path(Array.fill(rrand(8.0, 20.0),{RealVector[position[0] + rrand(-1, 1.0), position[1] + rrand(-1, 1.0)]}),true);
-				EntityParams([
-								'world', A.t.entityManager, 'position', position,
-								'radius', 0.4, 'rel', 0.1, 'maxSpeed', rrand(5.0, 40.0),
-								'steering', { arg entity; PathFollowing.calculate(entity,path, 0.5)}, 
-								'color', Color.green, 'collisionColor', Color.red 
-				]);
+	  var world, radius, mass, velocity, controller,
+		  heading, side, maxSpeed, maxForce, maxTurnRate, forceFunc;
+
+	width = A.t.entityManager.center[0]*2;
+	position = RealVector[rrand(2.0, width), rrand(2.0, width)];
+	path = Path(Array.fill(rrand(8.0, 20.0),{RealVector[position[0] + rrand(-1, 1.0), position[1] + rrand(-1, 1.0)]}),true);
+	world =  A.t.entityManager;
+	radius = 0.4; 
+	maxSpeed = rrand(5.0, 40.0);
+	forceFunc = { arg entity; "BBBBBEEEEEEEO!!!!".postln; PathFollowing.calculate(entity,path, 0.5)};
+
+	A.t.entity =SimpleCircleEnt(world, position, radius, controllerFunc: forceFunc);
+	A.t.entity.attach(SimpleCircleRep(A.t.entity)); //for visualisation	
+	A.t.entity.activate;
+
 };
 //A.t.entity = TestGameFactory.getEntity('SimpleCircle', f.value);
 );
 
-(
-~entityParams = f.value;
-A.t.entity =SimpleCircleEnt(~entityParams);
-A.t.entity.attach(SimpleCircleRep(A.t.entity, ~entityParams)); //for visualisation	
-A.t.entity.activate;
-)
+
+35.do{f.value;};
 
 A.t.entityManager.entityList;
 RepresentationManager.repList

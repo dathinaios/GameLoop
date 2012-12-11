@@ -1,9 +1,35 @@
 
 
-SimpleCircleEnt : Vehicle { var  >collisionFunc, <>type;
+SimpleCircleEnt : Vehicle { var  >collisionFunc, forceFunc;
 	
-	initHook1 { 
-		controller = SimpleCircleController(this, entityParams);
+
+	*new{ arg world, position, radius, mass, velocity, controller,
+			  heading, side, maxSpeed, maxForce, maxTurnRate, collisionFunc, forceFunc;
+		  ^super.newCopyArgs(world, 
+		  					 position, 
+		  					 radius, 
+		  				     mass,
+		  				     velocity,
+		  				     controller,
+		  				     heading,
+		  				     side,
+		  				     maxSpeed,
+		  				     maxForce,
+		  				     maxTurnRate,
+		  				     collisionFunc,
+		  				     forceFunc
+		  ).initHook1.init.initHook2;		
+
+	}
+
+	init{ var path;
+		super.init;
+		collisionFunc = collisionFunc ?? {{"BOOM".postln}};
+		path = Path(Array.fill(rrand(8.0, 20.0),{RealVector[position[0] + rrand(-1, 1.0), position[1] + rrand(-1, 1.0)]}),true);
+		controller = Controller(this, 
+				{ arg entity;
+				  PathFollowing.calculate(entity,path, 0.5)}
+		);
 	}
 
 	collision { arg entList; colliding = true;
@@ -11,27 +37,28 @@ SimpleCircleEnt : Vehicle { var  >collisionFunc, <>type;
 	}
 }
 
-SimpleCircleRep : EntityRepresentation { var <penWidth = 1.5;
-							   	   var <position, <radius;
-								   var color, collisionColor;
+SimpleCircleRep : EntityRepresentation { var color, collisionColor;
+										 var <penWidth = 1.5;
+							   	   		 var <position, <radius;
+								   
 							
-	*new { arg  entity, entityParams;  
-	^super.newCopyArgs(entity, entityParams).init
+	*new { arg  entity, color, collisionColor;  
+	^super.newCopyArgs(entity, color, collisionColor).init
 	}
 
 	init { 
 		position = entity.position;
 		radius = entity.radius;
-	/*	color = Color.white; 
-			collisionColor = Color.white;*/
-		color = entityParams.get['color'] ?? Color.white; 
-		collisionColor = entityParams.get['collisionColor'] ?? Color.white;
+		color = color ?? {Color.green};
+		collisionColor = collisionColor ?? {Color.red};
 	}
 	
 	color { if(entity.colliding, {^collisionColor },{^color})
 	}
 
 	update { arg entity, message; 
+		//"update inside entityRepresenation for circle".postln;
+		//entity.position.postln;
 		position = entity.position;
 		radius = entity.radius;
 		/*
@@ -45,14 +72,3 @@ SimpleCircleRep : EntityRepresentation { var <penWidth = 1.5;
 	setFR{}
 	
 }   
-
-SimpleCircleController : Controller {
-	
-	getForce { arg entity;
-			  if (entityParams.get['steering'].isNil,
-					{^0},
-			  		{^entityParams.get['steering'].value(entity)}
-			  );
-	}
-
-}
