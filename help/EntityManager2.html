@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -29.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 42.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 42.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #c40000}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {color: #0006ff}
+span.s2 {color: #0004bf}
+span.s3 {color: #000000}
+span.s4 {color: #c40000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>EntityManager2</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">EntityManager2 functions like <a href="EntityManager.html"><span class="s1">EntityManager</span></a> but you can add to it 3 types of entities: free, static and mobile.</p>
+<p class="p3">When adding a free Entity the manager doesn't include it when checking for collisions. Mobile entities are<span class="Apple-converted-space"> </span></p>
+<p class="p3">checked against each other and with static ones while static are not checked against each other. This saves<span class="Apple-converted-space"> </span></p>
+<p class="p3">processing time by reducing the number of checks while the spatial hashing index becomes more efficient<span class="Apple-converted-space"> </span></p>
+<p class="p3">by registering the static entities one time only, at the time of creation.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(aSpatialHashing)</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span>creates a new EntityManager passing it the spatial Index.</p>
+<p class="p2"><br></p>
+<p class="p5"><b>Instance Methods</b></p>
+<p class="p6"><br></p>
+<p class="p3"><b>addFree(a Entity)</b></p>
+<p class="p7">add a free entity to the manager. Used internally by the Entity class</p>
+<p class="p7">and its subclasses.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>removeFree(a Entity)</b></p>
+<p class="p7">remove a free entity to the manager. Used internally by the Entity class</p>
+<p class="p7">and its subclasses.</p>
+<p class="p6"><br></p>
+<p class="p3"><b>addStat(a Entity)</b></p>
+<p class="p7">add a static entity to the manager. Used internally by the Entity class</p>
+<p class="p7">and its subclasses.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>removeStat(a Entity)</b></p>
+<p class="p7">remove a static<span class="Apple-converted-space">  </span>entity to the manager. Used internally by the Entity class</p>
+<p class="p7">and its subclasses.</p>
+<p class="p6"><br></p>
+<p class="p3"><b>addMob(a Entity)</b></p>
+<p class="p7">add a mobile entity to the manager. Used internally by the Entity class</p>
+<p class="p7">and its subclasses.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>removeMob(a Entity)</b></p>
+<p class="p7">remove a mobile entity to the manager. Used internally by the Entity class</p>
+<p class="p7">and its subclasses.</p>
+<p class="p6"><br></p>
+<p class="p3"><b>update</b></p>
+<p class="p7">update all entities</p>
+<p class="p6"><br></p>
+<p class="p3"><b>clear</b></p>
+<p class="p7">clear all entities</p>
+<p class="p6"><br></p>
+<p class="p3"><b>refreshIndex1</b></p>
+<p class="p3"><b>refreshIndex2</b></p>
+<p class="p7">refresh can not happen simple by clearing buckets as in EntityManager because we need to keep</p>
+<p class="p7">the registered static elements. It also needs to happen in two stages (one before and one after update)</p>
+<p class="p7">because SpatialHashing needs to know the positions of the entities in order to unregister them (refreshIndex1).</p>
+<p class="p7">Only then we can update the positions and register them again.</p>
+<p class="p6"><br></p>
+<p class="p3"><b>collisionCheck</b></p>
+<p class="p7">check for collisions and notify entities</p>
+<p class="p6"><br></p>
+<p class="p8"><b>Examples</b></p>
+<p class="p9"><br></p>
+<p class="p10">//The main loop takes a slightly different form:</p>
+<p class="p11"><br></p>
+<p class="p12">(</p>
+<p class="p11"><br></p>
+<p class="p10">//create he manager and pass it the spatial index instance.</p>
+<p class="p12">~entityManager = <span class="s2">EntityManager2</span>(<span class="s2">SpatialHashing</span>(20, 20, 0.5));</p>
+<p class="p11"><br></p>
+<p class="p12">(</p>
+<p class="p10"><span class="Apple-tab-span">	</span>/// START ///</p>
+<p class="p12"><span class="Apple-tab-span">	</span>{</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s2">inf</span>.do{</p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//unregister the mobile entities</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~entityManager.refreshIndex1;</p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//update all entities (move them)</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~entityManager.update;<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//reregister the mobile entities after the motion</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~entityManager.refreshIndex2;</p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//check for collisions</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~entityManager.collisionCheck;</p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//**************************\\</p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//usually here you would render in visuals or sound</p>
+<p class="p10"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//**************************\\</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~entityManager.dt.wait; <span class="s4">//update at 20 fps</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span>}</p>
+<p class="p12"><span class="Apple-tab-span">	</span>}.asRoutine.play</p>
+<p class="p12">)</p>
+</body>
+</html>

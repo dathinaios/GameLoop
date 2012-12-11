@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ff}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -29.0px; font: 12.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 42.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 42.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #c40000}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {color: #000000}
+span.s2 {color: #0004bf}
+span.s3 {color: #c40000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>EntityManager</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">EntityManager is a 'world' for Entities. When an Entity is created it is added to an EntityManager. the responsibilities of</p>
+<p class="p3">the manager are: (1) updating the entities (the time between updates is stored in the managers class variable dt).<span class="Apple-converted-space"> </span></p>
+<p class="p3">(2) checking for collisions using an instance of SpatialHashing and sending the .collision msg to the entities.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s1">See also: <a href="EntityManager2.html">EntityManager2</a></span></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(aSpatialHashing)</b></p>
+<p class="p5"><span class="Apple-tab-span">	</span>creates a new EntityManager passing it the spatial Index.</p>
+<p class="p2"><br></p>
+<p class="p6"><b>Instance Methods</b></p>
+<p class="p7"><br></p>
+<p class="p3"><b>add(a Entity)</b></p>
+<p class="p8">add an entity to the manager. Used internally by the Entity class</p>
+<p class="p8">and its subclasses.</p>
+<p class="p2"><br></p>
+<p class="p3"><b>remove(a Entity)</b></p>
+<p class="p8">remove an entity to the manager. Used internally by the Entity class</p>
+<p class="p8">and its subclasses.</p>
+<p class="p7"><br></p>
+<p class="p3"><b>update</b></p>
+<p class="p8">update all entities</p>
+<p class="p7"><br></p>
+<p class="p3"><b>clear</b></p>
+<p class="p8">clear all entities</p>
+<p class="p7"><br></p>
+<p class="p3"><b>refreshIndex</b></p>
+<p class="p8">clear and recalculate the spatial index. This step is needed in the main loop</p>
+<p class="p8">to register the new positions of the entities in the spatial hashing grid (see SpatialHashing)</p>
+<p class="p7"><br></p>
+<p class="p3"><b>collisionCheck</b></p>
+<p class="p8">check for collisions and notify entities</p>
+<p class="p7"><br></p>
+<p class="p9"><b>Examples</b></p>
+<p class="p10"><br></p>
+<p class="p11">//The main loop:</p>
+<p class="p12"><br></p>
+<p class="p13">(</p>
+<p class="p12"><br></p>
+<p class="p11">//create he manager and pass it the spatial index instance.</p>
+<p class="p13">~entityManager = <span class="s2">EntityManager</span>(<span class="s2">SpatialHashing</span>(20, 20, 0.5));</p>
+<p class="p12"><br></p>
+<p class="p13">(</p>
+<p class="p11"><span class="Apple-tab-span">	</span>/// START ///</p>
+<p class="p13"><span class="Apple-tab-span">	</span>{</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s2">inf</span>.do{</p>
+<p class="p11"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//update all entities (move them)</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~entityManager.update;<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//refresh the spatial index after the motion</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~entityManager.refreshIndex;</p>
+<p class="p11"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//check for collisions</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~entityManager.collisionCheck;</p>
+<p class="p11"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//**************************\\</p>
+<p class="p11"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//usually here you would render in visuals or sound</p>
+<p class="p11"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//**************************\\</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>~entityManager.dt.wait; <span class="s3">//update at 20 fps</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>}</p>
+<p class="p13"><span class="Apple-tab-span">	</span>}.asRoutine.play</p>
+<p class="p13">)</p>
+</body>
+</html>

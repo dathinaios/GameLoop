@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -29.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 42.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 42.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 42.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+span.s1 {color: #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>EntityRepresentation</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3">EntityRepresentation is the base class for all entity representations. the representations are the<span class="Apple-converted-space"> </span></p>
+<p class="p3">place where the entities are rendered into sound, visuals or anything else you'd like. An entity can<span class="Apple-converted-space"> </span></p>
+<p class="p3">have multiple representations as in most of the examples where the entities are translated as both<span class="Apple-converted-space"> </span></p>
+<p class="p3">sound and visuals.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><b>*new(entity)</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span>create it and pass it the entity. note that the entity won't know anything</p>
+<p class="p4"><span class="Apple-tab-span">	</span>about its representation according to the MVC pattern. The representation<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>will be querring the entity for its state.</p>
+<p class="p5"><br></p>
+<p class="p3"><b>add</b></p>
+<p class="p6">add it to the RepresentationManager</p>
+<p class="p5"><br></p>
+<p class="p3"><b>remove</b></p>
+<p class="p6">remove it from the RepresentationManager</p>
+<p class="p5"><br></p>
+<p class="p3"><b>update</b></p>
+<p class="p6">calls the getData method</p>
+<p class="p5"><br></p>
+<p class="p3"><b>getData</b></p>
+<p class="p6">Should be implemented in the subclass to get the data from the entity and</p>
+<p class="p6">assign them to the relevant parameters. Called every update.</p>
+<p class="p7"><br></p>
+<p class="p3"><b>run</b></p>
+<p class="p6">this method runs the rep but does not add the representation to the manager.<span class="Apple-converted-space"> </span></p>
+<p class="p6">Seperating the activation from the running can be usefull when you use bundles.</p>
+<p class="p6">Typically something like that:</p>
+<p class="p5"><br></p>
+<p class="p8"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Routine<span class="s1">{</span></p>
+<p class="p9"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rep.run; </span>//run the representation bundle (is going to play after latency)</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>latency.wait;<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>entity.activate;</span>//activate the entity after latency to account for the<span class="Apple-converted-space">  </span>bundle</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>//the activate method is going to call the activate to the rep</p>
+<p class="p11"><br></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}.play(clock);</p>
+<p class="p2"><b></b><br></p>
+<p class="p3"><b>activate</b></p>
+<p class="p6">this method adds the rep to the manager but does not run the representation.<span class="Apple-converted-space"> </span></p>
+<p class="p6">It is called by the entity method activate to all its representations.</p>
+<p class="p7"><br></p>
+<p class="p3"><b>activateRun</b></p>
+<p class="p6">activate and run at the same time.</p>
+<p class="p12"><br></p>
+<p class="p13"><b>See examples</b></p>
+<p class="p7"><br></p>
+</body>
+</html>
