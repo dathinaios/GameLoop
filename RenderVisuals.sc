@@ -21,7 +21,7 @@ RenderVisuals { var dimensions, <obstacleArray, gridSize, cellSize, w;
 		cellSizeInPixels = meterInPixels*cellSize;
 		rowSize = gridSize/cellSize;
 		speakerRadInPixels = 2 * meterInPixels;
-		w.drawHook = {
+		w.drawFunc= {
 		
 			Pen.width = 2;
 			

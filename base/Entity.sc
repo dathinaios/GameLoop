@@ -1,5 +1,5 @@
 /*
-	TODO Could the EntityParams live in entity only instead of passing it around like crazy or is that bad programming methodology?
+	TODO I am going to take the entityParams out of the Entity class and use it only at the level of the factory.
 	TODO page 69 of Ai book. Event handling for communication between objects.
 	TODO If I get the variables names in an array and then iterate over that and get the values wouldn't it be more efficient than iterating over the whole entityParams Dictionary?
 	TODO The represtnation manager is used only for the visuals. That does not make sense in terms of the overall design.
