@@ -1,5 +1,4 @@
 /*
-	TODO I am going to take the entityParams out of the Entity class and use it only at the level of the factory.
 	TODO page 69 of Ai book. Event handling for communication between objects.
 	TODO If I get the variables names in an array and then iterate over that and get the values wouldn't it be more efficient than iterating over the whole entityParams Dictionary?
 	TODO The represtnation manager is used only for the visuals. That does not make sense in terms of the overall design.
@@ -50,6 +49,7 @@ Entity {
 	}
 	
 	remove { world.remove(this);
+			 this.changed(\remove);
 			 this.release; //release all dependants;
 	}
 	
@@ -89,6 +89,7 @@ MobileEntity : Entity { var <>velocity, <>controller;
 		velocity = velocity ?? {RealVector[0,0]};
 		controller = controller ?? {Controller.new};
 	}
+
 	integrateEuler{ arg force = 0;
 		velocity = velocity + ((force/mass) * dt);
 			//Main.elapsedTime.postln;
@@ -102,7 +103,7 @@ MobileEntity : Entity { var <>velocity, <>controller;
 	
 	update {
 		this.integrateEuler(controller.getForce(this));
-		this.changed;
+		this.changed(\update);
 		//this.updateReps; //update all active views
 	}
 	
@@ -159,12 +160,14 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 			};
 	}
 
+	/*
 	update { //arg force;
 		//force = steering.calculate;
 		this.integrateEuler(controller.getForce(this));
-		this.changed; //update all active views
+		this.changed(\update);
 		//"update inside vehicle".postln;
 		//this.position.postln;
 	}
+	*/
 
 }

@@ -24,7 +24,7 @@ SimpleCircleEnt : Vehicle { var  >collisionFunc, forceFunc;
 
 	init{ var path;
 		super.init;
-		collisionFunc = collisionFunc ?? {{"BOOM".postln}};
+		collisionFunc = collisionFunc ?? {{}};
 		path = Path(Array.fill(rrand(8.0, 20.0),{RealVector[position[0] + rrand(-1, 1.0), position[1] + rrand(-1, 1.0)]}),true);
 		controller = Controller(this, 
 				{ arg entity;
@@ -57,13 +57,13 @@ SimpleCircleRep : EntityRepresentation { var color, collisionColor;
 	}
 
 	update { arg entity, message; 
-		//"update inside entityRepresenation for circle".postln;
-		//entity.position.postln;
-		position = entity.position;
-		radius = entity.radius;
+		//first fo the standard update from the superclass
+		super.update(entity, message);
+		//here add anyadditional functionality
+		message.debug("update method in simple circle - message = ");
 		/*
 		switch 
-		{message == 'collision'} {this.collision};
+		{message == \remove} {"removal update".postln; this.remove};
 		*/
 	}
 	

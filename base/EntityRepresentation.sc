@@ -6,7 +6,10 @@ EntityRepresentation { var entity, entityParams;
 
 	// the dependancy passes in the changed and any additional arguments 
 	update { arg entity, message; 
-		switch //a typical use of a .changed notification (could be case for multiple)
+		position = entity.position;
+		radius = entity.radius;
+		//in the subclass call super.update to do the above and then add your own like:
+		case //a typical use of a .changed notification (could be case for multiple)
 		{message == \collision} {this.collision};
 	} 
 	
