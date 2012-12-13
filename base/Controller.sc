@@ -1,5 +1,15 @@
 
-Controller { var entity, <forceFunc;
+Controller { var entity;
+	
+	*new { arg entity; 
+		^super.newCopyArgs(entity)
+	}
+	
+	getForce { this.subclassResponsibility("getForce");
+	}
+}
+
+FlexibleController { var entity, <forceFunc;
 	
 	*new { arg entity, forceFunc; 
 		^super.newCopyArgs(entity, forceFunc).init
@@ -13,3 +23,4 @@ Controller { var entity, <forceFunc;
 	}
 
 }
+

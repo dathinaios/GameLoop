@@ -1,6 +1,6 @@
 
 
-SimpleCircleEnt : Vehicle { var  >collisionFunc, forceFunc;
+SimpleCircle : Vehicle { var  >collisionFunc, forceFunc;
 	
 
 	*new{ arg world, position, radius, mass, velocity, controller,
@@ -22,14 +22,9 @@ SimpleCircleEnt : Vehicle { var  >collisionFunc, forceFunc;
 
 	}
 
-	init{ var path;
+	init{
 		super.init;
 		collisionFunc = collisionFunc ?? {{}};
-		path = Path(Array.fill(rrand(8.0, 20.0),{RealVector[position[0] + rrand(-1, 1.0), position[1] + rrand(-1, 1.0)]}),true);
-		controller = Controller(this, 
-				{ arg entity;
-				  PathFollowing.calculate(entity,path, 0.5)}
-		);
 	}
 
 	collision { arg entList; colliding = true;
@@ -71,3 +66,14 @@ SimpleCircleRep : EntityRepresentation { var color, collisionColor;
 	setFR{}
 	
 }   
+
+SimpleCircleController : Controller{
+
+	getForce { arg entity; var path, position, width;
+			width = A.t.entityManager.center[0]*2;
+			position = RealVector[rrand(2.0, width), rrand(2.0, width)];
+			path = Path(Array.fill(rrand(8.0, 20.0),
+			{RealVector[position[0] + rrand(-1, 1.0), position[1] + rrand(-1, 1.0)]}),true);
+			^PathFollowing.calculate(entity,path, 0.5);
+	}
+}

@@ -86,7 +86,8 @@ MobileEntity : Entity { var <>velocity, <>controller;
 	init{
 		super.init;
 		velocity = velocity ?? {RealVector[0,0]};
-		controller = controller ?? {Controller.new};
+		//choose the right controller by adding the "controller" to the base name of the class
+		controller = controller ?? {(this.class.asString++"Controller").asSymbol.asClass.new(this)};
 	}
 
 	integrateEuler{ arg force = 0;

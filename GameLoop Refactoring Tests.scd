@@ -29,10 +29,9 @@ f = { var path, position, width;
 	maxSpeed = rrand(5.0, 40.0);
 	forceFunc = { arg entity; "BBBBBEEEEEEEO!!!!".postln; PathFollowing.calculate(entity,path, 0.5)};
 
-	A.t.entity =SimpleCircleEnt(world, position, radius, controllerFunc: forceFunc);
+	A.t.entity =SimpleCircle(world, position, radius);
 	A.t.entity.attach(SimpleCircleRep(A.t.entity)); //for visualisation	
 	A.t.entity.activate;
-
 };
 //A.t.entity = TestGameFactory.getEntity('SimpleCircle', f.value);
 );
@@ -46,3 +45,6 @@ RepresentationManager.repList
 A.t.routiniaris.stop
 A.t.entityManager.clear;
 
+1.class.asString
+a = SimpleCircleEnt.new;
+(A.t.entity.class.asString++"Controller").postln.asSymbol.asClass.new;
