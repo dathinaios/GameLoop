@@ -45,7 +45,7 @@ Entity {
 	//overide the add method in a subclass if you want to use 
 	//EntityManager2
 	add{ world.add(this);
-			//Main.elapsedTime.debug("I'm alive!!")
+	   //Main.elapsedTime.debug("I'm alive!!")
 	}
 	
 	remove { world.remove(this);
@@ -65,9 +65,8 @@ Entity {
 	
 	activate { //this method is the last to be called. It will add the entity and the representations to their managers
 		this.add;
-		this.changed; //this change should be dealt in the representation to activate them//reps.do{arg i; i.activate};
-		//TODO: this should be dealt in the dependants as a response to the above changed message!!
-		this.dependants.do{arg i; i.activate};
+		this.changed(\add); //this change should be dealt in the representation to activate them//reps.do{arg i; i.activate};
+		//this.dependants.do{arg i; i.activate};
 	}
 
 }     

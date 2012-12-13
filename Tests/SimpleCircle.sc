@@ -39,7 +39,6 @@ SimpleCircleEnt : Vehicle { var  >collisionFunc, forceFunc;
 
 SimpleCircleRep : EntityRepresentation { var color, collisionColor;
 										 var <penWidth = 1.5;
-							   	   		 var <position, <radius;
 								   
 							
 	*new { arg  entity, color, collisionColor;  
@@ -60,7 +59,7 @@ SimpleCircleRep : EntityRepresentation { var color, collisionColor;
 		//first fo the standard update from the superclass
 		super.update(entity, message);
 		//here add anyadditional functionality
-		message.debug("update method in simple circle - message = ");
+		//message.debug("update method in simple circle - message");
 		/*
 		switch 
 		{message == \remove} {"removal update".postln; this.remove};

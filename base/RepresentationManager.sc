@@ -1,6 +1,6 @@
 RepresentationManager{ classvar <repList;
 
-	*new {"you can not hav an instance of RepresentationManager".error} 
+	*new {"you can not have an instance of RepresentationManager".error} 
 	
 	*initClass{
 		repList = List.new;
