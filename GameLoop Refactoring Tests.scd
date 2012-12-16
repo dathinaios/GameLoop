@@ -1,21 +1,14 @@
 
 (
-A.t.entityManager = EntityManager(SpatialHashing(40, 40, 1));
+~centerr = 40;
 //Make a visualiser
-A.t.mainClock = TempoClock.new;
-A.t.visualiser = RenderVisuals([0, A.t.entityManager.center[0]*2], RepresentationManager.repList, 20, 0.5);
+A.t.visualiser = RenderVisuals([0, ~centerr], RepresentationManager.repList, 20, 0.5);
+A.t.entityManager = EntityManager({{A.t.visualiser.render}.defer}, SpatialHashing(40, 40, 1));
 A.t.visualiser.activate;
 
 //The main game loop
-A.t.routiniaris = Routine{
-inf.do{
-	A.t.entityManager.refreshIndex;
-	A.t.entityManager.update; 
-	A.t.entityManager.collisionCheck; 
-	{A.t.visualiser.render}.defer; // render the representation/view
-	0.05.wait;
-	}
-}.play(A.t.mainClock);
+A.t.entityManager.play(0.05); //plays at the dafault 0.05 frame rate
+
 
 f = { var path, position, width;
 	  var world, radius, mass, velocity, controller,
@@ -33,16 +26,20 @@ f = { var path, position, width;
 	A.t.entity.attach(SimpleCircleRep(A.t.entity)); //for visualisation	
 	A.t.entity.activate;
 };
-//A.t.entity = TestGameFactory.getEntity('SimpleCircle', f.value);
 );
 
 
 35.do{f.value;};
 f.value;
+A.t.entity.collisionType
+A.t.entity;
+A.t.entityManager.stop
+Thread.killAll
 
-A.t.entityManager.entityList;
+A.t.entityManager.freeList;
+A.t.entityManager.mobList;
+A.t.entityManager.staticList;
 RepresentationManager.repList
-A.t.routiniaris.stop
 A.t.entityManager.clear;
 
 1.class.asString

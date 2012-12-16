@@ -10,6 +10,7 @@ Entity {
 		var <>world, <>position, <>radius, <>mass;
 		var <dt, <id; //we Do not need the param reps anymore since we are using the dependants mechanism
 		var <>colliding;
+		var <>collisionType;
 
 	*new{ arg world, position, radius, mass;
 		  ^super.newCopyArgs(world, 
@@ -30,6 +31,7 @@ Entity {
 			//set colliding to false for start
 			colliding = false;
 			//Main.elapsedTime.debug("I'm alive!!")
+			collisionType = \free;
 	}
 
 	initHook1{

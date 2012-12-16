@@ -2,156 +2,64 @@
 	TODO Can I resolve the specialisation of EntityManager2 so that at least it can be along with any other class that differs from EntityManager a subclass of it?
 */
 
-EntityManager{ 
-			 var <spatialIndex;
-			 var <entityList;
-			 var <dt;
-
-	*new { arg index = SpatialHashing(20, 20, 0.5); 
-	^super.newCopyArgs(index).init
-	} 
-	
-	init{
-		dt = 0.05; //20 FPS
-		entityList = List.new;
-	}
-
-	add{ arg entity; 
-		entityList.add(entity);
-		spatialIndex.register(entity);
-	}
-
-	remove{ arg entity; 
-		entityList.remove(entity);
-		spatialIndex.unregister(entity);
-	}
-	
-	update{ entityList.do{arg i; i.update;}
-	}
-	
-	clear { var listCopy;
-		    listCopy = entityList.copy;
-		    listCopy.do{arg i; i.remove};
-	}
-	
-	refreshIndex { 
-				spatialIndex.clearBuckets; //clear the index
-				entityList.do{arg i;  //recalculate for all objects
-					spatialIndex.register(i);
-				};
-	}
-	
-	//Collision detection
-	
-//	collisionCheck{ 
-//		entityList.do{ arg i; var nearest;
-//			//get the near by objects
-//			nearest = spatialIndex.getNearest(i);
-//			//if there were objects found check for collisions
-//			if(nearest.size>0, {
-//					nearest.do{arg i2; 
-//						if(this.circlesCollide(i, i2)) {i.collision(i2)};
-//					};
-//					}
-//			);
-//		}
-//	}
-
-	collisionCheck{ 
-		entityList.do{ arg i; var nearest, collidingWith;
-			// a list to store the objects that are found to collide with the entity
-			collidingWith = List.new; //I use a list to allow for any number of objects
-			//get the near by objects
-			nearest = spatialIndex.getNearest(i);
-			//if there were objects found check for collisions
-			if(nearest.size>0, {
-					nearest.do{arg i2; //gather all the colliding with entity objects in the list
-						if(this.circlesCollide(i, i2)) {collidingWith = collidingWith.add(i2)};
-					};
-					if(collidingWith.size != 0,//if there are results
-						// call the collision function passing the list as an argument
-						{i.collision(collidingWith)},
-						//else set the colliding to false
-						{i.colliding_(false)}
-					);
-					},
-					//if not set the colliding variable to false
-					{
-					i.colliding_(false)
-					}
-			);
-		}
-	}
-
-	//faster:
-	circlesCollide{ arg cA, cB; //circleA circleB
-				  var r1, r2, dx, dy;
-				  var a;
-			r1 = cA.radius;
-			r2 = cB.radius;
-			a = (r1+r2) * (r1+r2);
-			dx = cA.position[0] - cB.position[0];//distance of x points
-			dy = cA.position[1] - cB.position[1];//distance of y points
-
-	        if (a > ((dx*dx) + (dy*dy)),
-	        {^true}
-	        ,{^false});			
-
-	}
-	
-	center{ var width, height;
-		width = spatialIndex.sceneWidth;
-		height = spatialIndex.sceneHeight;
-		^RealVector[width * 0.5, height*0.5];
-	}
-
-}
 
 // Entity Manager 2 has three types of objects. Ones that dont collide,
 // ones that collide with everything and ones that collide but not between each other.
 
-EntityManager2 {
-			 var <spatialIndex;
+EntityManager {
+			 var <renderHook, <spatialIndex; //render hook is a function that will be called once every loop
 			 var <freeList, <mobList, <staticList;
-			 var <dt;
+			 var <dt, <mainRoutine, <mainClock;
 
-	*new { arg index = SpatialHashing(20, 20, 0.5); 
-	^super.newCopyArgs(index).init
+	*new { arg renderHook, index = SpatialHashing(20, 20, 0.5); 
+	^super.newCopyArgs(renderHook, index).init
 	} 
 	
+	play{ arg rate; //start the gameloop at framerate rate
+		if (mainRoutine.isNil.postln,
+			{ //1st condition
+			  dt = rate ?? dt; //TODO: not very elegant. 
+				mainRoutine = Routine{
+					inf.do{
+						this.refreshIndex1; //unregisterAll
+						this.update; 
+						this.refreshIndex2; //reregisterAll
+						this.collisionCheck; 
+						renderHook.value;
+						dt.wait;
+						}
+				}.play(mainClock)
+			}, 
+			{ //2nd condition
+			  mainRoutine.play;
+			}
+		);
+	}
+
+	stop{
+		mainRoutine.stop.reset;
+	}
+
 	init{
 		dt = 0.05; //20 FPS
 		freeList = List.new;
 		mobList = List.new;
 		staticList = List.new;
+		mainClock = TempoClock.new;
 	}
 
-	addFree{ arg entity; 
-		freeList.add(entity);
+	add{ arg entity; 
+		switch (entity.collisionType)
+		{\free} {freeList.add(entity)}
+		{\mobile} {mobList.add(entity); spatialIndex.register(entity)}
+		{\static} {staticList.add(entity); spatialIndex.register(entity)}
 	}
 
-	removeFree{ arg entity; 
-		freeList.remove(entity);
-	}
-	
-	addMob{ arg entity; 
-		mobList.add(entity);
-		spatialIndex.register(entity);
-	}
-
-	removeMob{ arg entity; 
-		mobList.remove(entity);
-		spatialIndex.unregister(entity);
-	}
-	
-	addStat{ arg entity; 
-		staticList.add(entity);
-		spatialIndex.register(entity);
-	}
-
-	removeStat{ arg entity; 
-		staticList.remove(entity);
-		spatialIndex.unregister(entity);
+	remove{ arg entity; 
+		switch (entity.collisionType)
+		{\free} {freeList.remove(entity)}
+		{\mobile} {mobList.remove(entity); spatialIndex.unregister(entity)}
+		{\static} {staticList.remove(entity); spatialIndex.unregister(entity)}
 	}
 		
 	update{ //update all Entities
@@ -297,6 +205,136 @@ EntityManager2 {
 
 }
 
+EntityManager2{ 
+			 var <spatialIndex;
+			 var <entityList;
+			 var <dt, <mainRoutine, <mainClock;
+
+	*new { arg index = SpatialHashing(20, 20, 0.5); 
+	^super.newCopyArgs(index).init
+	} 
+	
+	init{
+		dt = 0.05; //20 FPS
+		entityList = List.new;
+		mainClock = TempoClock.new;
+	}
+
+	play{ arg rate; //start the gameloop at framerate rate
+		if (mainRoutine.isNil.postln,
+			{ //1st condition
+			  dt = rate ?? dt;
+				mainRoutine = Routine{
+					inf.do{
+						this.update; 
+						this.refreshIndex; //unregisterAll
+						this.collisionCheck; 
+						renderHook.value;
+						dt.wait;
+						}
+				}.play(mainClock)
+			}, 
+			{ //2nd condition
+			  mainRoutine.play;
+			}
+		);
+	}
+
+	stop{
+		mainRoutine.stop.reset;
+	}
+
+
+	add{ arg entity; 
+		entityList.add(entity);
+		spatialIndex.register(entity);
+	}
+
+	remove{ arg entity; 
+		entityList.remove(entity);
+		spatialIndex.unregister(entity);
+	}
+	
+	update{ entityList.do{arg i; i.update;}
+	}
+	
+	clear { var listCopy;
+		    listCopy = entityList.copy;
+		    listCopy.do{arg i; i.remove};
+	}
+	
+	refreshIndex { 
+				spatialIndex.clearBuckets; //clear the index
+				entityList.do{arg i;  //recalculate for all objects
+					spatialIndex.register(i);
+				};
+	}
+	
+	//Collision detection
+	
+//	collisionCheck{ 
+//		entityList.do{ arg i; var nearest;
+//			//get the near by objects
+//			nearest = spatialIndex.getNearest(i);
+//			//if there were objects found check for collisions
+//			if(nearest.size>0, {
+//					nearest.do{arg i2; 
+//						if(this.circlesCollide(i, i2)) {i.collision(i2)};
+//					};
+//					}
+//			);
+//		}
+//	}
+
+	collisionCheck{ 
+		entityList.do{ arg i; var nearest, collidingWith;
+			// a list to store the objects that are found to collide with the entity
+			collidingWith = List.new; //I use a list to allow for any number of objects
+			//get the near by objects
+			nearest = spatialIndex.getNearest(i);
+			//if there were objects found check for collisions
+			if(nearest.size>0, {
+					nearest.do{arg i2; //gather all the colliding with entity objects in the list
+						if(this.circlesCollide(i, i2)) {collidingWith = collidingWith.add(i2)};
+					};
+					if(collidingWith.size != 0,//if there are results
+						// call the collision function passing the list as an argument
+						{i.collision(collidingWith)},
+						//else set the colliding to false
+						{i.colliding_(false)}
+					);
+					},
+					//if not set the colliding variable to false
+					{
+					i.colliding_(false)
+					}
+			);
+		}
+	}
+
+	//faster:
+	circlesCollide{ arg cA, cB; //circleA circleB
+				  var r1, r2, dx, dy;
+				  var a;
+			r1 = cA.radius;
+			r2 = cB.radius;
+			a = (r1+r2) * (r1+r2);
+			dx = cA.position[0] - cB.position[0];//distance of x points
+			dy = cA.position[1] - cB.position[1];//distance of y points
+
+	        if (a > ((dx*dx) + (dy*dy)),
+	        {^true}
+	        ,{^false});			
+
+	}
+	
+	center{ var width, height;
+		width = spatialIndex.sceneWidth;
+		height = spatialIndex.sceneHeight;
+		^RealVector[width * 0.5, height*0.5];
+	}
+
+}
 //basic use:
 
 //(
