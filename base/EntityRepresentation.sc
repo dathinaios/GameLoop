@@ -9,8 +9,8 @@ EntityRepresentation { var entity, <position, <radius;
 		//in the subclass call super.update to do the above and then add your own like:
 		switch (message)//a typical use of a .changed notification (could be case for multiple)
 		{\update} {position = entity.position; radius = entity.radius}
-		{\add} {RepresentationManager.add(this)}
-		{\remove} {RepresentationManager.remove(this)};
+		{\add} {entity.world.repManager.add(this)}
+		{\remove} {entity.world.repManager.remove(this)};
 		//in subclass put: {message == \collision} {this.collision};
 	} 
 	
@@ -30,14 +30,12 @@ EntityRepresentation { var entity, <position, <radius;
 
 	activate { // this method adds the rep to the manager but does not
 			   // run the representation.
-	
 		this.add;
 	
 	}
 	activateRun{ // this method adds the rep to the manager and then calls run
 			 // run should be implemented in the subclass and will contain 
 			 // all the things relevenat to the particular representation
-			 
 		this.add;
 		this.run;
 	}

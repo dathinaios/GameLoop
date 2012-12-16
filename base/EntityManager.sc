@@ -1,5 +1,6 @@
 /*
-	TODO Can I resolve the specialisation of EntityManager2 so that at least it can be along with any other class that differs from EntityManager a subclass of it?
+TODO
+
 */
 
 
@@ -7,14 +8,29 @@
 // ones that collide with everything and ones that collide but not between each other.
 
 EntityManager {
-			 var <renderHook, <spatialIndex; //render hook is a function that will be called once every loop
+			 var <spatialIndex; //render hook is a function that will be called once every loop
 			 var <freeList, <mobList, <staticList;
 			 var <dt, <mainRoutine, <mainClock;
+			 var <sceneWidth, <sceneHeight, <repManager;
 
-	*new { arg renderHook, index = SpatialHashing(20, 20, 0.5); 
-	^super.newCopyArgs(renderHook, index).init
+	*new { arg spatialIndex = SpatialHashing(20, 20, 0.5); 
+	^super.newCopyArgs(spatialIndex).init
 	} 
 	
+	init{
+		dt = 0.05; //20 FPS
+		freeList = List.new;
+		mobList = List.new;
+		staticList = List.new;
+		mainClock = TempoClock.new;
+		//get the dimension of the space from the spatial index
+		sceneWidth = spatialIndex.sceneWidth;
+		sceneHeight = spatialIndex.sceneHeight;
+		//create and activate the representation manager
+		repManager = RepresentationManager(this);
+		repManager.activate;
+	}
+
 	play{ arg rate; //start the gameloop at framerate rate
 		if (mainRoutine.isNil.postln,
 			{ //1st condition
@@ -25,7 +41,7 @@ EntityManager {
 						this.update; 
 						this.refreshIndex2; //reregisterAll
 						this.collisionCheck; 
-						renderHook.value;
+						{repManager.render}.defer; //render!!
 						dt.wait;
 						}
 				}.play(mainClock)
@@ -40,13 +56,6 @@ EntityManager {
 		mainRoutine.stop.reset;
 	}
 
-	init{
-		dt = 0.05; //20 FPS
-		freeList = List.new;
-		mobList = List.new;
-		staticList = List.new;
-		mainClock = TempoClock.new;
-	}
 
 	add{ arg entity; 
 		switch (entity.collisionType)
@@ -197,18 +206,17 @@ EntityManager {
 
 	}
 	
-	center{ var width, height;
-		width = spatialIndex.sceneWidth;
-		height = spatialIndex.sceneHeight;
-		^RealVector[width * 0.5, height*0.5];
+	center{
+		^RealVector[sceneWidth * 0.5, sceneHeight*0.5];
 	}
 
 }
 
 EntityManager2{ 
-			 var <spatialIndex;
+			 var renderHook, <spatialIndex;
 			 var <entityList;
 			 var <dt, <mainRoutine, <mainClock;
+			 var <sceneWidth, <sceneHeight;
 
 	*new { arg index = SpatialHashing(20, 20, 0.5); 
 	^super.newCopyArgs(index).init
@@ -218,6 +226,8 @@ EntityManager2{
 		dt = 0.05; //20 FPS
 		entityList = List.new;
 		mainClock = TempoClock.new;
+		sceneWidth = spatialIndex.sceneWidth;
+		sceneHeight = spatialIndex.sceneHeight;
 	}
 
 	play{ arg rate; //start the gameloop at framerate rate

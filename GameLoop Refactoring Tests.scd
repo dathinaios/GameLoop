@@ -1,14 +1,7 @@
 
 (
-~centerr = 40;
-//Make a visualiser
-A.t.visualiser = RenderVisuals([0, ~centerr], RepresentationManager.repList, 20, 0.5);
-A.t.entityManager = EntityManager({{A.t.visualiser.render}.defer}, SpatialHashing(40, 40, 1));
-A.t.visualiser.activate;
-
-//The main game loop
-A.t.entityManager.play(0.05); //plays at the dafault 0.05 frame rate
-
+//create the manger and start the game loop at 20 frames per second
+A.t.entityManager = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
 
 f = { var path, position, width;
 	  var world, radius, mass, velocity, controller,
@@ -20,26 +13,24 @@ f = { var path, position, width;
 	world =  A.t.entityManager;
 	radius = 0.4; 
 	maxSpeed = rrand(5.0, 40.0);
-	forceFunc = { arg entity; "BBBBBEEEEEEEO!!!!".postln; PathFollowing.calculate(entity,path, 0.5)};
+	//forceFunc = { arg entity; "BBBBBEEEEEEEO!!!!".postln; PathFollowing.calculate(entity,path, 0.5)};
 
-	A.t.entity =SimpleCircle(world, position, radius);
+	A.t.entity =SimpleCircle(world, position, radius); //.collisionType_(\mobile);
 	A.t.entity.attach(SimpleCircleRep(A.t.entity)); //for visualisation	
 	A.t.entity.activate;
 };
 );
 
 
-35.do{f.value;};
+50.do{f.value;};
 f.value;
-A.t.entity.collisionType
-A.t.entity;
-A.t.entityManager.stop
-Thread.killAll
 
+A.t.entityManager.stop
 A.t.entityManager.freeList;
 A.t.entityManager.mobList;
 A.t.entityManager.staticList;
 RepresentationManager.repList
+A.t.routiniaris.stop
 A.t.entityManager.clear;
 
 1.class.asString
