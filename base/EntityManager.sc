@@ -57,11 +57,14 @@ EntityManager {
 	}
 
 
-	add{ arg entity; 
+	add{ arg entity; var representation;
 		switch (entity.collisionType)
 		{\free} {freeList.add(entity)}
 		{\mobile} {mobList.add(entity); spatialIndex.register(entity)}
-		{\static} {staticList.add(entity); spatialIndex.register(entity)}
+		{\static} {staticList.add(entity); spatialIndex.register(entity)};
+		//create and attach the relevant rerpesentation if it exists
+		representation = (entity.class.asString++"Representation").asSymbol.asClass.new(entity);
+		representation ?? entity.attach(representation);
 	}
 
 	remove{ arg entity; 

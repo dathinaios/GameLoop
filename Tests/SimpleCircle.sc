@@ -32,7 +32,7 @@ SimpleCircle : Vehicle { var  >collisionFunc, forceFunc;
 	}
 }
 
-SimpleCircleRep : EntityRepresentation { var color, collisionColor;
+SimpleCircleRepresentation : EntityRepresentation { var color, collisionColor;
 										 var <penWidth = 1.5;
 								   
 							

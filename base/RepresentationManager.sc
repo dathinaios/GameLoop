@@ -17,7 +17,7 @@ RepresentationManager{ var manager;
 		cellSize = manager.spatialIndex.cellSize;
 	}
 
-	add{ arg entity; 
+	add{arg entity; 
 		repList.add(entity);
 	}
 

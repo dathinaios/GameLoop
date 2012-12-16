@@ -16,7 +16,6 @@ f = { var path, position, width;
 	//forceFunc = { arg entity; "BBBBBEEEEEEEO!!!!".postln; PathFollowing.calculate(entity,path, 0.5)};
 
 	A.t.entity =SimpleCircle(world, position, radius); //.collisionType_(\mobile);
-	A.t.entity.attach(SimpleCircleRep(A.t.entity)); //for visualisation	
 	A.t.entity.activate;
 };
 );
