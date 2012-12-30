@@ -15,7 +15,7 @@ f = { var path, position, width;
 	maxSpeed = rrand(2.0,5.0);
 	//forceFunc = { arg entity; "BBBBBEEEEEEEO!!!!".postln; PathFollowing.calculate(entity,path, 0.5)};
 
-	A.t.entity = SimpleCircle(world, position, radius, maxSpeed: 2); //.collisionType_(\mobile);
+	A.t.entity = SimpleCircle(world, position, radius, maxSpeed: 11); //.collisionType_(\mobile);
 	A.t.entity.activate;
 };
 );
@@ -39,3 +39,5 @@ A.t.entityManager.mainRoutine.stop
 1.class.asString
 a = SimpleCircleEnt.new;
 (A.t.entity.class.asString++"Controller").postln.asSymbol.asClass.new;
+SimpleCircle(A.t.entityManager, RealVector[2.0,2.0], 0.9, maxSpeed: 11)
+Dictionary

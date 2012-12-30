@@ -1,28 +1,28 @@
 
 
-SimpleCircle : Vehicle { var  >collisionFunc, forceFunc;
+SimpleCircle : Vehicle { var  >collisionFunc, >forceFunc;
 	
 
 	*new{ arg world, position, radius, mass, velocity, controller,
 			  heading, side, maxSpeed, maxForce, maxTurnRate, collisionFunc, forceFunc;
-		  ^super.newCopyArgs(world, 
-		  					 position, 
-		  					 radius, 
-		  				     mass,
-		  				     velocity,
-		  				     controller,
-		  				     heading,
-		  				     side,
-		  				     maxSpeed,
-		  				     maxForce,
-		  				     maxTurnRate,
-		  				     collisionFunc,
-		  				     forceFunc
-		  ).initHook1.init.initHook2;		
-
+		  ^super.new(world, 
+					 position, 
+					 radius, 
+					 mass
+		  ).velocity_(velocity)
+		   .controller_(controller)
+		   .heading_(heading)
+		   .side_(side)
+		   .maxSpeed_(maxSpeed)
+		   .maxForce_(maxForce)
+		   .maxTurnRate_(maxTurnRate)
+		   .collisionFunc_(collisionFunc)
+		   .forceFunc_(forceFunc)
+		   .initHook1.init.initHook2;		
 	}
 
 	init{
+		"simplecircle init".postln;
 		super.init;
 		collisionFunc = collisionFunc ?? {{}};
 	}

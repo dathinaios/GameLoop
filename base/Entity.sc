@@ -13,14 +13,17 @@ Entity {
 		var <>collisionType;
 
 	*new{ arg world, position, radius, mass;
-		  ^super.new(world, 
+		  ^super.newCopyArgs(world, 
 		  					 position, 
 		  					 radius, 
 		  				     mass
-		  ).initHook1.init.initHook2;		
+		  );
 	}
 
+	//The init method is called in the subclass by using super.init. Using super.init
+	//in all the init methods assures that everything will be called
 	init{ 	
+		 	"enity init".postln;
 			position = position ?? {world.center};
 			radius = radius ?? {1.0}; 
 			mass = mass ?? {1.0};
@@ -32,16 +35,6 @@ Entity {
 			colliding = false;
 			//Main.elapsedTime.debug("I'm alive!!")
 			collisionType = \free;
-	}
-
-	initHook1{
-		//for particular initialisations in a subclass
-		//before all the other inits
-	}
-	
-	initHook2{
-		//for particular initialisations in a subclass
-		//after all the other inits
 	}
 	
 	//overide the add method in a subclass if you want to use 
@@ -76,16 +69,16 @@ Entity {
 MobileEntity : Entity { var <>velocity, <>controller;
 
 	*new{ arg world, position, radius, mass, velocity, controller;
-		  ^super.newCopyArgs(world, 
-		  					 position, 
-		  					 radius, 
-		  				     mass,
-		  				     velocity,
-		  				     controller
-		  ).initHook1.init.initHook2;		
+		  ^super.new(world, 
+					 position, 
+					 radius, 
+					 mass
+		  ).velocity_(velocity)
+		   .controller_(controller);
 	}
 
 	init{
+		"mobile init".postln;
 		super.init;
 		velocity = velocity ?? {RealVector[0,0]};
 		//choose the right controller by adding the "controller" to the base name of the class
@@ -125,21 +118,21 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 	
 	*new{ arg world, position, radius, mass, velocity, controller,
 			  heading, side, maxSpeed, maxForce, maxTurnRate;
-		  ^super.newCopyArgs(world, 
-		  					 position, 
-		  					 radius, 
-		  				     mass,
-		  				     velocity,
-		  				     controller,
-		  				     heading,
-		  				     side,
-		  				     maxSpeed,
-		  				     maxForce,
-		  				     maxTurnRate
-		  ).initHook1.init.initHook2;		
+		  ^super.new(world, 
+					 position, 
+					 radius, 
+					 mass
+		  ).velocity_(velocity)
+		   .controller_(controller)
+		   .heading_(heading)
+		   .side_(side)
+		   .maxSpeed_(maxSpeed)
+		   .maxForce_(maxForce)
+		   .maxTurnRate_(maxTurnRate);
 	}
 	
 	init{
+		"vehicle init".postln;
 		super.init;
 		maxSpeed.debug('maxSpeed try');
 		maxSpeed = maxSpeed ?? {100};
