@@ -26,9 +26,9 @@ EntityManager {
 		//get the dimension of the space from the spatial index
 		sceneWidth = spatialIndex.sceneWidth;
 		sceneHeight = spatialIndex.sceneHeight;
-		//create and activate the representation manager
+		//create and run the representation manager
 		repManager = RepresentationManager(this);
-		repManager.activate;
+		repManager.run;
 	}
 
 	play{ arg rate; //start the gameloop at framerate rate
@@ -58,14 +58,13 @@ EntityManager {
 	}
 
 
-	add{ arg entity; var representation;
+	add{ arg entity;
 		switch (entity.collisionType)
 		{\free} {freeList.add(entity)}
 		{\mobile} {mobList.add(entity); spatialIndex.register(entity)}
 		{\static} {staticList.add(entity); spatialIndex.register(entity)};
-		//create and attach the relevant rerpesentation if it exists
-		representation = (entity.class.asString++"Representation").asSymbol.asClass.new(entity);
-		representation ?? entity.attach(representation);
+		//notify the RepresentationManager of the new entity
+		repManager.newEntity(entity);
 	}
 
 	remove{ arg entity; 
@@ -220,7 +219,7 @@ EntityManager {
 //I could fix this class in case we want to have collision detection for every object. In that cas it might be faster to
 // do it through EntityManager2
 
-EntityManager2{ 
+EntityManager2{ /*{{{*/
 			 var renderHook, <spatialIndex;
 			 var <entityList;
 			 var <dt, <mainRoutine, <mainClock;
@@ -352,7 +351,8 @@ EntityManager2{
 		^RealVector[width * 0.5, height*0.5];
 	}
 
-}
+}/*}}}*/
+
 //basic use:
 
 //(
@@ -360,26 +360,11 @@ EntityManager2{
 //
 ////create he manager and pass it the spatial index instance.
 //~entityManager = EntityManager(SpatialHashing(20, 20, 0.5));
-//g = Gen1GUI_GameLoopTest([0, 20], RepresentationManager.repList, 20, 0.5);
-//g.activate;
-//
-///// START ///
-//{
-//inf.do{
-//
-//	~entityManager.update; 
-//	~entityManager.refreshIndex;
-//	~entityManager.collisionCheck;
-//	{g.render}.defer; //and update the representation/view
-//	0.05.wait;
-//
-//}
-//}.asRoutine.play
-//)
-//)
+//~entityManager.play(0.05) //play at 0.05 FPS
 
 //finding the object witht the smallest ID for collsion
 
+//I don't remember what that is:
 //	collision { arg ents; var smallestID;
 //	
 //		smallestID = ents.add(this).minItem({ arg item, i; item.id });

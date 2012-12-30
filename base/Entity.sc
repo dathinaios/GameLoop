@@ -1,9 +1,6 @@
 /*
 	TODO page 69 of Ai book. Event handling for communication between objects.
-	TODO If I get the variables names in an array and then iterate over that and get the values wouldn't it be more efficient than iterating over the whole entityParams Dictionary?
-	TODO The represtnation manager is used only for the visuals. That does not make sense in terms of the overall design.
-	TODO Use RealVector
-	TODO With the event based  thingy that is described in the AI book I think that an object can anticipate its collision. That could work really nicely for modulating the sound.
+	TODO With the event based  thingy that is described in the AI book I think that an object can anticipate its collision. That could work really nicely for modulating the sound. ??I do not remember what I mean??
 */
 
 Entity {

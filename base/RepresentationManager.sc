@@ -17,6 +17,13 @@ RepresentationManager{ var manager;
 		cellSize = manager.spatialIndex.cellSize;
 	}
 
+	//the method called by entityManager to notify of the creation of new entities
+	newEntity{ arg entity; var representation;
+		//create and attach the relevant rerpesentation if it exists
+		representation = (entity.class.asString++"Representation").asSymbol.asClass.new(entity);
+		representation ?? entity.attach(representation);
+	}
+
 	add{arg entity; 
 		repList.add(entity);
 	}
@@ -36,7 +43,7 @@ RepresentationManager{ var manager;
 		w.close;
 	}
 
-	activate {/*{{{*/
+	run{/*{{{*/
 
 		var   h = 400, v = 400, seed, run = true,  spaceUnits, spaceUnits2, meterInPixels,  speakerRadInPixels;
 		w = Window("Visuals", Rect(0, 0, h, v), false);
@@ -70,7 +77,7 @@ RepresentationManager{ var manager;
 				//Pen.strokeOval(Rect((obstacle.position[0]*meterInPixels)-curRadPix, ((obstacle.position[1]*meterInPixels).linlin(0, 700, 700, 0))-curRadPix, curWidth, curWidth));
 				obstacle.draw((Rect((obstacPos[0]*meterInPixels)-curRadPix, ((obstacPos[1]*meterInPixels).linlin(0, h, v, 0))-curRadPix, curWidth, curWidth)))
 			};
-/*{{{*/
+/* COMMENTED OUT{{{*/
 //				//draw the grid
 //				
 //				rowSize.do{ arg i;

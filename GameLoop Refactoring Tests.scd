@@ -9,14 +9,16 @@ f = { var position, radius, width;
 	position = RealVector[rrand(2.0, width), rrand(2.0, width)];
 	radius = 0.4; 
 
-	A.t.entity = SimpleCircle(A.t.entityManager, position, radius, maxSpeed: 40); //.collisionType_(\mobile);
+	A.t.entity = SimpleCircle(A.t.entityManager, position, radius, maxSpeed: 40, 
+		collisionFunc: {arg entList; entList.postln.do{arg i; i.remove}}); 
+	A.t.entity.collisionType_(\mobile);
 	A.t.entity.activate;
 };
 );
 
 
 50.do{f.value;};
-f.value.maxSpeed;
+f.value;
 
 A.t.entityManager.clear;
 A.t.entityManager.stop
@@ -33,4 +35,4 @@ A.t.entityManager.mainRoutine.stop
 1.class.asString
 a = SimpleCircleEnt.new;
 (A.t.entity.class.asString++"Controller").postln.asSymbol.asClass.new;
-SimpleCircle(A.t.entityManager, RealVector[2.0,2.0], 0.9, maxSpeed: 11)
+SimpleCircle(A.t.entityManager, RealVector[2.0,2.0], 0.9, maxSpeed: 5).activate;
