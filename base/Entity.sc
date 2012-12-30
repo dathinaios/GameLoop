@@ -23,7 +23,7 @@ Entity {
 	//The init method is called in the subclass by using super.init. Using super.init
 	//in all the init methods assures that everything will be called
 	init{ 	
-		 	"enity init".postln;
+		 	//"enity init".postln;
 			position = position ?? {world.center};
 			radius = radius ?? {1.0}; 
 			mass = mass ?? {1.0};
@@ -45,7 +45,7 @@ Entity {
 	
 	remove { world.remove(this);
 			 this.changed(\remove);
-			 this.release; //release all dependants;
+			 //this.release; //release all dependants; I do not need that becasue the depndants release themselves
 	}
 	
 	attach { arg dependant;
@@ -78,7 +78,7 @@ MobileEntity : Entity { var <>velocity, <>controller;
 	}
 
 	init{
-		"mobile init".postln;
+		//"mobile init".postln;
 		super.init;
 		velocity = velocity ?? {RealVector[0,0]};
 		//choose the right controller by adding the "controller" to the base name of the class
@@ -132,9 +132,8 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 	}
 	
 	init{
-		"vehicle init".postln;
+		//"vehicle init".postln;
 		super.init;
-		maxSpeed.debug('maxSpeed try');
 		maxSpeed = maxSpeed ?? {100};
 		maxForce = maxForce ?? {40};
 		maxTurnRate = maxTurnRate ?? {2};

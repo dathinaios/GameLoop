@@ -18,11 +18,11 @@ SimpleCircle : Vehicle { var  >collisionFunc, >forceFunc;
 		   .maxTurnRate_(maxTurnRate)
 		   .collisionFunc_(collisionFunc)
 		   .forceFunc_(forceFunc)
-		   .initHook1.init.initHook2;		
+		   .init;		
 	}
 
 	init{
-		"simplecircle init".postln;
+		//"simplecircle init".postln;
 		super.init;
 		collisionFunc = collisionFunc ?? {{}};
 	}
@@ -73,7 +73,7 @@ SimpleCircleController : Controller{
 			width = A.t.entityManager.center[0]*2;
 			position = RealVector[rrand(2.0, width), rrand(2.0, width)];
 			path = Path(Array.fill(rrand(8.0, 20.0),
-			{RealVector[position[0] + rrand(-1, 1.0), position[1] + rrand(-1, 1.0)]}),true);
+			{RealVector[position[0] + rrand(-33, 33.0), position[1] + rrand(-33.0, 33.0)]}),true);
 			^PathFollowing.calculate(entity,path, 0.5);
 	}
 }
