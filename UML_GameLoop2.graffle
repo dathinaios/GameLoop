@@ -103,6 +103,11 @@
 						<string>NO</string>
 					</dict>
 				</dict>
+				<key>Text</key>
+				<dict>
+					<key>Align</key>
+					<integer>1</integer>
+				</dict>
 			</dict>
 			<key>BaseZoom</key>
 			<integer>0</integer>
@@ -149,6 +154,8 @@
 							</dict>
 							<key>Text</key>
 							<dict>
+								<key>Align</key>
+								<integer>1</integer>
 								<key>Text</key>
 								<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -263,7 +270,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{155.58884804620436, 492.56351180599557}, {27, 12}}</string>
+					<string>{{155.60819570390589, 492.51760892710263}, {27, 12}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -327,8 +334,8 @@
 					<integer>133</integer>
 					<key>Points</key>
 					<array>
-						<string>{188.0370933807327, 514.263873480033}</string>
-						<string>{153.40113083147114, 485.56479716182156}</string>
+						<string>{188.07980990464713, 514.263873480033}</string>
+						<string>{153.40113083147114, 485.48089016324889}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -354,7 +361,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{139.84877223716728, 194.91668627617366}, {27, 12}}</string>
+					<string>{{139.84877223716731, 194.91668627617366}, {27, 12}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -413,7 +420,7 @@
 					<integer>131</integer>
 					<key>Points</key>
 					<array>
-						<string>{191.51068858783779, 230.54000170396176}</string>
+						<string>{191.51068858783782, 230.54000170396176}</string>
 						<string>{121.75358537357452, 176.39081661439837}</string>
 					</array>
 					<key>Style</key>
@@ -478,6 +485,8 @@
 							</dict>
 							<key>Text</key>
 							<dict>
+								<key>Align</key>
+								<integer>1</integer>
 								<key>Text</key>
 								<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -666,6 +675,8 @@ update}</string>
 							</dict>
 							<key>Text</key>
 							<dict>
+								<key>Align</key>
+								<integer>1</integer>
 								<key>Text</key>
 								<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -812,7 +823,7 @@ maxTurnRate}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{503.28368471973795, 462.74469979245276}, {28, 12}}</string>
+					<string>{{503.25348769530649, 462.76487411789321}, {28, 12}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -878,8 +889,8 @@ maxTurnRate}</string>
 					<integer>95</integer>
 					<key>Points</key>
 					<array>
-						<string>{497.26530305136282, 452.8187163828095}</string>
-						<string>{497.29475219246206, 478.35209980661892}</string>
+						<string>{497.25118101283613, 452.8187163828095}</string>
+						<string>{497.25487419504748, 478.35209980661892}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -936,6 +947,8 @@ maxTurnRate}</string>
 							</dict>
 							<key>Text</key>
 							<dict>
+								<key>Align</key>
+								<integer>1</integer>
 								<key>Text</key>
 								<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -977,6 +990,8 @@ maxTurnRate}</string>
 							</dict>
 							<key>Text</key>
 							<dict>
+								<key>Align</key>
+								<integer>1</integer>
 								<key>Text</key>
 								<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -1035,6 +1050,8 @@ maxTurnRate}</string>
 							</dict>
 							<key>Text</key>
 							<dict>
+								<key>Align</key>
+								<integer>1</integer>
 								<key>Text</key>
 								<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -1136,6 +1153,8 @@ maxTurnRate}</string>
 							</dict>
 							<key>Text</key>
 							<dict>
+								<key>Align</key>
+								<integer>1</integer>
 								<key>Text</key>
 								<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -1177,6 +1196,8 @@ maxTurnRate}</string>
 							</dict>
 							<key>Text</key>
 							<dict>
+								<key>Align</key>
+								<integer>1</integer>
 								<key>Text</key>
 								<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -1233,6 +1254,8 @@ maxTurnRate}</string>
 					</dict>
 					<key>Text</key>
 					<dict>
+						<key>Align</key>
+						<integer>1</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -1258,8 +1281,8 @@ maxTurnRate}</string>
 					<integer>83</integer>
 					<key>Points</key>
 					<array>
-						<string>{560.79066192163907, 377.97649018601612}</string>
-						<string>{532.52463084634599, 300.04001027237211}</string>
+						<string>{560.78983714200808, 377.97649018601612}</string>
+						<string>{532.51921460806182, 300.04001027237211}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -1295,8 +1318,8 @@ maxTurnRate}</string>
 					<integer>82</integer>
 					<key>Points</key>
 					<array>
-						<string>{439.25630477707085, 438.62037080195375}</string>
-						<string>{153.40113083147122, 437.64269666992499}</string>
+						<string>{439.25630477707085, 438.62036368179344}</string>
+						<string>{153.40113083147122, 437.64265445346206}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -1339,6 +1362,8 @@ maxTurnRate}</string>
 					</dict>
 					<key>Text</key>
 					<dict>
+						<key>Align</key>
+						<integer>1</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -1359,7 +1384,7 @@ maxTurnRate}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{186.88015581819508, 143.58555112511553}, {56, 12}}</string>
+					<string>{{186.88015581819508, 143.59184209918618}, {56, 12}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -1423,8 +1448,8 @@ maxTurnRate}</string>
 					<integer>9</integer>
 					<key>Points</key>
 					<array>
-						<string>{274.93134237690288, 120.91937088579806}</string>
-						<string>{153.77884765799399, 178.7530199621558}</string>
+						<string>{274.93134237690288, 120.92318728506322}</string>
+						<string>{153.77884765799399, 178.7618287841895}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -1460,8 +1485,8 @@ maxTurnRate}</string>
 					<integer>27</integer>
 					<key>Points</key>
 					<array>
-						<string>{95.927636764779095, 290.44730172092011}</string>
-						<string>{95.880412114338199, 262.44965001923151}</string>
+						<string>{95.927644954419122, 290.44730172092011}</string>
+						<string>{95.880428492931401, 262.44965001923151}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -1518,6 +1543,8 @@ maxTurnRate}</string>
 							</dict>
 							<key>Text</key>
 							<dict>
+								<key>Align</key>
+								<integer>1</integer>
 								<key>Text</key>
 								<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -1666,6 +1693,8 @@ update}</string>
 							</dict>
 							<key>Text</key>
 							<dict>
+								<key>Align</key>
+								<integer>1</integer>
 								<key>Text</key>
 								<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -1811,6 +1840,8 @@ update}</string>
 							</dict>
 							<key>Text</key>
 							<dict>
+								<key>Align</key>
+								<integer>1</integer>
 								<key>Text</key>
 								<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -1957,6 +1988,8 @@ velocity}</string>
 							</dict>
 							<key>Text</key>
 							<dict>
+								<key>Align</key>
+								<integer>1</integer>
 								<key>Text</key>
 								<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -2198,6 +2231,8 @@ collisionCheck}</string>
 							</dict>
 							<key>Text</key>
 							<dict>
+								<key>Align</key>
+								<integer>1</integer>
 								<key>Text</key>
 								<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -2301,6 +2336,11 @@ collisionCheck}</string>
 						<key>Draws</key>
 						<string>NO</string>
 					</dict>
+				</dict>
+				<key>Text</key>
+				<dict>
+					<key>Align</key>
+					<integer>1</integer>
 				</dict>
 			</dict>
 			<key>BaseZoom</key>
@@ -2626,6 +2666,11 @@ collisionCheck}</string>
 							<string>Rectangle</string>
 							<key>Style</key>
 							<dict/>
+							<key>Text</key>
+							<dict>
+								<key>Align</key>
+								<integer>1</integer>
+							</dict>
 							<key>Wrap</key>
 							<string>NO</string>
 						</dict>
@@ -2646,6 +2691,11 @@ collisionCheck}</string>
 							<string>Rectangle</string>
 							<key>Style</key>
 							<dict/>
+							<key>Text</key>
+							<dict>
+								<key>Align</key>
+								<integer>1</integer>
+							</dict>
 							<key>Wrap</key>
 							<string>NO</string>
 						</dict>
@@ -2895,6 +2945,11 @@ collisionCheck (SpatialIndex)}</string>
 							<string>Rectangle</string>
 							<key>Style</key>
 							<dict/>
+							<key>Text</key>
+							<dict>
+								<key>Align</key>
+								<integer>1</integer>
+							</dict>
 							<key>Wrap</key>
 							<string>NO</string>
 						</dict>
@@ -2915,6 +2970,11 @@ collisionCheck (SpatialIndex)}</string>
 							<string>Rectangle</string>
 							<key>Style</key>
 							<dict/>
+							<key>Text</key>
+							<dict>
+								<key>Align</key>
+								<integer>1</integer>
+							</dict>
 							<key>Wrap</key>
 							<string>NO</string>
 						</dict>
@@ -3231,6 +3291,8 @@ collisionCheck (SpatialIndex)}</string>
 							<dict/>
 							<key>Text</key>
 							<dict>
+								<key>Align</key>
+								<integer>1</integer>
 								<key>Text</key>
 								<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -3304,6 +3366,8 @@ collisionCheck (SpatialIndex)}</string>
 							<dict/>
 							<key>Text</key>
 							<dict>
+								<key>Align</key>
+								<integer>1</integer>
 								<key>Text</key>
 								<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -3377,6 +3441,8 @@ collisionCheck (SpatialIndex)}</string>
 							<dict/>
 							<key>Text</key>
 							<dict>
+								<key>Align</key>
+								<integer>1</integer>
 								<key>Text</key>
 								<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
@@ -3459,6 +3525,8 @@ collisionCheck (SpatialIndex)}</string>
 		<array/>
 		<key>FitInWindow</key>
 		<true/>
+		<key>Frame</key>
+		<string>{{261, 83}, {815, 665}}</string>
 		<key>ListView</key>
 		<true/>
 		<key>OutlineWidth</key>
@@ -3469,8 +3537,10 @@ collisionCheck (SpatialIndex)}</string>
 		<false/>
 		<key>SidebarWidth</key>
 		<integer>138</integer>
+		<key>VisibleRegion</key>
+		<string>{{2, 1}, {815, 571}}</string>
 		<key>Zoom</key>
-		<real>1.4003496170043945</real>
+		<real>1</real>
 		<key>ZoomValues</key>
 		<array>
 			<array>

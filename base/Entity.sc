@@ -13,7 +13,7 @@ Entity {
 		var <>collisionType;
 
 	*new{ arg world, position, radius, mass;
-		  ^super.newCopyArgs(world, 
+		  ^super.new(world, 
 		  					 position, 
 		  					 radius, 
 		  				     mass
@@ -141,6 +141,7 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 	
 	init{
 		super.init;
+		maxSpeed.debug('maxSpeed try');
 		maxSpeed = maxSpeed ?? {100};
 		maxForce = maxForce ?? {40};
 		maxTurnRate = maxTurnRate ?? {2};

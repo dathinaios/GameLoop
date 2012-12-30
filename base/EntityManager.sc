@@ -4,7 +4,7 @@ TODO
 */
 
 
-// Entity Manager 2 has three types of objects. Ones that dont collide,
+// EntityManager has three types of objects. Ones that dont collide,
 // ones that collide with everything and ones that collide but not between each other.
 
 EntityManager {
@@ -32,7 +32,7 @@ EntityManager {
 	}
 
 	play{ arg rate; //start the gameloop at framerate rate
-		if (mainRoutine.isNil.postln,
+		if (mainRoutine.isNil,
 			{ //1st condition
 			  dt = rate ?? dt; //TODO: not very elegant. 
 				mainRoutine = Routine{
@@ -47,13 +47,14 @@ EntityManager {
 				}.play(mainClock)
 			}, 
 			{ //2nd condition
-			  mainRoutine.play;
+			  mainRoutine.reset.play;
 			}
 		);
 	}
 
 	stop{
-		mainRoutine.stop.reset;
+		mainRoutine.stop;
+		//mainRoutine.reset;
 	}
 
 
@@ -214,6 +215,10 @@ EntityManager {
 	}
 
 }
+
+
+//I could fix this class in case we want to have collision detection for every object. In that cas it might be faster to
+// do it through EntityManager2
 
 EntityManager2{ 
 			 var renderHook, <spatialIndex;
