@@ -9,8 +9,13 @@ f = { var position, radius, width;
 	position = RealVector[rrand(2.0, width), rrand(2.0, width)];
 	radius = 0.4; 
 
-	A.t.entity = SimpleCircle(A.t.entityManager, position, radius, maxSpeed: 40, 
-		collisionFunc: {arg entList; entList.postln.do{arg i; i.remove}}); 
+	A.t.entity = SimpleCircle(
+		A.t.entityManager, 
+		position, 
+		radius, 
+		maxSpeed: 40, 
+		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
+	); 
 	A.t.entity.collisionType_(\mobile);
 	A.t.entity.activate;
 };
