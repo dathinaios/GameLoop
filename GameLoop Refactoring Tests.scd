@@ -2,6 +2,7 @@
 (
 //create the manger and start the game loop at 20 frames per second
 A.t.entityManager = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
+A.t.entityManager.addCamera;
 
 f = { var position, radius, width;
 
@@ -21,13 +22,13 @@ f = { var position, radius, width;
 };
 );
 
-A.t.entityManager.repManager.addCamera;
-A.t.entityManager.repManager.removeCamera;
+A.t.entityManager.repManager.cameraEntity.moveFwd(2.7);
 
 50.do{f.value;};
 f.value;
 
 A.t.entityManager.clear;
+A.t.entityManager.removeCamera;
 A.t.entityManager.stop
 A.t.entityManager.play
 A.t.entityManager.freeList;

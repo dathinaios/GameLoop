@@ -57,6 +57,13 @@ EntityManager {
 		//mainRoutine.reset;
 	}
 
+	addCamera{
+		repManager.addCamera;
+	}
+
+	removeCamera{
+		repManager.removeCamera;
+	}
 
 	add{ arg entity;
 		switch (entity.collisionType)

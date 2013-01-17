@@ -1,5 +1,5 @@
 RepresentationManager{ var manager; 
-					   var <repList, <cameraEntity;
+					   var <repList, <cameraEntity, <cameraActive = false;
 					   //visualisation vars TODO: tidy up and fix
 					   var dimensions, gridSize, cellSize, mainView;
 					   var rowSize, cellSizeInPixels;
@@ -32,11 +32,13 @@ RepresentationManager{ var manager;
 			maxSpeed: 10, 
 		); 
 		cameraEntity.activate;
+		cameraActive = true;
 	}
 
 	removeCamera{
 		manager.remove(cameraEntity);
 		cameraEntity.changed(\remove);
+		cameraActive = false;
 	}
 
 	add{arg entity; 
@@ -84,7 +86,15 @@ RepresentationManager{ var manager;
 				var spaceIn, currentObst, curRadPix, curWidth, obstacle, obstacPos; 
 				obstacle = repList[index]; //get the current object
 				//get position using camera if active
-				obstacPos = obstacle.position;
+				if(cameraActive,
+					{
+					 obstacPos = 
+					 if(obstacle.class == Camera2DRepresentation,
+					 	{manager.center},
+					 	{Camera2D.applyTransformation(obstacle)+manager.center});
+					},
+					{obstacPos = obstacle.position}
+				);
 				Pen.width = obstacle.penWidth;
 				Pen.color = obstacle.color.alpha_(0.7);
 				Pen.beginPath;
