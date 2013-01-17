@@ -21,6 +21,8 @@ f = { var position, radius, width;
 };
 );
 
+A.t.entityManager.repManager.addCamera;
+A.t.entityManager.repManager.removeCamera;
 
 50.do{f.value;};
 f.value;
@@ -41,3 +43,4 @@ A.t.entityManager.mainRoutine.stop
 a = SimpleCircleEnt.new;
 (A.t.entity.class.asString++"Controller").postln.asSymbol.asClass.new;
 SimpleCircle(A.t.entityManager, RealVector[2.0,2.0], 0.9, maxSpeed: 5).activate;
+Camera2D(A.t.entityManager, RealVector[2.0,2.0], 0.9, maxSpeed: 5).activate;

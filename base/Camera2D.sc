@@ -1,9 +1,10 @@
 
 Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <instance;
+					 var <>collisionFunc;
 
 
 *new{ arg world, position, radius, mass, velocity, controller,
-		  heading, side, maxSpeed, maxForce, maxTurnRate, collisionFunc, forceFunc;
+		  heading, side, maxSpeed, maxForce, maxTurnRate, collisionFunc;
 
 		if(instance.isNil, 
 			{
@@ -19,7 +20,6 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <instance;
 			.maxForce_(maxForce)
 			.maxTurnRate_(maxTurnRate)
 			.collisionFunc_(collisionFunc)
-			.forceFunc_(forceFunc)
 			.init;		
 			},
 			{"There is already an active instance of Camera2D".error;}
@@ -30,18 +30,22 @@ init{
 	//"simplecircle init".postln;
 	super.init;
 	heading = heading ?? {0};
+	instance = this;
 }
 
-
-*initialize{ arg manager;
-	if(instance.isNil,
-		{
-		 instance = this.new(world: manager, theta: 0, mass: 0.1, maxSpeed: 5);
-		 ^instance;
-		},
-		{^instance});
-	
+remove {
+"To remove the camera you will need to call .removeCamera on the RepManager".error;
 }
+
+//*initialize{ arg manager;
+//	if(instance.isNil,
+//		{
+//		 instance = this.new(world: manager, heading: 0, mass: 0.1, maxSpeed: 5);
+//		 ^instance;
+//		},
+//		{^instance});
+//	
+//}
 
 *applyTransformation{ arg ent;
 	^instance.applyTransformation(ent);
@@ -106,13 +110,17 @@ reset{
 
 Camera2DController : Controller{
 	
+	getForce { arg entity;
+			^RealVector[0,0]
+	}
+
+	/*
 	getForce { arg entity, amount = 9, rotAmount = 0.025pi; 
 			var theta, x,y, fwd, back, rotLeft, rotRight;
 			fwd = Camera2D.fwd;
 			back = Camera2D.back;
 			rotLeft = Camera2D.rotLeft;
 			rotRight = Camera2D.rotRight;
-			/*
 			if(fwd || back || rotLeft || rotRight,
 				{
 				  case
@@ -148,12 +156,19 @@ Camera2DController : Controller{
 					^RealVector[0,0]
 				}
 			)
-			*/
 	}
+	*/
 
 }
 
 Camera2DRepresentation : SimpleCircleRepresentation{
+
+	init { 
+		position = entity.position;
+		radius = entity.radius;
+		color = color ?? {Color.white};
+		collisionColor = collisionColor ?? {Color.red};
+	}
 
 	draw{arg rect; Pen.strokeRect(rect)}
 

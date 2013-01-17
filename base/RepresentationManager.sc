@@ -1,7 +1,7 @@
 RepresentationManager{ var manager; 
-					   var <repList;
+					   var <repList, <cameraEntity;
 					   //visualisation vars TODO: tidy up and fix
-					   var dimensions, gridSize, cellSize, w;
+					   var dimensions, gridSize, cellSize, mainView;
 					   var rowSize, cellSizeInPixels;
 
 	*new { arg manager;
@@ -23,6 +23,21 @@ RepresentationManager{ var manager;
 		representation = (entity.class.asString++"Representation").asSymbol.asClass.new(entity);
 		representation ?? entity.attach(representation);
 	}
+	
+	addCamera{  
+		cameraEntity = Camera2D(
+			manager, 
+			manager.center, //position
+			0.5, //radius 
+			maxSpeed: 10, 
+		); 
+		cameraEntity.activate;
+	}
+
+	removeCamera{
+		manager.remove(cameraEntity);
+		cameraEntity.changed(\remove);
+	}
 
 	add{arg entity; 
 		repList.add(entity);
@@ -36,26 +51,26 @@ RepresentationManager{ var manager;
 	}
 
 	render {
-		w.refresh;
+		mainView.refresh;
 	}
 	
 	close {
-		w.close;
+		mainView.close;
 	}
 
 	run{/*{{{*/
 
 		var   h = 400, v = 400, seed, run = true,  spaceUnits, spaceUnits2, meterInPixels,  speakerRadInPixels;
-		w = Window("Visuals", Rect(0, 0, h, v), false);
-		w.view.background = Color.black;
-		w.onClose = { run = false }; // stop the thread on close
-		w.front;
+		mainView = Window("Visuals", Rect(0, 0, h, v), false);
+		mainView.view.background = Color.black;
+		mainView.onClose = { run = false }; // stop the thread on close
+		mainView.front;
 		//for  space of 700 pixels is 20 meters one meter is 35 pixels
 		meterInPixels = h/(dimensions[1]-dimensions[0]); //assumes h = v
 		cellSizeInPixels = meterInPixels*cellSize;
 		rowSize = gridSize/cellSize;
 		speakerRadInPixels = 2 * meterInPixels;
-		w.drawFunc= {
+		mainView.drawFunc= {
 	
 		Pen.width = 2;
 		
@@ -64,8 +79,11 @@ RepresentationManager{ var manager;
 		
 		Pen.use { var divisions, subOrAdd;
 			
-			repList.size.do { arg index; var spaceIn, currentObst, curRadPix, curWidth, obstacle, obstacPos; 
+			repList.size.do { 
+				arg index; 
+				var spaceIn, currentObst, curRadPix, curWidth, obstacle, obstacPos; 
 				obstacle = repList[index]; //get the current object
+				//get position using camera if active
 				obstacPos = obstacle.position;
 				Pen.width = obstacle.penWidth;
 				Pen.color = obstacle.color.alpha_(0.7);
