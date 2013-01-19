@@ -1,12 +1,12 @@
-//extra methods for RealVector
+//extra methods for RealVector2D
 
-+ RealVector {
++ RealVector2D {
 	
-	//mag {^this[0].sumsqr(this[1]).sqrt} //is called norm in RealVector
+	//mag {^this[0].sumsqr(this[1]).sqrt} //is called norm in RealVector2D
 	
 	magSq {^this[0].sumsqr(this[1])} //thus skipping the sqrt
 	
-	perp { ^RealVector[(-1)*this[1], this[0]]}
+	perp { ^RealVector2D[(-1)*this[1], this[0]]}
 	
 	distanceSq{ |vec| var ySeparation, xSeparation;
 		ySeparation = vec[1] - this[1];
@@ -18,8 +18,8 @@
 
 /*
 (
-a = RealVector[2,3];
-b = RealVector[5,8];
+a = RealVector2D[2,3];
+b = RealVector2D[5,8];
 );
 
 bench{a.magSq.debug("magSq")}

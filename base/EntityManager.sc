@@ -217,7 +217,7 @@ EntityManager {
 	}
 	
 	center{
-		^RealVector[sceneWidth * 0.5, sceneHeight*0.5];
+		^RealVector2D[sceneWidth * 0.5, sceneHeight*0.5];
 	}
 
 }
@@ -355,7 +355,7 @@ EntityManager2{ /*{{{*/
 	center{ var width, height;
 		width = spatialIndex.sceneWidth;
 		height = spatialIndex.sceneHeight;
-		^RealVector[width * 0.5, height*0.5];
+		^RealVector2D[width * 0.5, height*0.5];
 	}
 
 }/*}}}*/

@@ -16,7 +16,7 @@ FlexibleController { var entity, <forceFunc;
 	}
 
 	init{
-		forceFunc  = forceFunc ?? {{ arg entity; RealVector[0.0]}};
+		forceFunc  = forceFunc ?? {{ arg entity; RealVector2D[0.0, 0.0]}};
 	}
 	
 	getForce { arg entity; ^forceFunc.value(entity);

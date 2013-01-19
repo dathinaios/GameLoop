@@ -71,9 +71,9 @@ SimpleCircleController : Controller{
 
 	getForce { arg entity; var path, position, width;
 			width =entity.world.center[0]*2;
-			position = RealVector[rrand(2.0, width), rrand(2.0, width)];
+			position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
 			path = Path(Array.fill(rrand(8.0, 20.0),
-			{RealVector[position[0] + rrand(-33, 33.0), position[1] + rrand(-33.0, 33.0)]}),true);
+			{RealVector2D[position[0] + rrand(-33, 33.0), position[1] + rrand(-33.0, 33.0)]}),true);
 			^PathFollowing.calculate(entity,path, 0.5);
 	}
 }

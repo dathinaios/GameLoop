@@ -7,7 +7,7 @@ A.t.entityManager.addCamera;
 f = { var position, radius, width;
 
 	width = A.t.entityManager.center[0]*2;
-	position = RealVector[rrand(2.0, width), rrand(2.0, width)];
+	position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
 	radius = 0.4; 
 
 	A.t.entity = SimpleCircle(
@@ -17,12 +17,15 @@ f = { var position, radius, width;
 		maxSpeed: 40, 
 		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
 	); 
-	A.t.entity.collisionType_(\mobile);
+	//A.t.entity.collisionType_(\mobile);
 	A.t.entity.activate;
 };
 );
 
-A.t.entityManager.repManager.cameraEntity.moveFwd(2.7);
+A.t.entityManager.repManager.cameraEntity.moveFwd(-4.7);
+A.t.entityManager.repManager.cameraEntity.arrivePosition = RealVector2D[25,20];
+A.t.entityManager.repManager.cameraEntity.rotateLeft(0.3pi);
+A.t.entityManager.repManager.cameraEntity.heading;
 
 50.do{f.value;};
 f.value;
@@ -43,5 +46,9 @@ A.t.entityManager.mainRoutine.stop
 1.class.asString
 a = SimpleCircleEnt.new;
 (A.t.entity.class.asString++"Controller").postln.asSymbol.asClass.new;
-SimpleCircle(A.t.entityManager, RealVector[2.0,2.0], 0.9, maxSpeed: 5).activate;
-Camera2D(A.t.entityManager, RealVector[2.0,2.0], 0.9, maxSpeed: 5).activate;
+SimpleCircle(A.t.entityManager, RealVector2D[2.0,2.0], 0.9, maxSpeed: 5).activate;
+Camera2D(A.t.entityManager, RealVector2D[2.0,2.0], 0.9, maxSpeed: 5).activate;
+
+MyVector2D[-24,-2].normalize.mag
+RealVector2D[-24,-2].normalize.norm
+

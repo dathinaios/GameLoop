@@ -1,6 +1,6 @@
 
 Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <instance;
-					 var <>collisionFunc;
+					 var <>collisionFunc, <>arrivePosition;
 
 
 *new{ arg world, position, radius, mass, velocity, controller,
@@ -29,23 +29,14 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <instance;
 init{
 	//"simplecircle init".postln;
 	super.init;
-	heading = heading ?? {0};
+	heading = heading ?? {RealVector2D[0,0]};
 	instance = this;
+	arrivePosition = position;
 }
 
 remove {
-"To remove the camera you will need to call .removeCamera on the RepManager".error;
+	"WARNING: To remove the camera you will need to call .removeCamera on the EntityManager".postln;
 }
-
-//*initialize{ arg manager;
-//	if(instance.isNil,
-//		{
-//		 instance = this.new(world: manager, heading: 0, mass: 0.1, maxSpeed: 5);
-//		 ^instance;
-//		},
-//		{^instance});
-//	
-//}
 
 *applyTransformation{ arg ent;
 	^instance.applyTransformation(ent);
@@ -64,33 +55,37 @@ applyTransformation{ arg entity;
 					 var xMinusx, yMinusy;
 	//translate position according to rotation and camera position	
 	entPos = entity.position;
-	theta = heading;
+	theta = heading.norm;
 	thetaSin = theta.sin;
 	thetaCos = theta.cos;
 	xMinusx = entPos[0] - position[0];
 	yMinusy = entPos[1] - position[1];
 	x = (xMinusx * thetaCos) - (yMinusy * thetaSin);
 	y = (xMinusx * thetaSin) + (yMinusy * thetaCos);
-	^RealVector[x,y];
+	^RealVector2D[x,y];
 }
 
 moveFwd{arg amount = 0.02; var theta, x, y;
 	theta = heading;
+	//theta.debug("theta");
 	y = theta.cos;
 	x = theta.sin;
-	position = position + (amount *RealVector[x, y]);
+	//y.debug("y"); x.debug("y");
+	//position = position + (amount *RealVector2D[x, y]);
+	arrivePosition = arrivePosition + (amount *RealVector2D[x, y]);
+	arrivePosition.debug("FINAL");
 }
 
 moveBack{arg amount = 0.02; var theta, x, y;
 	theta = heading;
 	y = theta.cos;
 	x = theta.sin;
-	position = position - (amount *RealVector[x, y]);
+	//position = position - (amount *RealVector2D[x, y]);
+	arrivePosition = arrivePosition - (amount *RealVector2D[x, y]);
 }
 
-
 moveLeft{arg amount = 0.23; 
-	position = position - RealVector[amount, 0]
+	position = position - RealVector2D[amount, 0]
 }
 
 rotateLeft{arg amount = 0.001pi;
@@ -102,7 +97,7 @@ rotateRight{arg amount = 0.001pi;
 }
 
 reset{
-	position = world.center;
+	arrivePosition = world.center;
 	heading = 0;
 }
 
@@ -111,7 +106,14 @@ reset{
 Camera2DController : Controller{
 	
 	getForce { arg entity;
-			^RealVector[0,0]
+		//I could use an arrive behavior and change the 
+		//position according to the move forward etc.
+			//entity.position.debug("position");
+			//^RealVector2D[0,0];
+			^Arrive.calculate( 
+				entity, 
+				entity.arrivePosition
+			);
 	}
 
 	/*
@@ -130,7 +132,7 @@ Camera2DController : Controller{
 						theta = heading;
 						y = theta.cos;
 						x = theta.sin;
-						^(entity.velocity + (amount *RealVector[x, y].normalize));
+						^(entity.velocity + (amount *RealVector2D[x, y].normalize));
 					}
 					{back}
 					{ 	
@@ -138,22 +140,22 @@ Camera2DController : Controller{
 						theta = heading;
 						y = theta.cos;
 						x = theta.sin;
-						^(entity.velocity - (amount *RealVector[x, y].normalize));
+						^(entity.velocity - (amount *RealVector2D[x, y].normalize));
 					}
 					{rotLeft}
 					{ 	Camera2D.rotLeft_(false);
 						heading = heading - rotAmount;
-						^RealVector[0,0]
+						^RealVector2D[0,0]
 					}
 					{rotRight}
 					{ 	Camera2D.rotRight_(false);
 						heading = heading + rotAmount;
-						^RealVector[0,0]
+						^RealVector2D[0,0]
 					};
 				},
 				{
 					entity.velocity = entity.velocity * 0.5;
-					^RealVector[0,0]
+					^RealVector2D[0,0]
 				}
 			)
 	}

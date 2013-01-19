@@ -29,7 +29,7 @@ RepresentationManager{ var manager;
 			manager, 
 			manager.center, //position
 			0.5, //radius 
-			maxSpeed: 10, 
+			maxSpeed: 10 
 		); 
 		cameraEntity.activate;
 		cameraActive = true;
@@ -88,10 +88,10 @@ RepresentationManager{ var manager;
 				//get position using camera if active
 				if(cameraActive,
 					{
-					 obstacPos = 
-					 if(obstacle.class == Camera2DRepresentation,
-					 	{manager.center},
-					 	{Camera2D.applyTransformation(obstacle)+manager.center});
+					obstacPos = 
+					if(obstacle.class == Camera2DRepresentation,
+						{manager.center},
+						{Camera2D.applyTransformation(obstacle)+manager.center});
 					},
 					{obstacPos = obstacle.position}
 				);
