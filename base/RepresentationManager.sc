@@ -91,7 +91,7 @@ RepresentationManager{ var manager;
 					obstacPos = 
 					if(obstacle.class == Camera2DRepresentation,
 						{manager.center},
-						{Camera2D.applyTransformation(obstacle)+manager.center});
+						{cameraEntity.applyTransformation(obstacle)+manager.center});
 					},
 					{obstacPos = obstacle.position}
 				);

@@ -147,7 +147,7 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 		// update the heading and side (only if velocity is greater than *from AI by example book*)
 		if (velocity.magSq > 0.00000001)
 			{
-			heading = velocity.normalize; //.debug('heading');
+			heading = velocity.normalize;//.debug('heading');
 			side = heading.perp;
 			};
 	}

@@ -22,10 +22,11 @@ f = { var position, radius, width;
 };
 );
 
-A.t.entityManager.repManager.cameraEntity.moveFwd(-4.7);
-A.t.entityManager.repManager.cameraEntity.arrivePosition = RealVector2D[25,20];
-A.t.entityManager.repManager.cameraEntity.rotateLeft(0.3pi);
-A.t.entityManager.repManager.cameraEntity.heading;
+A.t.entityManager.repManager.cameraEntity.moveFwd(4);
+A.t.entityManager.repManager.cameraEntity.moveBack(4);
+A.t.entityManager.repManager.cameraEntity.goto(RealVector2D[rrand(5.0, 35.0),rrand(6.0, 30.0)]);
+A.t.entityManager.repManager.cameraEntity.rotateLeft(0.1pi);
+A.t.entityManager.repManager.cameraEntity.rotateRight(0.1pi);
 
 50.do{f.value;};
 f.value;
@@ -52,3 +53,23 @@ Camera2D(A.t.entityManager, RealVector2D[2.0,2.0], 0.9, maxSpeed: 5).activate;
 MyVector2D[-24,-2].normalize.mag
 RealVector2D[-24,-2].normalize.norm
 
+(
+{
+	var entPos, newPos, theta, thetaSin, thetaCos, rad, x,y;
+	var xMinusx, yMinusy;
+	var position;
+
+	position = RealVector2D[25, 23];
+	entPos = RealVector2D[24,20];
+	theta = RealVector2D[23, 10].norm.debug("theta");
+	thetaSin = theta.sin;
+	thetaCos = theta.cos;
+	xMinusx = entPos[0] - position[0];
+	yMinusy = entPos[1] - position[1];
+	x = (xMinusx * thetaCos) - (yMinusy * thetaSin);
+	y = (xMinusx * thetaSin) + (yMinusy * thetaCos);
+	RealVector2D[x,y];
+}.value
+)
+
+CmdPeriod.run
