@@ -1,54 +1,66 @@
 
 (
 //create the manger and start the game loop at 20 frames per second
-A.t.entityManager = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
-A.t.entityManager.addCamera;
+~entityManager = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
+~entityManager.addCamera;
 
 f = { var position, radius, width;
 
-	width = A.t.entityManager.center[0]*2;
+	width = ~entityManager.center[0]*2;
 	position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
 	radius = 0.4; 
 
-	A.t.entity = SimpleCircle(
-		A.t.entityManager, 
+	~entity = SimpleCircle(
+		~entityManager, 
 		position, 
 		radius, 
 		maxSpeed: 40, 
 		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
 	); 
-	//A.t.entity.collisionType_(\mobile);
-	A.t.entity.activate;
+	//~entity.collisionType_(\mobile);
+	~entity.activate;
 };
 );
-
-A.t.entityManager.repManager.cameraEntity.moveFwd(4);
-A.t.entityManager.repManager.cameraEntity.moveBack(4);
-A.t.entityManager.repManager.cameraEntity.goto(RealVector2D[rrand(5.0, 35.0),rrand(6.0, 30.0)]);
-A.t.entityManager.repManager.cameraEntity.rotateLeft(0.1pi);
-A.t.entityManager.repManager.cameraEntity.rotateRight(0.1pi);
 
 50.do{f.value;};
 f.value;
 
-A.t.entityManager.clear;
-A.t.entityManager.removeCamera;
-A.t.entityManager.stop
-A.t.entityManager.play
-A.t.entityManager.freeList;
-A.t.entityManager.mobList;
-A.t.entityManager.staticList;
-RepresentationManager.repList
-A.t.routiniaris.stop
+~entityManager.repManager.cameraEntity.moveFwd(4);
+~entityManager.repManager.cameraEntity.moveBack(4);
+~entityManager.repManager.cameraEntity.goto(RealVector2D[rrand(5.0, 35.0),rrand(6.0, 30.0)]);
+~entityManager.repManager.cameraEntity.rotateLeft(0.1pi);
+~entityManager.repManager.cameraEntity.rotateRight(0.1pi);
+~entityManager.repManager.cameraEntity.reset;
 
-A.t.entityManager.mainRoutine.play
-A.t.entityManager.mainRoutine.stop
+(
+r = Routine{ //test
+	loop{
+	~entityManager.repManager.cameraEntity.rotateRight(0.05pi);
+	0.05.wait;
+	};
+}.play;
+)
+
+r.stop
+
+~entityManager.clear;
+~entityManager.removeCamera;
+~entityManager.stop
+~entityManager.play
+~entityManager.freeList;
+~entityManager.mobList;
+~entityManager.staticList;
+RepresentationManager.repList
+~routiniaris.stop
+
+~entityManager.mainRoutine.play
+~entityManager.mainRoutine.stop
 
 1.class.asString
 a = SimpleCircleEnt.new;
-(A.t.entity.class.asString++"Controller").postln.asSymbol.asClass.new;
-SimpleCircle(A.t.entityManager, RealVector2D[2.0,2.0], 0.9, maxSpeed: 5).activate;
-Camera2D(A.t.entityManager, RealVector2D[2.0,2.0], 0.9, maxSpeed: 5).activate;
+(~entity.class.asString++"Controller").postln.asSymbol.asClass.new;
+SimpleCircle(~entityManager, RealVector2D[2.0,2.0], 0.9, maxSpeed: 5).activate;
+Camera2D(~entityManager, RealVector2D[2.0,2.0], 0.9, maxSpeed: 5).activate;
 
 MyVector2D[-24,-2].normalize.mag
 RealVector2D[-24,-2].normalize.norm

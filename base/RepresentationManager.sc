@@ -1,5 +1,6 @@
 RepresentationManager{ var manager; 
-					   var <repList, <cameraEntity, <cameraActive = false;
+					   var <repList, <cameraEntity, <cameraActive = false, 
+					   		leftRotationRoutine, rightRotationRoutine;
 					   //visualisation vars TODO: tidy up and fix
 					   var dimensions, gridSize, cellSize, mainView;
 					   var rowSize, cellSizeInPixels;
@@ -15,6 +16,20 @@ RepresentationManager{ var manager;
 		dimensions = [0, manager.center[0]*2];
 		gridSize = 10;
 		cellSize = manager.spatialIndex.cellSize;
+		//define the rotation routine
+		leftRotationRoutine = Routine{ //test
+			loop{
+			cameraEntity.rotateLeft(0.01pi);
+			0.05.wait;
+			};
+		};
+
+		rightRotationRoutine = Routine{ //test
+			loop{
+			cameraEntity.rotateRight(0.01pi);
+			0.05.wait;
+			};
+		};
 	}
 
 	//the method called by entityManager to notify of the creation of new entities
@@ -29,7 +44,8 @@ RepresentationManager{ var manager;
 			manager, 
 			manager.center, //position
 			0.5, //radius 
-			maxSpeed: 10 
+			mass: 0.04,
+			maxSpeed: 20 
 		); 
 		cameraEntity.activate;
 		cameraActive = true;
@@ -105,6 +121,44 @@ RepresentationManager{ var manager;
 				//Pen.strokeOval(Rect((obstacle.position[0]*meterInPixels)-curRadPix, ((obstacle.position[1]*meterInPixels).linlin(0, 700, 700, 0))-curRadPix, curWidth, curWidth));
 				obstacle.draw((Rect((obstacPos[0]*meterInPixels)-curRadPix, ((obstacPos[1]*meterInPixels).linlin(0, h, v, 0))-curRadPix, curWidth, curWidth)))
 			};
+
+			//Specific mainview setting and keyboard controls
+			//mainView.alwaysOnTop = true;
+			mainView.view.keyDownAction = 
+				{arg view, char, modifiers, unicode, keycode;
+					//view.postln;
+					//char.postln;
+					//modifiers.postln;
+					//unicode.postln;
+					//keycode.postln;
+					switch (keycode)
+					{126}{cameraEntity.moveFwd(4)}
+					{125}{cameraEntity.moveBack(4)}
+					{123}
+					{
+						if(leftRotationRoutine.isPlaying.not)
+						  {leftRotationRoutine.reset.play};
+					}
+					{124}
+					{
+						if(rightRotationRoutine.isPlaying.not)
+						  {rightRotationRoutine.reset.play};
+					}
+				};
+
+			mainView.view.keyUpAction = 
+				{arg view, char, modifiers, unicode, keycode;
+					//view.postln;
+					//char.postln;
+					//modifiers.postln;
+					//unicode.postln;
+					//keycode.postln;
+					switch (keycode)
+					{123}{leftRotationRoutine.stop}
+					{124}{rightRotationRoutine.stop}
+				};
+
+
 /* COMMENTED OUT{{{*/
 //				//draw the grid
 //				

@@ -39,6 +39,11 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <instance;
 	remove {
 		"WARNING: To remove the camera you will need to call .removeCamera on the EntityManager".postln;
 	}
+
+	/*There were issues with the transformation. I was using the heading of the camera entity in a weird manner.
+	what I did here instead is define a new var for rotation. It takes a value from 0 to 2pi and works as expected.
+	The only issue is that although the motion left righ is smooth the rotation is not.*/
+
 	applyTransformation{ arg entity; 
 						var entPos, newPos, theta, thetaSin, thetaCos, rad, x,y;
 						var xMinusx, yMinusy;
@@ -72,16 +77,16 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <instance;
 		arrivePosition = arrivePosition - (amount *RealVector2D[x, y]);
 	}
 
-	goto{ arg target;
-		arrivePosition = target;
-	}
-
 	rotateLeft{arg amount = 0.001pi;
-		rotation = rotation - amount;
+		rotation = (rotation - amount).wrap(0, 2pi);
 	}
 
 	rotateRight{arg amount = 0.001pi;
-		rotation = rotation + amount;
+		rotation = (rotation + amount).wrap(0, 2pi);
+	}
+
+	goto{ arg target;
+		arrivePosition = target;
 	}
 
 	reset{
@@ -114,7 +119,9 @@ Camera2DController : Controller{
 			//^RealVector2D[0,0];
 			^Arrive.calculate( 
 				entity, 
-				entity.arrivePosition
+				entity.arrivePosition,
+				deceleration: 2,
+				tweak: 0.3 
 			);
 	}
 
