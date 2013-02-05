@@ -1,8 +1,3 @@
-/*
-TODO
-
-*/
-
 
 // EntityManager has three types of objects. Ones that dont collide,
 // ones that collide with everything and ones that collide but not between each other.

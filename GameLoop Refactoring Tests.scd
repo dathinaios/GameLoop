@@ -2,6 +2,7 @@
 (
 //create the manger and start the game loop at 20 frames per second
 ~entityManager = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
+//~entityManager = GameLoop(40, 40, 1).play(0.05);
 ~entityManager.addCamera;
 
 f = { var position, radius, width;
@@ -12,6 +13,7 @@ f = { var position, radius, width;
 
 	~entity = SimpleCircle(
 		~entityManager, 
+		//~entityManager.world, 
 		position, 
 		radius, 
 		maxSpeed: 40, 
