@@ -5,7 +5,7 @@
 EntityManager {
 			 var <spatialIndex; //render hook is a function that will be called once every loop
 			 var <freeList, <mobList, <staticList;
-			 var <dt, <mainRoutine, <mainClock;
+			 var <>dt, <mainRoutine, <mainClock;
 			 var <sceneWidth, <sceneHeight, <repManager;
 
 	*new { arg spatialIndex = SpatialHashing(20, 20, 0.5); 
@@ -17,15 +17,16 @@ EntityManager {
 		freeList = List.new;
 		mobList = List.new;
 		staticList = List.new;
-		mainClock = TempoClock.new;
+		//mainClock = TempoClock.new;
 		//get the dimension of the space from the spatial index
 		sceneWidth = spatialIndex.sceneWidth;
 		sceneHeight = spatialIndex.sceneHeight;
 		//create and run the representation manager
-		repManager = RepresentationManager(this);
-		repManager.run;
+		//repManager = RepresentationManager(this);
+		//repManager.run;
 	}
 
+	/*
 	play{ arg rate; //start the gameloop at framerate rate
 		if (mainRoutine.isNil,
 			{ //1st condition
@@ -46,18 +47,11 @@ EntityManager {
 			}
 		);
 	}
+	*/
 
 	stop{
 		mainRoutine.stop;
 		//mainRoutine.reset;
-	}
-
-	addCamera{
-		repManager.addCamera;
-	}
-
-	removeCamera{
-		repManager.removeCamera;
 	}
 
 	add{ arg entity;
@@ -65,8 +59,9 @@ EntityManager {
 		{\free} {freeList.add(entity)}
 		{\mobile} {mobList.add(entity); spatialIndex.register(entity)}
 		{\static} {staticList.add(entity); spatialIndex.register(entity)};
-		//notify the RepresentationManager of the new entity
-		repManager.newEntity(entity);
+		//notify dependants (represemtationManager) that an entity was added
+		this.changed(entity)
+		//repManager.newEntity(entity);
 	}
 
 	remove{ arg entity; 

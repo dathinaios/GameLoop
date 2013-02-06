@@ -31,14 +31,15 @@ RepresentationManager{ var manager;
 			};
 		};
 	}
-
-	//the method called by entityManager to notify of the creation of new entities
-	newEntity{ arg entity; var representation;
-		//create and attach the relevant rerpesentation if it exists
-		representation = (entity.class.asString++"Representation").asSymbol.asClass.new(entity);
-		representation ?? entity.attach(representation);
-	}
 	
+	//notification(s) from EntityManager
+	update { arg theChanger, message; //message contains the enity
+			 var representation;
+		//create and attach the relevant rerpesentation if it exists
+		representation = (message.class.asString++"Representation").asSymbol.asClass.new(message);
+		representation ?? message.attach(representation);
+	}
+
 	addCamera{  
 		cameraEntity = Camera2D(
 			manager, 
@@ -100,7 +101,7 @@ RepresentationManager{ var manager;
 			repList.size.do { 
 				arg index; 
 				var spaceIn, currentObst, curRadPix, curWidth, obstacle, obstacPos; 
-				obstacle = repList[index]; //get the current object
+				obstacle = repList[index].postln; //get the current object
 				//get position using camera if active
 				if(cameraActive,
 					{

@@ -16,13 +16,16 @@ GameLoop{
 	}
 
 	init{
-		dt = 0.05; //20 FPS
 		mainClock = TempoClock.new;
 		entManager = EntityManager(SpatialHashing(sceneWidth, sceneHeight, cellSize));
 		instance = this;
 		//create and run the representation manager
-		repManager = RepresentationManager(this);
+		repManager = RepresentationManager(entManager);
 		repManager.run;
+		//add the representationManager as a dependant to the entManager
+		//in order to notfy of new additions
+		entManager.addDependant(repManager);
+
 	}
 
 	world{ // at the moment we are returning the entManager
@@ -34,15 +37,15 @@ GameLoop{
 	play{ arg rate; //start the gameloop at framerate rate
 		if (mainRoutine.isNil,
 			{ //1st condition
-			  dt = rate ?? dt; //TODO: not very elegant. 
+			  if(rate != nil, {entManager.dt = rate});
 				mainRoutine = Routine{
 					inf.do{
-						instance.refreshIndex1; //unregisterAll
-						instance.update; 
-						instance.refreshIndex2; //reregisterAll
-						instance.collisionCheck; 
+						entManager.refreshIndex1; //unregisterAll
+						entManager.update; 
+						entManager.refreshIndex2; //reregisterAll
+						entManager.collisionCheck; 
 						{repManager.render}.defer; //render!!
-						dt.wait;
+						entManager.dt.wait;
 						}
 				}.play(mainClock)
 			}, 

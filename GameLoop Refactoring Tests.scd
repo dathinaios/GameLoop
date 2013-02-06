@@ -1,8 +1,8 @@
 
 (
 //create the manger and start the game loop at 20 frames per second
-~entityManager = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
-//~entityManager = GameLoop(40, 40, 1).play(0.05);
+//~entityManager = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
+~entityManager = GameLoop(40, 40, 1).play(0.05);
 ~entityManager.addCamera;
 
 f = { var position, radius, width;
@@ -12,8 +12,8 @@ f = { var position, radius, width;
 	radius = 0.4; 
 
 	~entity = SimpleCircle(
-		~entityManager, 
-		//~entityManager.world, 
+		//~entityManager, 
+		~entityManager.world, 
 		position, 
 		radius, 
 		maxSpeed: 40, 
@@ -49,23 +49,13 @@ r.stop
 ~entityManager.removeCamera;
 ~entityManager.stop
 ~entityManager.play
-~entityManager.freeList;
+~entityManager.world.freeList;
 ~entityManager.mobList;
 ~entityManager.staticList;
-RepresentationManager.repList
 ~routiniaris.stop
 
 ~entityManager.mainRoutine.play
 ~entityManager.mainRoutine.stop
-
-1.class.asString
-a = SimpleCircleEnt.new;
-(~entity.class.asString++"Controller").postln.asSymbol.asClass.new;
-SimpleCircle(~entityManager, RealVector2D[2.0,2.0], 0.9, maxSpeed: 5).activate;
-Camera2D(~entityManager, RealVector2D[2.0,2.0], 0.9, maxSpeed: 5).activate;
-
-MyVector2D[-24,-2].normalize.mag
-RealVector2D[-24,-2].normalize.norm
 
 (
 {
