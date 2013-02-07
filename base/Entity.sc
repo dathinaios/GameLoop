@@ -34,8 +34,6 @@ Entity {
 			collisionType = \free;
 	}
 	
-	//overide the add method in a subclass if you want to use 
-	//EntityManager2
 	add{ world.add(this);
 	   //Main.elapsedTime.debug("I'm alive!!")
 	}

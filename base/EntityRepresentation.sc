@@ -6,11 +6,11 @@ EntityRepresentation { var entity, <position, <radius;
 
 	// the dependancy passes in the changed and any additional arguments 
 	update { arg entity, message;  //entity var is theChanger
-		//in the subclass call super.update to do the above and then add your own like:
+		//in the subclass call super.update to do this and then add your own like:
 		switch (message)//a typical use of a .changed notification (could be case for multiple)
-		{\update} {position = entity.position; radius = entity.radius}
-		{\add} {entity.world.repManager.add(this)}
-		{\remove} {entity.world.repManager.remove(this)};
+		{\update} {position = entity.position; radius = entity.radius};
+		//{\add} {entity.world.repManager.add(this)}
+		//{\remove} {entity.world.repManager.remove(this)};
 		//in subclass put: {message == \collision} {this.collision};
 	} 
 	

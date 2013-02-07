@@ -1,19 +1,19 @@
 
 (
 //create the manger and start the game loop at 20 frames per second
-//~entityManager = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
-~entityManager = GameLoop(40, 40, 1).play(0.05);
-~entityManager.addCamera;
+//~gameloop = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
+~gameloop = GameLoop(40, 40, 1).play(0.05);
+~gameloop.addCamera;
 
 f = { var position, radius, width;
 
-	width = ~entityManager.center[0]*2;
+	width = ~gameloop.center[0]*2;
 	position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
 	radius = 0.4; 
 
 	~entity = SimpleCircle(
-		//~entityManager, 
-		~entityManager.world, 
+		//~gameloop, 
+		~gameloop.world, 
 		position, 
 		radius, 
 		maxSpeed: 40, 
@@ -26,18 +26,21 @@ f = { var position, radius, width;
 
 50.do{f.value;};
 f.value;
+~gameloop.entManager.clear;
+~entity.remove
 
-~entityManager.repManager.cameraEntity.moveFwd(4);
-~entityManager.repManager.cameraEntity.moveBack(4);
-~entityManager.repManager.cameraEntity.goto(RealVector2D[rrand(5.0, 35.0),rrand(6.0, 30.0)]);
-~entityManager.repManager.cameraEntity.rotateLeft(0.1pi);
-~entityManager.repManager.cameraEntity.rotateRight(0.1pi);
-~entityManager.repManager.cameraEntity.reset;
+~gameloop.repManager.cameraEntity.moveFwd(4);
+~gameloop.repManager.cameraEntity.moveBack(4);
+~gameloop.repManager.cameraEntity.goto(RealVector2D[rrand(5.0, 35.0),rrand(6.0, 30.0)]);
+~gameloop.repManager.cameraEntity.rotateLeft(0.1pi);
+~gameloop.repManager.cameraEntity.rotateRight(0.1pi);
+~gameloop.repManager.cameraEntity.reset;
+~gameloop.repManager.repList
 
 (
 r = Routine{ //test
 	loop{
-	~entityManager.repManager.cameraEntity.rotateRight(0.05pi);
+	~gameloop.repManager.cameraEntity.rotateRight(0.05pi);
 	0.05.wait;
 	};
 }.play;
@@ -45,17 +48,17 @@ r = Routine{ //test
 
 r.stop
 
-~entityManager.clear;
-~entityManager.removeCamera;
-~entityManager.stop
-~entityManager.play
-~entityManager.world.freeList;
-~entityManager.mobList;
-~entityManager.staticList;
+~gameloop.clear;
+~gameloop.removeCamera;
+~gameloop.stop
+~gameloop.play
+~gameloop.world.freeList;
+~gameloop.mobList;
+~gameloop.staticList;
 ~routiniaris.stop
 
-~entityManager.mainRoutine.play
-~entityManager.mainRoutine.stop
+~gameloop.mainRoutine.play
+~gameloop.mainRoutine.stop
 
 (
 {

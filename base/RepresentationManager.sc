@@ -33,11 +33,21 @@ RepresentationManager{ var manager;
 	}
 	
 	//notification(s) from EntityManager
-	update { arg theChanger, message; //message contains the enity
+	update { arg theChanger, message; //message contains the entity and a message
 			 var representation;
-		//create and attach the relevant rerpesentation if it exists
-		representation = (message.class.asString++"Representation").asSymbol.asClass.new(message);
-		representation ?? message.attach(representation);
+		//here we will interpret the message
+		switch (message[1])
+		{\add} {
+			//create and attach the relevant rerpesentation if it exists
+			representation = (message[0].class.asString++"Representation").asSymbol.asClass.new(message[0]);
+			representation ?? message[0].attach(representation);
+			//add the representation to the repList variable
+			this.add(representation);
+		}
+		{\remove} {
+			//remove the representation from the repList variable
+			message[0].dependants.do{arg i; this.remove(i)}
+		};
 	}
 
 	addCamera{  
@@ -90,7 +100,6 @@ RepresentationManager{ var manager;
 		rowSize = gridSize/cellSize;
 		speakerRadInPixels = 2 * meterInPixels;
 		mainView.drawFunc= {
-	
 		Pen.width = 2;
 		
 		//to draw the obstacles 
@@ -101,7 +110,7 @@ RepresentationManager{ var manager;
 			repList.size.do { 
 				arg index; 
 				var spaceIn, currentObst, curRadPix, curWidth, obstacle, obstacPos; 
-				obstacle = repList[index].postln; //get the current object
+				obstacle = repList[index]; //get the current object
 				//get position using camera if active
 				if(cameraActive,
 					{

@@ -60,7 +60,7 @@ EntityManager {
 		{\mobile} {mobList.add(entity); spatialIndex.register(entity)}
 		{\static} {staticList.add(entity); spatialIndex.register(entity)};
 		//notify dependants (represemtationManager) that an entity was added
-		this.changed(entity)
+		this.changed([entity, \add])
 		//repManager.newEntity(entity);
 	}
 
@@ -68,7 +68,8 @@ EntityManager {
 		switch (entity.collisionType)
 		{\free} {freeList.remove(entity)}
 		{\mobile} {mobList.remove(entity); spatialIndex.unregister(entity)}
-		{\static} {staticList.remove(entity); spatialIndex.unregister(entity)}
+		{\static} {staticList.remove(entity); spatialIndex.unregister(entity)};
+		this.changed([entity, \remove]);
 	}
 		
 	update{ //update all Entities
@@ -87,7 +88,7 @@ EntityManager {
 //		    listCopy = staticList.copy;
 //		    listCopy.do{arg i; i.remove};
 
- 	[freeList.copy, mobList.copy, staticList.copy].flat.do{arg i; i.remove};
+ 		[freeList.copy, mobList.copy, staticList.copy].flat.do{arg i; i.remove};
 
 	}
 	
