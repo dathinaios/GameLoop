@@ -39,7 +39,7 @@ Entity {
 	}
 	
 	remove { world.remove(this);
-			 this.changed(\remove);
+			 //this.changed(\remove);
 			 //this.release; //release all dependants; I do not need that becasue the depndants release themselves
 	}
 	
@@ -55,7 +55,7 @@ Entity {
 	
 	activate { //this method is the last to be called. It will add the entity and the representations to their managers
 		this.add;
-		this.changed(\add); //this change should be dealt in the representation to activate them//reps.do{arg i; i.activate};
+		//this.changed(\add); //this change should be dealt in the representation to activate them//reps.do{arg i; i.activate};
 		//this.dependants.do{arg i; i.activate};
 	}
 
