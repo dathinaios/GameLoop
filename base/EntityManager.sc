@@ -21,33 +21,7 @@ EntityManager {
 		//get the dimension of the space from the spatial index
 		sceneWidth = spatialIndex.sceneWidth;
 		sceneHeight = spatialIndex.sceneHeight;
-		//create and run the representation manager
-		//repManager = RepresentationManager(this);
-		//repManager.run;
 	}
-
-	/*
-	play{ arg rate; //start the gameloop at framerate rate
-		if (mainRoutine.isNil,
-			{ //1st condition
-			  dt = rate ?? dt; //TODO: not very elegant. 
-				mainRoutine = Routine{
-					inf.do{
-						this.refreshIndex1; //unregisterAll
-						this.update; 
-						this.refreshIndex2; //reregisterAll
-						this.collisionCheck; 
-						{repManager.render}.defer; //render!!
-						dt.wait;
-						}
-				}.play(mainClock)
-			}, 
-			{ //2nd condition
-			  mainRoutine.reset.play;
-			}
-		);
-	}
-	*/
 
 	stop{
 		mainRoutine.stop;
@@ -79,17 +53,7 @@ EntityManager {
 	}
 	
 	clear { var listCopy;
-//		    listCopy = freeList.copy;
-//		    listCopy.do{arg i; i.remove};
-//		    
-//		    listCopy = mobList.copy;
-//		    listCopy.do{arg i; i.remove};
-//		    
-//		    listCopy = staticList.copy;
-//		    listCopy.do{arg i; i.remove};
-
  		[freeList.copy, mobList.copy, staticList.copy].flat.do{arg i; i.remove};
-
 	}
 	
 	refreshIndex1 { //refresh can not happen simply by clearing buckets as in manager1 because we need to keep
@@ -110,7 +74,7 @@ EntityManager {
 
 	}
 
-	//Collision detection
+	//Collision detection/*{{{*/
 
 //	collisionCheck{ 
 //	
@@ -126,7 +90,7 @@ EntityManager {
 //			);
 //		};
 //		
-//	}
+//	}/*}}}*/
 
 
 	collisionCheck{ 
