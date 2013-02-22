@@ -1,5 +1,6 @@
 
 (
+AmbiDecoderCentre.startDecoder2('stereo');
 //create the manger and start the game loop at 20 frames per second
 //~gameloop = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
 ~gameloop = GameLoop(40, 40, 1).play(0.05);
@@ -11,7 +12,7 @@ f = { var position, radius, width;
 	position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
 	radius = 0.4; 
 
-	~entity = SimpleCircle(
+	~entity = MUEnt(
 		//~gameloop, 
 		~gameloop.world, 
 		position, 
@@ -59,24 +60,51 @@ r.stop
 
 ~gameloop.mainRoutine.play
 ~gameloop.mainRoutine.stop
-
-(
-{
-	var entPos, newPos, theta, thetaSin, thetaCos, rad, x,y;
-	var xMinusx, yMinusy;
-	var position;
-
-	position = RealVector2D[25, 23];
-	entPos = RealVector2D[24,20];
-	theta = RealVector2D[23, 10].norm.debug("theta");
-	thetaSin = theta.sin;
-	thetaCos = theta.cos;
-	xMinusx = entPos[0] - position[0];
-	yMinusy = entPos[1] - position[1];
-	x = (xMinusx * thetaCos) - (yMinusy * thetaSin);
-	y = (xMinusx * thetaSin) + (yMinusy * thetaCos);
-	RealVector2D[x,y];
-}.value
-)
-
 CmdPeriod.run
+
+//Trying things out for using NodeProxies for SoundRepresentations
+
+~in     = NodeProxy.audio.fadeTime_(4);
+~out    = NodeProxy.audio.fadeTime_(4);
+~lfo    = NodeProxy.control(Server.default, 1).fadeTime_(4); //Dictionary.new;
+~filter = NodeProxy.audio.fadeTime_(4);
+~effect = NodeProxy.audio.fadeTime_(4);
+
+//Could I use this structure as a backdrop again?
+this.makeIn(\none);
+this.makeLFO(\none);
+this.makeFilter(\none);
+this.makeEffect(\none);
+
+mainOut = NodeProxy.audio.fadeTime_(4);
+mainOut[0] = {out.ar};	
+
+~in.source = {SinOsc.ar(440)};
+~in.source = {0};
+~out.source = {Out.ar(0, ~in.ar)};
+
+out.source = { arg globalGain = 0.5;
+	var input, rate, mul = 1;
+	input = effect.ar;
+	input = input * globalGain;
+	rate = Impulse.kr(15);
+	// measure Peak
+	SendReply.kr(rate, ("/levels"+ instanceNum).asSymbol, Peak.ar(input, rate)); //[Amplitude.kr(input, 0.05, 0.05)], K2A.ar(Peak.ar(input, delrate).lag(0, 3))]);	
+	input;
+	//Out.ar(0, input)
+};
+
+in[0] = {
+	arg freq = 0.5, amp = 0.5, pan = 0.5, detune = 0.5, detune2 = 0.5, trunc = 0; 
+	var in;
+	freq = \freq.asSpec.map(freq);
+	trunc = \trunc.asSpec.map(trunc);
+	pan = \pan.asSpec.map(pan);
+	detune= \detune.asSpec.map(detune);
+	detune2= \detune2.asSpec.map(detune2);
+	amp = amp*0.5;
+	in = Saw.ar(freq, amp);
+	in = in + Saw.ar(freq + detune + detune2, amp);
+	in = in.trunc(trunc);
+	Pan2.ar(in, pan);
+};
