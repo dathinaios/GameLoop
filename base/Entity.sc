@@ -148,6 +148,7 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 			heading = velocity.normalize;//.debug('heading');
 			side = heading.perp;
 			};
+		this.changed(\update)
 	}
 
 	/*

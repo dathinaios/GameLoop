@@ -50,7 +50,9 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 		collisionColor = collisionColor ?? {Color.red};
 
 		in     = NodeProxy.audio.fadeTime_(4);
+		in.group = GroupManager.between1; //leave th inGroup for control signals
 		out    = NodeProxy.audio.fadeTime_(4);
+		out.group = GroupManager.between3;
 
 		this.makeIn;
 		this.makeOut;
@@ -65,6 +67,10 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 		//here add any additional functionality
 		switch (message) 
 		{\remove} {this.remove};
+		//set the syth with the new position values
+		out.set('x', position[0]);
+		out.set('y', position[1]);
+
 	}/*}}}*/
 	
 	remove{/*{{{*/
@@ -92,7 +98,6 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 	}/*}}}*/
 	
 	makeOut {/*{{{*/
-			/*
 			out.source = { arg frameRate = 0.05;
 						   var x , y;
 						   var rad, azim, elev, input;
@@ -100,19 +105,27 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 						   	x = Ramp.kr(x, frameRate);
 						   	y = Ramp.kr(y, frameRate);
 						   	input = in.ar;
+						   	x.poll;
+						   	//y.poll;
 							//TODO: I should make a version for x,y since I am dealing with x,y.
 							azim = atan2(y,x);
 							rad = hypot(x,y);
-							//elev = entityParams.get['elev'];
+							elev = 0;
 							//get and use the relevant encoder
-							input = AmbiDecoderCentre.encoderPolar(input, azim, rad, elev: elev, ampCenter: 1, dp: true);
+							input = AmbiDecoderCentre.encoderPolar(
+								input, 
+								azim, 
+								rad, 
+								elev: elev, 
+								ampCenter: 1, 
+								dp: true
+							);
 							//in = SpacePolarB2Dp.ar(in, azim, rad,  ampCenter: 1, speakerRho: 1.5);
 							//in = SpacePolarAmbIEMDp.ar(in, azim, rad,  ampCenter: 1);
-							//MainOut
+							//MainOut 
+							//FMHDecode1.stereo(w, y);
 							Out.ar(AmbiDecoderCentre.bus.index, input);
 						}
-						*/
-			 out.source = {Out.ar(0, in.ar)}
 	}/*}}}*/
 
 }   

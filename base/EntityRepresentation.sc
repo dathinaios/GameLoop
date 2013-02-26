@@ -9,7 +9,10 @@ EntityRepresentation { var entity, <position, <radius;
 		//in the subclass call super.update to do this and then add your own like:
 		switch (message)//a typical use of a .changed notification (could be case for multiple)
 		{\update} {position = entity.position; radius = entity.radius};
-		//in subclass put: {message == \collision} {this.collision};
+		//in subclass you can use:
+		//switch (message) 
+		//{\remove} {this.remove}
+ 		//{message == \collision} {this.collision};
 	} 
 	
 	run { // method to run the representaion without adding to the manager.

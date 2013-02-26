@@ -1,7 +1,6 @@
 
 (
 AmbiDecoderCentre.startDecoder2('stereo');
-//create the manager and start the game loop at 20 frames per second
 //~gameloop = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
 ~gameloop = GameLoop(40, 40, 1).play(0.05);
 ~gameloop.addCamera;
@@ -22,6 +21,10 @@ AmbiDecoderCentre.startDecoder2('stereo');
 	//~entity.collisionType_(\mobile);
 	~entity.activate;
 );
+
+Server.default.queryAllNodes;
+GroupManager.inGroup;
+GroupManager.tailGroup; 
 
 ~gameloop.entManager.clear;
 ~entity.remove
@@ -66,15 +69,22 @@ CmdPeriod.run
 ~filter = NodeProxy.audio.fadeTime_(4);
 ~effect = NodeProxy.audio.fadeTime_(4);
 
-//Could I use this structure as a backdrop again?
 
+AmbiDecoderCentre.bus.index;
+Server.default;
+GroupManager.inGroup;
+~in.group = GroupManager.inGroup;
+~out.group = GroupManager.tailGroup;
+{Out.ar(AmbiDecoderCentre.bus.index, SinOsc.ar(440)*0.2)}.play
 ~in.source = {Impulse.ar(27)};
-~out.source = {Out.ar(0, ~in.ar)};
+~out.source = { Out.ar(AmbiDecoderCentre.bus.index, ~in.ar)};
+
 (
 ~in.release(2);
 ~out.release(2);
 )
 
+//Could I use this structure as a backdrop again?
 this.makeIn(\none);
 this.makeLFO(\none);
 this.makeFilter(\none);
