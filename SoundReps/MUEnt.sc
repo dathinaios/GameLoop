@@ -62,14 +62,19 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 	update { arg entity, message; /*{{{*/
 		//first fo the standard update from the superclass
 		super.update(entity, message);
-		//here add anyadditional functionality
-		//message.debug("update method in simple circle - message");
-		/*
-		switch 
-		{message == \remove} {"removal update".postln; this.remove};
-		*/
+		//here add any additional functionality
+		switch (message) 
+		{\remove} {this.remove};
 	}/*}}}*/
 	
+	remove{/*{{{*/
+		fork{
+		 in.release(2);
+		 2.wait;
+		 out.release(2);
+		};
+	}/*}}}*/
+
 	draw{arg rect; /*{{{*/
 		Pen.strokeOval(rect)
 	}/*}}}*/

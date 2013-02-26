@@ -1,19 +1,18 @@
 
 (
 AmbiDecoderCentre.startDecoder2('stereo');
-//create the manger and start the game loop at 20 frames per second
+//create the manager and start the game loop at 20 frames per second
 //~gameloop = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
 ~gameloop = GameLoop(40, 40, 1).play(0.05);
 ~gameloop.addCamera;
+);
 
-f = { var position, radius, width;
-
+(
+	var width, position, radius;
 	width = ~gameloop.center[0]*2;
 	position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
 	radius = 0.4; 
-
 	~entity = MUEnt(
-		//~gameloop, 
 		~gameloop.world, 
 		position, 
 		radius, 
@@ -22,11 +21,8 @@ f = { var position, radius, width;
 	); 
 	//~entity.collisionType_(\mobile);
 	~entity.activate;
-};
 );
 
-50.do{f.value;};
-f.value;
 ~gameloop.entManager.clear;
 ~entity.remove
 
@@ -71,40 +67,32 @@ CmdPeriod.run
 ~effect = NodeProxy.audio.fadeTime_(4);
 
 //Could I use this structure as a backdrop again?
+
+~in.source = {Impulse.ar(27)};
+~out.source = {Out.ar(0, ~in.ar)};
+(
+~in.release(2);
+~out.release(2);
+)
+
 this.makeIn(\none);
 this.makeLFO(\none);
 this.makeFilter(\none);
 this.makeEffect(\none);
 
-mainOut = NodeProxy.audio.fadeTime_(4);
-mainOut[0] = {out.ar};	
+f = { var position, radius, width;
 
-~in.source = {SinOsc.ar(440)};
-~in.source = {0};
-~out.source = {Out.ar(0, ~in.ar)};
-
-out.source = { arg globalGain = 0.5;
-	var input, rate, mul = 1;
-	input = effect.ar;
-	input = input * globalGain;
-	rate = Impulse.kr(15);
-	// measure Peak
-	SendReply.kr(rate, ("/levels"+ instanceNum).asSymbol, Peak.ar(input, rate)); //[Amplitude.kr(input, 0.05, 0.05)], K2A.ar(Peak.ar(input, delrate).lag(0, 3))]);	
-	input;
-	//Out.ar(0, input)
+	width = ~gameloop.center[0]*2;
+	position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
+	radius = 0.4; 
+	~entity = MUEnt(
+		~gameloop.world, 
+		position, 
+		radius, 
+		maxSpeed: 40, 
+		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
+	); 
+	//~entity.collisionType_(\mobile);
+	~entity.activate;
 };
-
-in[0] = {
-	arg freq = 0.5, amp = 0.5, pan = 0.5, detune = 0.5, detune2 = 0.5, trunc = 0; 
-	var in;
-	freq = \freq.asSpec.map(freq);
-	trunc = \trunc.asSpec.map(trunc);
-	pan = \pan.asSpec.map(pan);
-	detune= \detune.asSpec.map(detune);
-	detune2= \detune2.asSpec.map(detune2);
-	amp = amp*0.5;
-	in = Saw.ar(freq, amp);
-	in = in + Saw.ar(freq + detune + detune2, amp);
-	in = in.trunc(trunc);
-	Pan2.ar(in, pan);
-};
+50.do{f.value;};

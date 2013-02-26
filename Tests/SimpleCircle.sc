@@ -56,8 +56,8 @@ SimpleCircleRepresentation : EntityRepresentation { var color, collisionColor;
 		//here add anyadditional functionality
 		//message.debug("update method in simple circle - message");
 		/*
-		switch 
-		{message == \remove} {"removal update".postln; this.remove};
+		switch (message) 
+		{\remove} {"removal update".postln; this.remove};
 		*/
 	}
 	
