@@ -37,24 +37,27 @@ MUEnt : Vehicle { var  >collisionFunc, >forceFunc;
 
 MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 										 	 var <penWidth = 1.5;
-										 	 var in, out;
+										 	 var out;
 							
 	*new { arg  entity, color, collisionColor;  /*{{{*/
 	^super.newCopyArgs(entity, color, collisionColor).init
 	}/*}}}*/
 
 	init { /*{{{*/
+
 		position = entity.position;
 		radius = entity.radius;
 		color = color ?? {Color.green};
 		collisionColor = collisionColor ?? {Color.red};
 
-		in     = NodeProxy(Server.default, \audio, 16);
-		in.group = GroupManager.between1; //leave the inGroup for control signals
+		//in     = GameLoopDecoder.getEncoderProxy;
+		//in.group = GroupManager.between1; //leave the inGroup for control signals
+		out = GameLoopDecoder.getEncoderProxy;
 		out    = NodeProxy(Server.default, \audio, 16);
 		out.group = GroupManager.between3;
-
-		this.makeIn;
+		//plug the proxy to the decoder
+		GameLoopDecoder.getDecoder <<> out;
+		//this.makeIn;
 		this.makeOut;
 	}/*}}}*/
 	
@@ -67,7 +70,7 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 		//here add any additional functionality
 		switch (message) 
 		{\remove} {this.remove};
-		in.set('vel',entity.velocity);
+		out.set('vel',entity.velocity.norm);
 		//set the syth with the new position values
 		out.set('x', position[0]-20);
 		out.set('y', position[1]-20);
@@ -75,58 +78,40 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 	}/*}}}*/
 	
 	remove{/*{{{*/
-		fork{
-		 in.release(2);
-		 2.wait;
 		 out.release(2);
-		};
 	}/*}}}*/
 
 	draw{arg rect; /*{{{*/
 		Pen.strokeOval(rect)
 	}/*}}}*/
 	
-	makeIn {/*{{{*/
-			in.source = {  
-						var in, vel;
-						//To use the velocity
-						vel = Control.names(\vel).kr(entity.velocity.norm);
-						vel = Ramp.kr(vel, 0.05); //GameLoop.instance.dt);
-						//input
-						//in = entityParams.get['input'].value(vel, gate);
-						Impulse.ar(30);
-					  }; 
-	}/*}}}*/
-	
 	makeOut {/*{{{*/
 			out.source = { arg frameRate = 0.05;
 						   var x , y;
-						   var rad, azim, elev, input;
+						   var rad, azim, elev, input, vel;
 						  	#x, y = Control.names(#[x, y]).kr([position[0], position[1]]);
 						   	x = Ramp.kr(x, 0.05); //GameLoop.instance.dt);
 						   	y = Ramp.kr(y, 0.05); //GameLoop.instance.dt);
-						   	input = in.ar;
-						   	//y.poll;
-							//TODO: I should make a version for x,y since I am dealing with x,y.
+							//To use the velocity
+							vel = Control.names(\vel).kr(entity.velocity.norm);
+							vel = Ramp.kr(vel, 0.05); //GameLoop.instance.dt);
+							//input
+							//in = entityParams.get['input'].value(vel, gate);
+							input = Impulse.ar(vel.linlin(0,10, 5, 50));
+						   	//input = in.ar;
+							//TODO: I could make a version for x,y since I am dealing with x,y.
 							azim = atan2(y,x);
 							rad = hypot(x,y);
 							elev = 0;
 							//get and use the relevant encoder
-							input = AmbiDecoderCentre.encoderPolar(
+							GameLoopDecoder.getEncoder.ar(
 								input, 
 								azim, 
 								rad, 
 								elev: elev, 
-								ampCenter: 1, 
-								dp: true
+								ampCenter: 1
 							);
-							//in = SpacePolarB2Dp.ar(in, azim, rad,  ampCenter: 1, speakerRho: 1.5);
-							//in = SpacePolarAmbIEMDp.ar(in, azim, rad,  ampCenter: 1);
-							//MainOut 
-							//FMHDecode1.stereo(w, y);
-							Out.ar(AmbiDecoderCentre.bus.index, input);
 						};
- 							//AmbiDecoderCentre.decoder <<> out;
 	}/*}}}*/
 
 }   

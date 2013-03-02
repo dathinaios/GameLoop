@@ -1,7 +1,8 @@
 CmdPeriod.run
 
 (
-AmbiDecoderCentre.startDecoder2('stereo');
+//AmbiDecoderCentre.startDecoder2('stereo');
+GameLoopDecoder('AmbIEM', 'binaural');
 //~gameloop = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
 ~gameloop = GameLoop(40, 40, 1).play(0.05);
 ~gameloop.addCamera;
