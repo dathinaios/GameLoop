@@ -49,9 +49,9 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 		color = color ?? {Color.green};
 		collisionColor = collisionColor ?? {Color.red};
 
-		in     = NodeProxy.audio.fadeTime_(4);
-		in.group = GroupManager.between1; //leave th inGroup for control signals
-		out    = NodeProxy.audio.fadeTime_(4);
+		in     = NodeProxy(Server.default, \audio, 16);
+		in.group = GroupManager.between1; //leave the inGroup for control signals
+		out    = NodeProxy(Server.default, \audio, 16);
 		out.group = GroupManager.between3;
 
 		this.makeIn;
@@ -67,9 +67,10 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 		//here add any additional functionality
 		switch (message) 
 		{\remove} {this.remove};
+		in.set('vel',entity.velocity);
 		//set the syth with the new position values
-		out.set('x', position[0]);
-		out.set('y', position[1]);
+		out.set('x', position[0]-20);
+		out.set('y', position[1]-20);
 
 	}/*}}}*/
 	
@@ -89,8 +90,8 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 			in.source = {  
 						var in, vel;
 						//To use the velocity
-						//vel = Control.names(\vel).kr(entity.velocity.norm);
-						//vel = Ramp.kr(vel, GameLoop.instance.dt);
+						vel = Control.names(\vel).kr(entity.velocity.norm);
+						vel = Ramp.kr(vel, 0.05); //GameLoop.instance.dt);
 						//input
 						//in = entityParams.get['input'].value(vel, gate);
 						Impulse.ar(30);
@@ -102,10 +103,9 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 						   var x , y;
 						   var rad, azim, elev, input;
 						  	#x, y = Control.names(#[x, y]).kr([position[0], position[1]]);
-						   	x = Ramp.kr(x, frameRate);
-						   	y = Ramp.kr(y, frameRate);
+						   	x = Ramp.kr(x, 0.05); //GameLoop.instance.dt);
+						   	y = Ramp.kr(y, 0.05); //GameLoop.instance.dt);
 						   	input = in.ar;
-						   	x.poll;
 						   	//y.poll;
 							//TODO: I should make a version for x,y since I am dealing with x,y.
 							azim = atan2(y,x);
@@ -125,7 +125,8 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 							//MainOut 
 							//FMHDecode1.stereo(w, y);
 							Out.ar(AmbiDecoderCentre.bus.index, input);
-						}
+						};
+ 							//AmbiDecoderCentre.decoder <<> out;
 	}/*}}}*/
 
 }   

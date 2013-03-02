@@ -1,3 +1,4 @@
+CmdPeriod.run
 
 (
 AmbiDecoderCentre.startDecoder2('stereo');
@@ -22,6 +23,11 @@ AmbiDecoderCentre.startDecoder2('stereo');
 	~entity.activate;
 );
 
+GameLoopDecoder('AmbIEM', 'binaural')
+a = GameLoopDecoder.getEncoder();
+a.class
+Quarks.gui
+GameLoop.instance.dt;
 Server.default.queryAllNodes;
 GroupManager.inGroup;
 GroupManager.tailGroup; 
@@ -106,3 +112,62 @@ f = { var position, radius, width;
 	~entity.activate;
 };
 50.do{f.value;};
+
+
+// ------------------------------------------------------------
+//AMBISONIC TESTS
+
+(
+~encoder = FoaEncoderMatrix.newOmni;
+~decoder = FoaDecoderKernel.newCIPIC;     // kernel decoders should be freed after use!!
+                                         // free below...
+)
+
+// free kernel
+~decoder.free
+
+(
+~test = {
+    var sig;// audio signal
+    var angle, azim;            // angle and azimuth control
+
+
+    // display encoder and decoder
+    "Ambisonic encoding via % encoder".format(~encoder.kind).postln;
+    "Ambisonic decoding via % decoder".format(~decoder.kind).postln;
+
+    // angle ---> top         = push to plane wave
+    //            bottom        = omni-directional
+    angle = MouseY.kr(pi/2, 0);
+
+    // azimuth -> hard left     = back
+    //          centre     = centre
+    //          hard right     = back
+    azim = MouseX.kr(pi, -pi);
+
+
+    // ------------------------------------------------------------
+    // test sig
+    sig = PinkNoise.ar;             // mono pink noise
+
+
+    // ------------------------------------------------------------
+    // encode
+    sig = FoaEncode.ar(sig, ~encoder);
+
+    // ------------------------------------------------------------
+    // transform
+    sig = FoaTransform.ar(sig, 'push', angle, azim);
+
+
+    // ------------------------------------------------------------
+    // decode (to binaural)
+    FoaDecode.ar(sig, ~decoder);
+
+}.play;
+)
+	x = 2;
+	y = 0.5;
+	atan2(y,x);
+	hypot(x,y);
+

@@ -21,9 +21,9 @@ GameLoop{
 	}
 
 	init{
+		instance = this;
 		mainClock = TempoClock.new;
 		entManager = EntityManager(SpatialHashing(sceneWidth, sceneHeight, cellSize));
-		instance = this;
 		//create the representation manager
 		repManager = RepresentationManager.new;
 		//add the representationManager as a dependant to the entManager
