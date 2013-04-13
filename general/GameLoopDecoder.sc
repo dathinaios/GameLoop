@@ -1,5 +1,5 @@
 
-GameLoopDecoder { classvar <encoderProxy, <decoderProxy, 
+GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <decoderBus, 
 				 		  encoderChannels, decoderChannels,
 				 		  <>library, <>type, <>dp, order;
 
@@ -36,6 +36,7 @@ GameLoopDecoder { classvar <encoderProxy, <decoderProxy,
 			BinAmbi3O.init('1_4_7_4');
 			decoderProxy.source = {
 				var in, out;
+				//in = Control.names(\in).ar(0);
 				in = \in.ar(0!encoderChannels);
 				out = BinAmbi3O.ar(in);
 				Out.ar(0, out);
@@ -50,7 +51,14 @@ GameLoopDecoder { classvar <encoderProxy, <decoderProxy,
 			};
 		};
 
-		"A decoder was created through GameLoopDecoder".postln
+		"A decoder was created through GameLoopDecoder".postln;
+
+		// create the summing NodeProxy that will act as the summation bus
+		// see http://new-supercollider-mailing-lists-forums-use-these.2681727.n2.nabble.com/Many-to-One-Audio-Routing-in-Jitlib-td7594874.html
+
+		decoderBus = NodeProxy(Server.default, 'audio', encoderChannels);
+		//route the summation bus to the decoder
+		decoderBus <>> decoderProxy;
 
 	}/*}}}*/
 
@@ -75,10 +83,6 @@ GameLoopDecoder { classvar <encoderProxy, <decoderProxy,
 				{^SpacePolarATK}
 			);
 		};
-	}/*}}}*/
-
-	*getDecoder{/*{{{*/
-		^decoderProxy;
 	}/*}}}*/
 
 }

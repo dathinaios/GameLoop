@@ -84,7 +84,7 @@ BinAmbi3O.init('1_4_7_4');
 
 GameLoopDecoder('AmbIEM', 'binaural')
 GameLoopDecoder.getDecoder <<> ~in;
-//AMBIEM ENCODING DECODING /*{{{*/
+//AMBIEM ENCODING DECODING
 (
 ~in.source =  {
 	var x,y,in, foa, azimuth, radius;
@@ -99,3 +99,15 @@ GameLoopDecoder.getDecoder <<> ~in;
 );
 
 GameLoopDecoder.getDecoder.free
+
+(
+~in     = NodeProxy(Server.default, \audio, 2);
+~in2     = NodeProxy(Server.default, \audio, 2);
+~out    = NodeProxy(Server.default, \audio, 2);
+);
+
+~in.source = {Out.ar(65, Pan2.ar(Impulse.ar(MouseX.kr(20, 100)), -1))};
+~in2.source = {Out.ar(65, Pan2.ar(Saw.ar(MouseX.kr(20, 100)) * 0.5, 1))};
+~out.source = {Out.ar(0, In.ar(65, 2))}
+~out <<> ~in;
+~out <<> ~in2;

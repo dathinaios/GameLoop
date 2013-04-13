@@ -3,9 +3,15 @@ CmdPeriod.run
 (
 //AmbiDecoderCentre.startDecoder2('stereo');
 GameLoopDecoder('AmbIEM', 'binaural');
+)
+
+//Allow time for the decoder to be created....
+
+(
 //~gameloop = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
 ~gameloop = GameLoop(40, 40, 1).play(0.05);
 ~gameloop.addCamera;
+~entity = List.new;
 );
 
 (
@@ -13,28 +19,31 @@ GameLoopDecoder('AmbIEM', 'binaural');
 	width = ~gameloop.center[0]*2;
 	position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
 	radius = 0.4; 
-	~entity = MUEnt(
+	~entity.add(MUEnt(
 		~gameloop.world, 
 		position, 
 		radius, 
 		maxSpeed: 40, 
 		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
+	);
 	); 
 	//~entity.collisionType_(\mobile);
-	~entity.activate;
+	~entity.last.activate;
 );
 
-GameLoopDecoder('AmbIEM', 'binaural')
 a = GameLoopDecoder.getEncoder();
 a.class
 Quarks.gui
 GameLoop.instance.dt;
+
+GameLoopDecoder.decoderBus.sources;
 Server.default.queryAllNodes;
 GroupManager.inGroup;
 GroupManager.tailGroup; 
 
 ~gameloop.entManager.clear;
-~entity.remove
+~entity.do{arg i; i.remove;};
+~entity[1].remove
 
 ~gameloop.repManager.cameraEntity.moveFwd(4);
 ~gameloop.repManager.cameraEntity.moveBack(4);

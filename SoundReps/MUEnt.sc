@@ -50,13 +50,9 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 		color = color ?? {Color.green};
 		collisionColor = collisionColor ?? {Color.red};
 
-		//in     = GameLoopDecoder.getEncoderProxy;
-		//in.group = GroupManager.between1; //leave the inGroup for control signals
 		out = GameLoopDecoder.getEncoderProxy;
-		out    = NodeProxy(Server.default, \audio, 16);
-		out.group = GroupManager.between3;
 		//plug the proxy to the decoder
-		GameLoopDecoder.getDecoder <<> out;
+		GameLoopDecoder.decoderBus.add(out);
 		//this.makeIn;
 		this.makeOut;
 	}/*}}}*/
@@ -97,7 +93,7 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 							vel = Ramp.kr(vel, 0.05); //GameLoop.instance.dt);
 							//input
 							//in = entityParams.get['input'].value(vel, gate);
-							input = Impulse.ar(vel.linlin(0,10, 5, 50));
+							input = Impulse.ar(vel.linlin(0,10, 5, rrand(50, 200.0)));
 						   	//input = in.ar;
 							//TODO: I could make a version for x,y since I am dealing with x,y.
 							azim = atan2(y,x);
@@ -109,7 +105,7 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 								azim, 
 								rad, 
 								elev: elev, 
-								ampCenter: 1
+								ampCenter: 0.5
 							);
 						};
 	}/*}}}*/
