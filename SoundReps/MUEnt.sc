@@ -3,10 +3,10 @@
 	This is a basic Mobile Unit with varying sound input
 */
 
-MUEnt : Vehicle { var  >collisionFunc, >forceFunc;
+MUEnt : Vehicle { var  <>input, >collisionFunc, >forceFunc;
 	
 	*new{ arg world, position, radius, mass, velocity, controller,/*{{{*/
-			  heading, side, maxSpeed, maxForce, maxTurnRate, collisionFunc, forceFunc;
+			  heading, side, maxSpeed, maxForce, maxTurnRate, input, collisionFunc, forceFunc;
 		  ^super.new(world, 
 					 position, 
 					 radius, 
@@ -18,6 +18,7 @@ MUEnt : Vehicle { var  >collisionFunc, >forceFunc;
 		   .maxSpeed_(maxSpeed)
 		   .maxForce_(maxForce)
 		   .maxTurnRate_(maxTurnRate)
+		   .input_(input)
 		   .collisionFunc_(collisionFunc)
 		   .forceFunc_(forceFunc)
 		   .init;		
@@ -44,14 +45,12 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 	}/*}}}*/
 
 	init { /*{{{*/
-
 		position = entity.position;
 		radius = entity.radius;
 		color = color ?? {Color.green};
 		collisionColor = collisionColor ?? {Color.red};
-
 		out = GameLoopDecoder.getEncoderProxy;
-		//plug the proxy to the decoder
+		//plug the proxy to the decoder summing bus
 		GameLoopDecoder.decoderBus.add(out);
 		//this.makeIn;
 		this.makeOut;
@@ -84,7 +83,7 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 	makeOut {/*{{{*/
 			out.source = { arg frameRate = 0.05;
 						   var x , y;
-						   var rad, azim, elev, input, vel;
+						   var rad, azim, elev, in, vel;
 						  	#x, y = Control.names(#[x, y]).kr([position[0], position[1]]);
 						   	x = Ramp.kr(x, 0.05); //GameLoop.instance.dt);
 						   	y = Ramp.kr(y, 0.05); //GameLoop.instance.dt);
@@ -93,15 +92,20 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 							vel = Ramp.kr(vel, 0.05); //GameLoop.instance.dt);
 							//input
 							//in = entityParams.get['input'].value(vel, gate);
-							input = Impulse.ar(vel.linlin(0,10, 5, rrand(50, 200.0)));
-						   	//input = in.ar;
+							if(entity.input == nil,
+								{
+								in = Impulse.ar(vel.linlin(0,10, 5, rrand(50, 200.0)));
+								in = BPF.ar(in, rrand(200, 18000.0)*MouseX.kr(0.3, 2, lag: rrand(2.0, 6.0)), 0.4);
+								},
+								{in = entity.input.value(vel)}
+							);
 							//TODO: I could make a version for x,y since I am dealing with x,y.
 							azim = atan2(y,x);
 							rad = hypot(x,y);
 							elev = 0;
 							//get and use the relevant encoder
 							GameLoopDecoder.getEncoder.ar(
-								input, 
+								in, 
 								azim, 
 								rad, 
 								elev: elev, 

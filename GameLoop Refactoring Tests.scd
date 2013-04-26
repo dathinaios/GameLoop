@@ -1,10 +1,7 @@
 CmdPeriod.run
 
-(
 //AmbiDecoderCentre.startDecoder2('stereo');
 GameLoopDecoder('AmbIEM', 'binaural');
-)
-
 //Allow time for the decoder to be created....
 
 (
@@ -23,7 +20,13 @@ GameLoopDecoder('AmbIEM', 'binaural');
 		~gameloop.world, 
 		position, 
 		radius, 
-		maxSpeed: 40, 
+		maxSpeed: 40.0, 
+		input: 
+		{ arg vel;  var in;
+			in =SinOsc.ar(rrand(500, 20000.0))*
+				 LFPulse.ar(linlin(0,10, 5, rrand(10, 20.0)), mul: 0.5, add: 0.5);
+			in = BPF.ar(in, rrand(200, 18000.0)*MouseX.kr(0.3, 2, lag: rrand(2.0, 6.0)), 0.4);
+		}
 		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
 	);
 	); 
@@ -31,6 +34,7 @@ GameLoopDecoder('AmbIEM', 'binaural');
 	~entity.last.activate;
 );
 
+~gameloop.entManager.clear;
 a = GameLoopDecoder.getEncoder();
 a.class
 Quarks.gui
