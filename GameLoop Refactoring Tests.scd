@@ -1,10 +1,11 @@
 CmdPeriod.run
 
-//AmbiDecoderCentre.startDecoder2('stereo');
-GameLoopDecoder('AmbIEM', 'binaural');
-//Allow time for the decoder to be created....
 
 (
+//AmbiDecoderCentre.startDecoder2('stereo');
+//At the moment the first time it is giving an error. Run again.
+GameLoopDecoder('AmbIEM', 'binaural');
+//Allow time for the decoder to be created....
 //~gameloop = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
 ~gameloop = GameLoop(40, 40, 1).play(0.05);
 ~gameloop.addCamera;

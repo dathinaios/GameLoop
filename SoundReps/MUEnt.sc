@@ -73,7 +73,10 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 	}/*}}}*/
 	
 	remove{/*{{{*/
-		 out.release(2);
+		//clear everything with give realease time
+		 out.clear(2);
+		 //remove the node from the summing bus
+		 GameLoopDecoder.decoderBus.removeAt(out.sources.find([out]));
 	}/*}}}*/
 
 	draw{arg rect; /*{{{*/
@@ -93,7 +96,7 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 							//input
 							//in = entityParams.get['input'].value(vel, gate);
 							if(entity.input == nil,
-								{
+								{ // A default sound in case there is not input provided
 								in = Impulse.ar(vel.linlin(0,10, 5, rrand(50, 200.0)));
 								in = BPF.ar(in, rrand(200, 18000.0)*MouseX.kr(0.3, 2, lag: rrand(2.0, 6.0)), 0.4);
 								},
@@ -109,7 +112,7 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 								azim, 
 								rad, 
 								elev: elev, 
-								ampCenter: 0.5
+								ampCenter: 0.9
 							);
 						};
 	}/*}}}*/
