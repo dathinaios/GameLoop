@@ -3,10 +3,11 @@
 	This is a basic Mobile Unit with varying sound input
 */
 
-MUEnt : Vehicle { var  <>input, >collisionFunc, >forceFunc;
+MUEnt : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 	
 	*new{ arg world, position, radius, mass, velocity, controller,/*{{{*/
-			  heading, side, maxSpeed, maxForce, maxTurnRate, input, collisionFunc, forceFunc;
+			  heading, side, maxSpeed, maxForce, maxTurnRate, input,
+			  collisionFunc, forceFunc, release;
 		  ^super.new(world, 
 					 position, 
 					 radius, 
@@ -21,6 +22,7 @@ MUEnt : Vehicle { var  <>input, >collisionFunc, >forceFunc;
 		   .input_(input)
 		   .collisionFunc_(collisionFunc)
 		   .forceFunc_(forceFunc)
+		   .release_(release)
 		   .init;		
 	}/*}}}*/
 
@@ -28,6 +30,7 @@ MUEnt : Vehicle { var  <>input, >collisionFunc, >forceFunc;
 		//"simplecircle init".postln;
 		super.init;
 		collisionFunc = collisionFunc ?? {{}};
+		release = release ?? {0.2};
 	}/*}}}*/
 
 	collision { arg entList; colliding = true;/*{{{*/
@@ -53,7 +56,7 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 		//plug the proxy to the decoder summing bus
 		GameLoopDecoder.decoderBus.add(out);
 		//this.makeIn;
-		this.makeOut;
+		this.inputSourse;
 	}/*}}}*/
 	
 	color { if(entity.colliding, {^collisionColor },{^color})/*{{{*/
@@ -74,7 +77,7 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 	
 	remove{/*{{{*/
 		//clear everything with give realease time
-		 out.clear(2);
+		 out.clear(entity.release);
 		 //remove the node from the summing bus
 		 GameLoopDecoder.decoderBus.removeAt(out.sources.find([out]));
 	}/*}}}*/
@@ -83,7 +86,7 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 		Pen.strokeOval(rect)
 	}/*}}}*/
 	
-	makeOut {/*{{{*/
+	inputSourse {/*{{{*/
 			out.source = { arg frameRate = 0.05;
 						   var x , y;
 						   var rad, azim, elev, in, vel;
