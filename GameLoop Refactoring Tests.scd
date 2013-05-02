@@ -16,7 +16,7 @@ GameLoopDecoder('AmbIEM', 'binaural');
 	width = ~gameloop.center[0]*2;
 	position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
 	radius = 0.4; 
-	~entity.add(MUEnt(
+	~entity.add(SoundEntity(
 		~gameloop.world, 
 		position, 
 		radius, 

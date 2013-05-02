@@ -3,7 +3,7 @@
 	This is a basic Mobile Unit with varying sound input
 */
 
-MUEnt : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
+SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 	
 	*new{ arg world, position, radius, mass, velocity, controller,/*{{{*/
 			  heading, side, maxSpeed, maxForce, maxTurnRate, input,
@@ -39,7 +39,7 @@ MUEnt : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 
 }
 
-MUEntRepresentation : EntityRepresentation { var color, collisionColor;
+SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 										 	 var <penWidth = 1.5;
 										 	 var out;
 							
@@ -122,7 +122,7 @@ MUEntRepresentation : EntityRepresentation { var color, collisionColor;
 
 }   
 
-MUEntController : Controller{
+SoundEntityController : Controller{
 
 	getForce { arg entity; var path, position, width;/*{{{*/
 			width =entity.world.center[0]*2;
