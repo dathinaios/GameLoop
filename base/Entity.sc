@@ -76,7 +76,7 @@ MobileEntity : Entity { var <>velocity, <>controller;
 		//"mobile init".postln;
 		super.init;
 		velocity = velocity ?? {RealVector2D[0,0]};
-		//choose the right controller by adding the "controller" to the base name of the class
+		//choose the right controller by adding "controller" to the base name of the class
 		controller = controller ?? {(this.class.asString++"Controller").asSymbol.asClass.new(this)};
 	}
 

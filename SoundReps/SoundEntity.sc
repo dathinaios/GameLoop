@@ -52,6 +52,7 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 		radius = entity.radius;
 		color = color ?? {Color.green};
 		collisionColor = collisionColor ?? {Color.red};
+		//get the right encoder from the GameLoopDecoder class
 		out = GameLoopDecoder.getEncoderProxy;
 		//plug the proxy to the decoder summing bus
 		GameLoopDecoder.decoderBus.add(out);
@@ -105,7 +106,6 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 								},
 								{in = entity.input.value(vel)}
 							);
-							//TODO: I could make a version for x,y since I am dealing with x,y.
 							azim = atan2(y,x);
 							rad = hypot(x,y);
 							elev = 0;
@@ -122,14 +122,16 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 
 }   
 
-SoundEntityController : Controller{
+SoundEntityController : Controller{ 
 
-	getForce { arg entity; var path, position, width;/*{{{*/
-			width =entity.world.center[0]*2;
-			position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
-			path = Path(Array.fill(rrand(8.0, 20.0),
-			{RealVector2D[position[0] + rrand(-33, 33.0), position[1] + rrand(-33.0, 33.0)]}),true);
-			^PathFollowing.calculate(entity,path, 0.5);
+	getForce { var forceFunc; /*{{{*/
+		//the variable antity is declared in the superclass Controller
+		forceFunc = entity.forceFunc;
+		// The steering is using the forceFunction supplied. Else the Entity remain static
+			if(forceFunc == nil,
+				{^0},
+				{^forceFunc.value(entity)}
+			);
 	}/*}}}*/
 
 }

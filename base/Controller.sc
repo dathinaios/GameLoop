@@ -1,5 +1,5 @@
 
-Controller { var entity;
+Controller { var <>entity;
 	
 	*new { arg entity; 
 		^super.newCopyArgs(entity)
