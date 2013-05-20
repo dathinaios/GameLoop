@@ -12,34 +12,27 @@ GameLoopDecoder('AmbIEM', 'binaural');
 );
 
 (
-	var width, position, radius;
-	width = ~gameloop.center[0]*2;
-	position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
-	radius = 0.4; 
 	~entity.add(SoundEntity(
 		~gameloop.world, 
-		position, 
-		radius, 
-		maxSpeed: 40.0, 
-		input: 
-		{ arg vel;  var in;
-			in =SinOsc.ar(rrand(500, 20000.0))*
-				 LFPulse.ar(linlin(0,10, 5, rrand(10, 20.0)), mul: 0.5, add: 0.5);
-			in = BPF.ar(in, rrand(200, 18000.0)*MouseX.kr(0.3, 2, lag: rrand(2.0, 6.0)), 0.4);
-		},
-		forceFunc:
-		{ arg entity; var position, path;
-			position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
-			path = Path(Array.fill(rrand(8.0, 20.0),
-			{RealVector2D[position[0] + rrand(-33, 33.0), position[1] + rrand(-33.0, 33.0)]}),true);
-			PathFollowing.calculate(entity,path, 0.5);
-		}
+		position: RealVector2D[18, 22], 
+		radius: 0.4, 
+		maxSpeed: 10.0, 
+		input: nil, //input can be anything. Velocity is passed as a viariable
+		forceFunc: {arg entity; Arrive.calculate(entity, RealVector2D[20, 20.5])}
 		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
 	);
 	); 
 	//~entity.collisionType_(\mobile);
 	~entity.last.activate;
 );
+
+
+~entity[0].forceFunc_({arg entity; Arrive.calculate(entity, RealVector2D[22, 25])});
+~entity[0].forceFunc_({arg entity; Arrive.calculate(entity, RealVector2D[16, 22])});
+~entity[0].forceFunc_({arg entity; Arrive.calculate(entity, RealVector2D[21, 21])});
+~entity[0].forceFunc_({arg entity; Arrive.calculate(entity, RealVector2D[19, 20.5])});
+// chase the entity at [1]
+~entity[0].forceFunc_({arg entity; Seek.calculate(entity, ~entity[1].position)});
 
 ~gameloop.entManager.clear;
 a = GameLoopDecoder.getEncoder();
@@ -51,7 +44,7 @@ GameLoopDecoder.decoderBus.sources;
 Server.default.queryAllNodes;
 GroupManager.inGroup;
 GroupManager.tailGroup; 
-
+GameLoop.instance.dt
 ~gameloop.entManager.clear;
 ~entity.do{arg i; i.remove;};
 ~entity[1].remove
@@ -88,3 +81,34 @@ r.stop
 ~gameloop.mainRoutine.stop
 CmdPeriod.run
 
+
+//An input and steering behavior to play around with
+(
+	var width, position, radius;
+	width = ~gameloop.center[0]*2;
+	position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
+	radius = 0.4; 
+	~entity.add(SoundEntity(
+		~gameloop.world, 
+		position, 
+		radius, 
+		maxSpeed: 40.0, 
+		input: 
+		{ arg vel;  var in;
+			in =SinOsc.ar(rrand(500, 20000.0))*
+				 LFPulse.ar(linlin(0,10, 5, rrand(10, 20.0)), mul: 0.5, add: 0.5);
+			in = BPF.ar(in, rrand(200, 18000.0)*MouseX.kr(0.3, 2, lag: rrand(2.0, 6.0)), 0.4);
+		},
+		forceFunc:
+		{ arg entity; var position, path;
+			position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
+			path = Path(Array.fill(rrand(2.0, 38.0),
+			{RealVector2D[position[0] + rrand(-33, 33.0), position[1] + rrand(-33.0, 33.0)]}),true);
+			PathFollowing.calculate(entity,path, 0.5);
+		}
+		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
+	);
+	); 
+	//~entity.collisionType_(\mobile);
+	~entity.last.activate;
+);

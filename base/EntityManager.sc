@@ -314,29 +314,3 @@ EntityManager2{ /*{{{*/
 	}
 
 }/*}}}*/
-
-//basic use:
-
-//(
-//(
-//
-////create he manager and pass it the spatial index instance.
-//~entityManager = EntityManager(SpatialHashing(20, 20, 0.5));
-//~entityManager.play(0.05) //play at 0.05 FPS
-
-//finding the object witht the smallest ID for collsion
-
-//I don't remember what that is:
-//	collision { arg ents; var smallestID;
-//	
-//		smallestID = ents.add(this).minItem({ arg item, i; item.id });
-//		if(smallestID == this)
-//		{
-//		ents.do{arg i; i.remove};
-//		
-//		"BANG BANG!!!!".postln
-//
-//		}
-//		
-//	
-//	}

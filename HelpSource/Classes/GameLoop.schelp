@@ -1,0 +1,142 @@
+TITLE:: GameLoop
+summary:: (put short description here)
+categories:: Undocumented classes
+related:: Overviews/GameLoop_Overview, Classes/SoundEntity, EntityManager
+
+DESCRIPTION::
+(put long description here)
+
+
+CLASSMETHODS::
+
+METHOD:: instance
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: new
+(describe method here)
+
+ARGUMENT:: sceneWidth
+(describe argument here)
+
+ARGUMENT:: sceneHeight
+(describe argument here)
+
+ARGUMENT:: cellSize
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+
+INSTANCEMETHODS::
+
+METHOD:: sceneWidth
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: center
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: init
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: render
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: removeCamera
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: close
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: cameraActive
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: run
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: dt
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: mainRoutine
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: cameraEntity
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: play
+(describe method here)
+
+ARGUMENT:: rate
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: repManager
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: stop
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: addCamera
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: world
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: sceneHeight
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: cellSize
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: mainClock
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: entManager
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+
+EXAMPLES::
+
+code::
+(some example code)
+::

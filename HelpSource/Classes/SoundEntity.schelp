@@ -1,0 +1,103 @@
+TITLE:: SoundEntity
+summary:: (put short description here)
+categories:: Undocumented classes
+related:: Classes/SomeRelatedClass, Reference/SomeRelatedStuff, etc.
+
+DESCRIPTION::
+(put long description here)
+
+
+CLASSMETHODS::
+
+METHOD:: new
+(describe method here)
+
+ARGUMENT:: world
+(describe argument here)
+
+ARGUMENT:: position
+(describe argument here)
+
+ARGUMENT:: radius
+(describe argument here)
+
+ARGUMENT:: mass
+(describe argument here)
+
+ARGUMENT:: velocity
+(describe argument here)
+
+ARGUMENT:: controller
+(describe argument here)
+
+ARGUMENT:: heading
+(describe argument here)
+
+ARGUMENT:: side
+(describe argument here)
+
+ARGUMENT:: maxSpeed
+(describe argument here)
+
+ARGUMENT:: maxForce
+(describe argument here)
+
+ARGUMENT:: maxTurnRate
+(describe argument here)
+
+ARGUMENT:: input
+(describe argument here)
+
+ARGUMENT:: collisionFunc
+(describe argument here)
+
+ARGUMENT:: forceFunc
+(describe argument here)
+
+ARGUMENT:: release
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+
+INSTANCEMETHODS::
+
+METHOD:: release
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: input
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: collisionFunc
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: forceFunc
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: collision
+(describe method here)
+
+ARGUMENT:: entList
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: init
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+
+EXAMPLES::
+
+code::
+(some example code)
+::

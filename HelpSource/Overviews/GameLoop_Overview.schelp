@@ -1,0 +1,57 @@
+TITLE:: The GameLoop Library
+summary:: A Sound Oriented Game Engine
+categories:: Library
+related:: Classes/GameLoop, SoundEntity, Reference/SomeRelatedStuff, etc.
+
+DESCRIPTION::
+
+GameLoop is a framework for controlling sound using techniques created and used for video games. It is made for use
+towards the creation of generative or composed soundscapes but it could be applied to a variety of situations. The main structure
+of the framework was inspired by the article 'The Guerrilla Guide to Game Code' that can be found at:
+
+http://www.gamasutra.com/view/feature/2280/the_guerrilla_guide_to_game_code.php
+
+The framework is comprised from the above structure, a  spatial index for efficient collision detection (SpatialHashing), UGens for spatialisation
+according to cartesian or polar coordinates using Ambisonics (pseudo-UGens using JoshParmenter's Ambisonic UGens) and classes implementing
+Steering Behaviours used for game AI. Finally I included some classes that are created for my particular style of coding/composing.
+
+Here is documentation for all these:
+
+- Quick start guide
+- Using Steering Behaviours
+- The structure of the class hierarchy
+
+Included Classes:
+
+Main structure:
+
+	Entity
+	MobileEntity
+	Vehicle
+	EntityManager
+	EntityManager2
+	SpatialHashing
+
+UGens:
+
+	SpacePolarB1
+	SpacePolarB1Dp
+	SpacePolarB2
+	SpacePolarB2Dp
+	Fade
+	Fade2
+
+Steering Behaviours:
+
+	Seek
+	Arrive
+	PathFollowing
+	Wander
+
+
+
+EXAMPLES::
+
+code::
+(some example code)
+::

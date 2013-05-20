@@ -64,12 +64,14 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 	}/*}}}*/
 
 	update { arg entity, message; /*{{{*/
-		//first fo the standard update from the superclass
+		//first for the standard update from the superclass
 		super.update(entity, message);
 		//here add any additional functionality
 		switch (message) 
 		{\remove} {this.remove};
 		out.set('vel',entity.velocity.norm);
+		//transform the position according to the camera position.
+		//...........(TODO)............
 		//set the syth with the new position values
 		out.set('x', position[0]-20);
 		out.set('y', position[1]-20);
@@ -88,21 +90,21 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 	}/*}}}*/
 	
 	inputSourse {/*{{{*/
-			out.source = { arg frameRate = 0.05;
+			out.source = { arg dt;
 						   var x , y;
 						   var rad, azim, elev, in, vel;
+						    dt = entity.world.dt;
 						  	#x, y = Control.names(#[x, y]).kr([position[0], position[1]]);
-						   	x = Ramp.kr(x, 0.05); //GameLoop.instance.dt);
-						   	y = Ramp.kr(y, 0.05); //GameLoop.instance.dt);
+						   	x = Ramp.kr(x, dt); //GameLoop.instance.dt);
+						   	y = Ramp.kr(y, dt); //GameLoop.instance.dt);
 							//To use the velocity
 							vel = Control.names(\vel).kr(entity.velocity.norm);
-							vel = Ramp.kr(vel, 0.05); //GameLoop.instance.dt);
+							vel = Ramp.kr(vel, dt); //GameLoop.instance.dt);
 							//input
-							//in = entityParams.get['input'].value(vel, gate);
 							if(entity.input == nil,
 								{ // A default sound in case there is not input provided
 								in = Impulse.ar(vel.linlin(0,10, 5, rrand(50, 200.0)));
-								in = BPF.ar(in, rrand(200, 18000.0)*MouseX.kr(0.3, 2, lag: rrand(2.0, 6.0)), 0.4);
+								in = BPF.ar(in, rrand(200, 18000.0)*rrand(0.3, 2.0), 0.4);
 								},
 								{in = entity.input.value(vel)}
 							);

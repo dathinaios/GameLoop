@@ -2,7 +2,7 @@
 GameLoop{
 			 classvar <instance;
 			 var <sceneWidth, <sceneHeight, <cellSize;
-			 var <dt, <mainRoutine, <mainClock;
+			 var <mainRoutine, <mainClock;
 			 var <entManager, <repManager;
 			 var <cameraEntity, <cameraActive = false, 
 				 leftRotationRoutine, rightRotationRoutine;
@@ -114,6 +114,10 @@ GameLoop{
 		mainView.close;
 	}
 
+	dt{ //in case I need to get the dt of the world from here. 
+		//If I implement mulitple worlds this is going away.
+		^entManager.dt;
+	}
 	run{/*{{{*/
 
 		var   h = 400, v = 400, seed, run = true,  spaceUnits, spaceUnits2, meterInPixels,  speakerRadInPixels;
