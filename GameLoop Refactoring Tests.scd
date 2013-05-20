@@ -20,7 +20,7 @@ GameLoopDecoder('AmbIEM', 'binaural');
 		input: nil, //input can be anything. Velocity is passed as a viariable
 		forceFunc: {arg entity; Arrive.calculate(entity, RealVector2D[20, 20.5])}
 		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
-	);
+	)
 	); 
 	//~entity.collisionType_(\mobile);
 	~entity.last.activate;
@@ -34,7 +34,12 @@ GameLoopDecoder('AmbIEM', 'binaural');
 // chase the entity at [1]
 ~entity[0].forceFunc_({arg entity; Seek.calculate(entity, ~entity[1].position)});
 
-~gameloop.entManager.clear;
+//clear the entities
+~gameloop.clearEntities;
+//clear and close everything
+~gameloop.clear;
+~gameloop.removeCamera;
+
 a = GameLoopDecoder.getEncoder();
 a.class
 Quarks.gui

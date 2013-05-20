@@ -48,7 +48,6 @@ GameLoop{
 			0.05.wait;
 			};
 		};
-
 		//run the visualisation
 		this.run;
 	}
@@ -105,6 +104,7 @@ GameLoop{
 		entManager.remove(cameraEntity);
 		cameraEntity.changed(\remove);
 		cameraActive = false;
+		Camera2D.instance = nil;
 	}
 	center{
 		^RealVector2D[sceneWidth * 0.5, sceneHeight*0.5];
@@ -117,6 +117,17 @@ GameLoop{
 	dt{ //in case I need to get the dt of the world from here. 
 		//If I implement mulitple worlds this is going away.
 		^entManager.dt;
+	}
+
+	clear{
+		this.removeCamera;
+		entManager.clear;
+		mainView.close;
+		instance = nil;
+	}
+
+	clearEntities{
+		entManager.clear;
 	}
 	run{/*{{{*/
 

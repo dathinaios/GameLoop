@@ -1,5 +1,5 @@
 
-Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <instance;
+Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 					 var <>collisionFunc, <>arrivePosition, <>rotation;
 
 
@@ -37,7 +37,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <instance;
 	}
 
 	remove {
-		"WARNING: To remove the camera you will need to call .removeCamera on the EntityManager".postln;
+		"WARNING: To remove the camera you will need to call .removeCamera on GameLoop".postln;
 	}
 
 	/*There were issues with the transformation. I was using the heading of the camera entity in a weird manner.
