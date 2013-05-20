@@ -41,7 +41,7 @@ SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 
 SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 										 	 var <penWidth = 1.5;
-										 	 var out;
+										 	 var <out;
 							
 	*new { arg  entity, color, collisionColor;  /*{{{*/
 	^super.newCopyArgs(entity, color, collisionColor).init
@@ -81,11 +81,12 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 
 	}/*}}}*/
 	
-	remove{/*{{{*/
-		//clear everything with give realease time
+	remove{var decoderBus;/*{{{*/
+		decoderBus = GameLoopDecoder.decoderBus;
+		//clear everything with given realease time
 		 out.clear(entity.release);
 		 //remove the node from the summing bus
-		 GameLoopDecoder.decoderBus.removeAt(out.sources.find([out]));
+		 decoderBus.removeAt(decoderBus.sources.find([out]));
 	}/*}}}*/
 
 	draw{arg rect; /*{{{*/

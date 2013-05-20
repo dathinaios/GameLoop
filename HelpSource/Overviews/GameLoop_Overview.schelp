@@ -1,55 +1,52 @@
 TITLE:: The GameLoop Library
 summary:: A Sound Oriented Game Engine
 categories:: Library
-related:: Classes/GameLoop, SoundEntity, Reference/SomeRelatedStuff, etc.
+related:: Classes/GameLoop, SoundEntity
 
 DESCRIPTION::
 
-GameLoop is a framework for the creation of virtual sound environments inspired by video game techniques. The best place to start is the Quick Start Guide. 
-
-The design of the library was based on the article 'The Guerrilla Guide to Game Code' that can be found at:
-
-http://www.gamasutra.com/view/feature/2280/the_guerrilla_guide_to_game_code.php
+GameLoop is a library for the creation of virtual sound environments inspired by video game techniques.footnote::The design of the library was based on the article 'The Guerrilla Guide to Game Code' that can be found at http://www.gamasutra.com/view/feature/2280/the_guerrilla_guide_to_game_code.php::
 
 The library includes:
-- UGens for spatialisation according to cartesian or polar coordinates using Ambisonics  
-- Classes implementing Steering Behaviours. 
-- A  spatial index for efficient collision detection (SpatialHashing), 
+LIST::
+## UGens for spatialisation according to cartesian or polar coordinates using Ambisonics  
+## Classes implementing Steering Behaviours. 
+## A  spatial index for efficient collision detection (SpatialHashing), 
+::
 
-Here is documentation for all these:
+section::Overviews
+LIST::
+## link::Guides/QuickStart##Quick Start Guide::
+## link::Guides/SteeringBehaviors##Using Steering Behaviours::
+## link::Guides/ClassStructure##The Structure of the Class Hierarchy::
+::
 
-- Quick start guide
-- Using Steering Behaviours
-- The structure of the class hierarchy
-
-Included Classes:
+section::Main Classes
 
 Main structure:
-
-  GameLoop
-	Entity
-	EntityManager
-	RepresentationManager
-	SoundEntity
-	SpatialHashing
+LIST::
+## link::Classes/GameLoop::
+## link::Clases/Entity::
+## link::Clases/EntityManager::
+## link::Clases/RepresentationManager::
+## link::Clases/SoundEntity::
+## link::Clases/SpatialHashing::
+::
 
 UGens:
-
-	SpacePolarB1
-	SpacePolarB1Dp
-	SpacePolarB2
-	SpacePolarB2Dp
-	Fade
-	Fade2
+LIST::
+##link::Clases/SpacePolarAmbIEM::
+##link::Clases/SpacePolarAmbIEMDp::
+##link::Clases/Fade            ::
+##link::Clases/Fade2           ::
+::
 
 Steering Behaviours:
-
-	Seek
-	Arrive
-	PathFollowing
-	Wander
-
-
+LIST::
+##link::Clases/Seek::
+##link::Clases/Arrive::
+##link::Clases/PathFollowing::
+::
 
 EXAMPLES::
 
