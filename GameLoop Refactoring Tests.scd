@@ -26,7 +26,6 @@ GameLoopDecoder('AmbIEM', 'binaural');
 	~entity.last.activate;
 );
 
-
 ~entity[0].forceFunc_({arg entity; Arrive.calculate(entity, RealVector2D[22, 25])});
 ~entity[0].forceFunc_({arg entity; Arrive.calculate(entity, RealVector2D[16, 22])});
 ~entity[0].forceFunc_({arg entity; Arrive.calculate(entity, RealVector2D[21, 21])});
@@ -98,12 +97,13 @@ CmdPeriod.run
 		position, 
 		radius, 
 		maxSpeed: 40.0, 
+		/*
 		input: 
 		{ arg vel;  var in;
-			in =SinOsc.ar(rrand(500, 20000.0))*
+			in =0.3*Saw.ar(rrand(500, 20000.0))*
 				 LFPulse.ar(linlin(0,10, 5, rrand(10, 20.0)), mul: 0.5, add: 0.5);
 			in = BPF.ar(in, rrand(200, 18000.0)*MouseX.kr(0.3, 2, lag: rrand(2.0, 6.0)), 0.4);
-		},
+		},*/
 		forceFunc:
 		{ arg entity; var position, path;
 			position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];

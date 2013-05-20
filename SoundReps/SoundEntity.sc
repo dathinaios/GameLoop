@@ -63,7 +63,7 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 	color { if(entity.colliding, {^collisionColor },{^color})/*{{{*/
 	}/*}}}*/
 
-	update { arg entity, message; /*{{{*/
+	update { arg entity, message; var transPosition; /*{{{*/
 		//first for the standard update from the superclass
 		super.update(entity, message);
 		//here add any additional functionality
@@ -71,10 +71,13 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 		{\remove} {this.remove};
 		out.set('vel',entity.velocity.norm);
 		//transform the position according to the camera position.
-		//...........(TODO)............
+		if (GameLoop.instance.cameraActive,
+			{transPosition = Camera2D.instance.applyTransformation(entity)+ entity.world.center},
+			{transPosition = position}
+		);
 		//set the syth with the new position values
-		out.set('x', position[0]-20);
-		out.set('y', position[1]-20);
+		out.set('x', transPosition[0]-20);
+		out.set('y', transPosition[1]-20);
 
 	}/*}}}*/
 	
