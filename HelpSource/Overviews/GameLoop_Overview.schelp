@@ -5,19 +5,27 @@ related:: Classes/GameLoop, SoundEntity
 
 DESCRIPTION::
 
+NOTE::Make sure you have installed the VectorSpace and AmbIEM Quarks.
+code::
+Quarks.install("VectorSpace");
+Quarks.install("AmbIEM");
+::
+AmbIEM binaural also needs the HRTF measurements from http://sound.media.mit.edu/resources/KEMAR.html Get full.tar.Z, unzip, rename the folder as KemarHRTF and place it in the same directory as SuperCollider.app.
+::
+
 GameLoop is a library for the creation of virtual sound environments inspired by video game techniques.footnote::The design of the library was based on the article 'The Guerrilla Guide to Game Code' that can be found at http://www.gamasutra.com/view/feature/2280/the_guerrilla_guide_to_game_code.php::
 
 The library includes:
 LIST::
 ## UGens for spatialisation according to cartesian or polar coordinates using Ambisonics  
-## Classes implementing Steering Behaviours. 
+## Classes implementing Steering Behaviors. 
 ## A  spatial index for efficient collision detection (SpatialHashing), 
 ::
 
 section::Overviews
 LIST::
 ## link::Guides/QuickStart##Quick Start Guide::
-## link::Guides/SteeringBehaviors##Using Steering Behaviours::
+## link::Reference/SteeringBehaviors##About Steering Behaviors::
 ## link::Guides/ClassStructure##The Structure of the Class Hierarchy::
 ::
 

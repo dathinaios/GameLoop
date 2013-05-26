@@ -156,3 +156,6 @@ a = List.new;
 a[0] == a[1]
 
 GameLoopDecoder.decoderBus.sources;
+Class.find('ScIDE')
+
+

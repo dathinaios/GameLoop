@@ -108,7 +108,7 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 							if(entity.input == nil,
 								{ // A default sound in case there is not input provided
 								in = Impulse.ar(vel.linlin(0,10, 5, rrand(50, 200.0)));
-								in = BPF.ar(in, rrand(200, 18000.0)*rrand(0.3, 2.0), 0.4);
+								in = BPF.ar(in, rrand(2000, 18000.0)*rrand(0.3, 2.0), 0.4);
 								},
 								{in = entity.input.value(vel)}
 							);

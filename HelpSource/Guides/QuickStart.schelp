@@ -1,18 +1,29 @@
 TITLE:: GameLoop Quick Start Guide
+summary:: Quickly find out about GameLoop
 categories:: Guide
 related:: Overviews/GameLoop_Overview, Classes/GameLoop, SoundEntity
 
 This guide is created as a step by step intro to the main features of the GameLoop library.
 
+NOTE::Make sure you have installed the VectorSpace and AmbIEM Quarks.
+
+code::
+Quarks.install("VectorSpace");
+Quarks.install("AmbIEM");
+::
+
+AmbIEM binaural also needs the HRTF measurements from http://sound.media.mit.edu/resources/KEMAR.html Get full.tar.Z, unzip, rename the folder as KemarHRTF and place it in the same directory as SuperCollider.app.
+::
+
 section::Basics
 
-We will start simple so be patient until we reach the interesting sounding part. We will need a decoder for the sound output. Eventually there will be a selection of different decoders but for now let's use the Ambisonics to Binaural decoder from the AmbIEM Quark:
+We will start simple so be patient until we reach the interesting sounding part. We will need a decoder for the sound output. Eventually there will be a selection of different decoders but for now let's use the Ambisonics to Binaural decoder from the AmbIEM Quark (use headphones to get the binaural effect):
 
 code::
 GameLoopDecoder('AmbIEM', 'binaural');
 ::
 
-Now we need to create the environment for our sounds to live in. Let's assign it to the global variable ~gameloop:
+Now we need to create the environment for our sounds to live in. Let's assign it to the environment variable ~gameloop:
 
 code::
 ~gameloop = GameLoop(40, 40, 1).play(0.05);
@@ -20,7 +31,7 @@ code::
 
 NOTE::The visuals are intended as a guidance. The environment is meant to be experienced aurally.::
 
-Let's add a sound entity to our environment. At the most basic level an entity has a radius that describes its size and a position in space. We need to create it and activate it.
+Now we will add a sound entity to our environment. At the most basic level an entity has a radius that describes its size and a position in space. We need to create it and activate it.
 
 code::
 (
@@ -33,11 +44,13 @@ code::
 )
 ::
 
-Not very exciting but it is a start. Since we did not specify any input we can hear the default Impulse based sound. we are in the center of the space. Since the space is 40 x 40 the center is (20,20). The sounds appears to be 2 metres left and 2 metres forward. Notice that we had to pass the environment to the SoundEntity (using .world on the GameLoop instance) so that it knows where to add itself. Let's remove the entity:
+Not very exciting but it is a start. Since we did not specify any input we can hear the default Impulse based sound (we are at the center of the space). Since the space is 40 x 40 the center is (20,20). The sounds appears 2 metres left and 2 metres forward. Notice that we had to pass the environment to the SoundEntity (using .world on the GameLoop instance) so that it knows where to add itself. And to remove the entity:
 
 code::
 ~entity1.remove;
 ::
+
+section::Motion and Interaction
 
 Still working with the default sound let's make it move around.
 
@@ -54,7 +67,7 @@ code::
 )
 ::
 
-The maxSpeed argument limits the maximum speed of the sound. The motion of the SoundEntity is defined in the forceFunc argument. The arguments expects a function that is passed the entity. In this case the entity is used by the link::Class/Arrive:: Steering behavior. This behavior moves the entity from one place to the other, in this case from the starting position (18,22) to (20, 20.5). 
+The maxSpeed argument limits the maximum speed of the sound. The motion of the SoundEntity is defined in the forceFunc argument. The argument expects a function that is passed the entity. In this case the entity is used by the link::Class/Arrive:: Steering behavior. This behavior moves the entity from one place to the other, in this case from the starting position (18,22) to (20, 20.5). 
 
 We can change the forceFunc argument on the fly. Evaluate this a few time to move the entity to random points.
 
@@ -64,9 +77,11 @@ var newVector;
 newVector = RealVector2D[rrand(15.0, 24.0), rrand(15.0, 25.0)];
 ~entity1.forceFunc_({arg entity; Arrive.calculate(entity, newVector)});
 )
+
+~entity1.remove;
 ::
 
-We are going to have a look at the rest of the Steering behaviors a bit later. For now let's have a look at how the entities can interact with each other. By default entities do not interact but this can be changed by setting their collisionType to /static or /mobile (the default is /free). /mobile entities interact with every other entity while /static entities only interact with /mobile ones. This distinction is useful for preserving processing power.
+We are going to have a look at the rest of the Steering behaviors a bit later. For now let's see how the entities can interact with each other. By default entities do not interact but this can be changed by setting their collisionType to \static or \mobile (the default is \free). \mobile entities interact with every other entity while \static entities only interact with \mobile ones. This distinction is useful for saving processing power by avoiding unneeded collision checks.
 
 Let's make two of our default sounding entities collide.
 
@@ -96,7 +111,7 @@ code::
 ~entity2.remove;
 ::
 
-Although we can see the visual feedback that they collide nothing happens in the sound result. The reason is that if we want a result from a collision we also have to define the collisionFunc argument of the SoundEntity. Let's look at a simple example.
+Although we can see the visual feedback of the collision nothing happens in terms of sound. The reason is that if we want a result from a collision we also have to define the collisionFunc argument of the SoundEntity. Here is a simple example.
 
 code::
 (
@@ -122,9 +137,58 @@ code::
 ~entity1.activate;
 ~entity2.activate;
 )
-
-~entity1.remove;
-~entity2.remove;
 ::
 
-The collisionFunc argument is passed a function that expects two arguments: 1) a list of the objects that our entity is colliding with 2) the entity itself. In the above example we simple remove all the entities involved in the collision.
+The collisionFunc argument is passed a function that expects two arguments: 1) a list of the objects that our entity is colliding with 2) the entity itself. In the above example we simply remove all the entities involved in the collision.
+
+section::Custom Inputs
+
+GameLoop is using JitLib NodeProxies. The input of a SoundEntity is defined in the input argument. The argument expects a function that is passed the current velocity as an argument. This is very important as it allows us to shape the sound according to its current speed. As we've already seen if nothing is provided the input defaults to 'Jack the Mosquito' but let's try as an input a slightly modified example taken from PlayBuf's help file.
+code::
+
+// read a whole sound into memory
+b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav"); // remember to free the buffer later.
+
+(
+~entity1 = SoundEntity(
+  ~gameloop.world, 
+  position: RealVector2D[25, 20.5], 
+  radius: 0.4, 
+  maxSpeed: 10.0, 
+  input: {arg vel; var trig, bufnum;
+    bufnum = b.bufnum;
+    //velocity is used to modulate the rate of the trigger and the startPosition
+    trig = Impulse.kr(vel.linlin(0.0, 10.0, 2.0, 60.0 ));
+    PlayBuf.ar(1, bufnum, BufRateScale.kr(bufnum), trig, vel.linlin(0, 10.0, 5000, BufFrames.kr(bufnum)), 0)*0.5
+  },
+  forceFunc: {arg entity; Arrive.calculate(entity, RealVector2D[18, 20.5])},
+	collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
+); 
+~entity1.activate;
+)
+
+// Like before we can change the forceFunc to move it around.
+
+( 
+var newVector; 
+newVector = RealVector2D[rrand(15.0, 24.0), rrand(15.0, 25.0)];
+~entity1.forceFunc_({arg entity; Arrive.calculate(entity, newVector)});
+)
+
+~entity1.remove;
+
+::
+
+section::Navigating the Environment
+
+We can move around the virtual space by adding a camera.
+
+code::
+~gameloop.addCamera;
+::
+
+Focus on the viusalisation window and use the left/right arrows to rotate and front/back to move forward and backwards.
+
+section::More on Steering Behaviors
+
+(coming soon...)

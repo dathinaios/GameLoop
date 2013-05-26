@@ -1,7 +1,8 @@
 
 GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <decoderBus, 
 				 		  encoderChannels, decoderChannels,
-				 		  <>library, <>type, <>dp, order;
+				 		  <>library, <>type, <>dp, order,
+				 		  kernel;
 
 	*new{ arg library = 'AmbIEM', type = 'binaural', dp = true; /*{{{*/
 		
@@ -42,13 +43,29 @@ GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <decoderBus,
 				Out.ar(0, out);
 			};
 		}
+		{library =='ATK' && (type == 'newStereo')} {
+			//get the kernel (in this case it is a matrix)
+			kernel = FoaDecoderMatrix.newStereo(131/2 * pi/180, 0.5); // Cardioids at 131 deg
+				decoderProxy.source = {
+				var in, out;
+				in = \in.ar(0!encoderChannels);
+				out = FoaDecode.ar(in, kernel);
+				Out.ar(0, out);
+				};
+		}
+		//check here for auto choosing correct decoder: chttp://www.ambisonictoolkit.net/Help/Guides/Intro-to-the-ATK.html
 		{library =='ATK' && (type == 'newListen')} {
-			decoderProxy.source = {
-			var in, out;
-			in = \in.ar(0!encoderChannels);
-			out = FoaDecode.ar(in, 'newListen');
-			Out.ar(0, out);
-			};
+			//get the kernel
+			kernel = FoaDecoderKernel.newListen(1013);
+			Routine{
+				2.5.wait; //take the time to load the kernel
+				decoderProxy.source = {
+				var in, out;
+				in = \in.ar(0!encoderChannels);
+				out = FoaDecode.ar(in, kernel);
+				Out.ar(0, out);
+				};
+			}.play;
 		};
 
 		"A decoder was created through GameLoopDecoder".postln;
@@ -79,7 +96,7 @@ GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <decoderBus,
 		}
 		{library =='ATK' && (type == 'newListen')} {
 			if (dp == true,
-				{^SpacePolarATKDp.class},
+				{^SpacePolarATKDp},
 				{^SpacePolarATK}
 			);
 		};
