@@ -5,22 +5,31 @@ related:: Overviews/GameLoop_Overview, Classes/GameLoop, SoundEntity
 
 This guide is created as a step by step intro to the main features of the GameLoop library.
 
-NOTE::Make sure you have installed the VectorSpace and AmbIEM Quarks.
+NOTE:: Make sure you have installed the VectorSpace, MathLib as well as the AmbIEM Quark if you want to use its binaural decoding. Evaluate to install the Quarks:
 
 code::
 Quarks.install("VectorSpace");
 Quarks.install("AmbIEM");
+Quarks.install("MathLib");
 ::
 
-AmbIEM binaural also needs the HRTF measurements from http://sound.media.mit.edu/resources/KEMAR.html Get full.tar.Z, unzip, rename the folder as KemarHRTF and place it in the same directory as SuperCollider.app.
+Also get the latest SuperCollider Plugins: http://sourceforge.net/projects/sc3-plugins/files/ 
+
+The Plugins include the required MoogVCF UGen as well as the Ambisonic Toolkit. 
+
+Finally AmbIEM also needs the HRTF measurements from http://sound.media.mit.edu/resources/KEMAR.html Get full.tar.Z, unzip, rename the folder as KemarHRTF and place it in the same directory as SuperCollider.app.
 ::
 
 section::Basics
 
-We will start simple so be patient until we reach the interesting sounding part. We will need a decoder for the sound output. Eventually there will be a selection of different decoders but for now let's use the Ambisonics to Binaural decoder from the AmbIEM Quark (use headphones to get the binaural effect):
+We will start simple so be patient until we reach the interesting sounding part. We will need a decoder for the sound output.You can choose from a selction of different decoders but for now let's use the simple stereo decoder from the AmbIEM Quark:
+
+NOTE:: In GameLoop you can choose between the AmbIEM (3d order Ambisonic to Binaural) and Ambisonic Toolkit (First order Ambisonics - Stereo, Binaural and other configurations). Regarding Binaural the Ambisonic Toolkit produces less artifacts but AmbIEM delivers (according to my subjective comparison) a superior spatial image. The newStereo decoder used here is inferior to both but it does not require you to download the Kernels for ATK or the HRTF's for AmbIEM. See link::Classes/GameLoopDecoder:: if you want to try other decoder configurations.
+::
+
 
 code::
-GameLoopDecoder('AmbIEM', 'binaural');
+GameLoopDecoder('ATK', 'newStereo');
 ::
 
 Now we need to create the environment for our sounds to live in. Let's assign it to the environment variable ~gameloop:

@@ -5,12 +5,19 @@ related:: Classes/GameLoop, SoundEntity
 
 DESCRIPTION::
 
-NOTE::Make sure you have installed the VectorSpace and AmbIEM Quarks.
+NOTE:: Make sure you have installed the VectorSpace, MathLib as well as the AmbIEM Quark if you want to use its binaural decoding. Evaluate to install the Quarks:
+
 code::
 Quarks.install("VectorSpace");
 Quarks.install("AmbIEM");
+Quarks.install("MathLib");
 ::
-AmbIEM binaural also needs the HRTF measurements from http://sound.media.mit.edu/resources/KEMAR.html Get full.tar.Z, unzip, rename the folder as KemarHRTF and place it in the same directory as SuperCollider.app.
+
+Also get the latest SuperCollider Plugins: http://sourceforge.net/projects/sc3-plugins/files/ 
+
+The Plugins include the required MoogVCF UGen as well as the Ambisonic Toolkit. 
+
+Finally AmbIEM also needs the HRTF measurements from http://sound.media.mit.edu/resources/KEMAR.html Get full.tar.Z, unzip, rename the folder as KemarHRTF and place it in the same directory as SuperCollider.app.
 ::
 
 GameLoop is a library for the creation of virtual sound environments inspired by video game techniques.footnote::The design of the library was based on the article 'The Guerrilla Guide to Game Code' that can be found at http://www.gamasutra.com/view/feature/2280/the_guerrilla_guide_to_game_code.php::
