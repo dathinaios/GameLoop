@@ -101,6 +101,9 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 						  	#x, y = Control.names(#[x, y]).kr([position[0], position[1]]);
 						   	x = Ramp.kr(x, dt); //GameLoop.instance.dt);
 						   	y = Ramp.kr(y, dt); //GameLoop.instance.dt);
+						   	//debugging
+						   	//x = MouseX.kr(-20, 20);
+						   	//y = MouseY.kr(-20, 20);
 							//To use the velocity
 							vel = Control.names(\vel).kr(entity.velocity.norm);
 							vel = Ramp.kr(vel, dt); //GameLoop.instance.dt);

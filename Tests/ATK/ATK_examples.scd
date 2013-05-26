@@ -12,14 +12,19 @@ Server.default = s = Server.internal.boot;
 (
 //ATK ENCODING DECODING /*{{{*/
 //SpacePolarATKDp
+	//From ATK Help:
+	// azimuth -> hard left     = back
+    //            centre        = centre
+    //            hard right    = back
+    azim = MouseX.kr(pi, -pi);
 ~in.source =  {
 	var x,y,in, foa, azimuth, radius;
 	in = Impulse.ar(LFDNoise1.ar(0.3,50, 200));
     // ------------------------------------------------------------
-	y = MouseX.kr(10,-10);
-	x = MouseY.kr(10,-10);
-	azimuth = atan2(y,x);
-	radius = hypot(x,y);
+	x = MouseX.kr(-10,10).poll(label:'X');
+	y = MouseY.kr(-10,10).poll(label:'Y');
+	azimuth = atan2(y,x).poll(label:'azimuth');
+	radius = hypot(x,y).poll(label:'radius');
 	SpacePolarATKDp.ar(in, azimuth, radius);
 };
 )
@@ -46,10 +51,10 @@ Server.default = s = Server.internal.boot;
 	var x,y,in, foa, azimuth, radius;
 	in = Impulse.ar(LFDNoise1.ar(0.3,50, 200));
     // ------------------------------------------------------------
-	x = MouseX.kr(-10,10);
-	y = MouseY.kr(10,-10);
-	azimuth = atan2(y,x);
-	radius = hypot(x,y);
+	x = MouseX.kr(-10,10).poll(label:'X');
+	y = MouseY.kr(-10,10).poll(label:'Y');
+	azimuth = atan2(y,x).poll(label:'azimuth');
+	radius = hypot(x,y).poll(label:'radius');
 	SpacePolarAmbIEMDp.ar(in, azimuth, radius);
 };
 )

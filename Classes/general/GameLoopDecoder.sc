@@ -15,7 +15,9 @@ GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <decoderBus,
 		case 
 		//binaural
 		{library =='AmbIEM' && (type == 'binaural')} {decoderChannels = 2; order = 3}
-		{library =='ATK' && (type == 'newListen')} {decoderChannels = 2; order = 1};
+		{library =='ATK' && (type == 'newListen')} {decoderChannels = 2; order = 1}
+		//stereo
+		{library =='ATK' && (type == 'newStereo')} {decoderChannels = 2; order = 1};
 
 		//encoder channels depend on the Ambisonics order (1st,2nd or 3d)
 		//use by the getEncoderProxy method
@@ -37,7 +39,6 @@ GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <decoderBus,
 			BinAmbi3O.init('1_4_7_4');
 			decoderProxy.source = {
 				var in, out;
-				//in = Control.names(\in).ar(0);
 				in = \in.ar(0!encoderChannels);
 				out = BinAmbi3O.ar(in);
 				Out.ar(0, out);
@@ -94,12 +95,27 @@ GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <decoderBus,
 				{^SpacePolarAmbIEM}
 			);
 		}
+		//Make all the ATK types into one condition as they return the same encoder
 		{library =='ATK' && (type == 'newListen')} {
+			if (dp == true,
+				{^SpacePolarATKDp},
+				{^SpacePolarATK}
+			);
+		}
+		{library =='ATK' && (type == 'newStereo')} {
 			if (dp == true,
 				{^SpacePolarATKDp},
 				{^SpacePolarATK}
 			);
 		};
 	}/*}}}*/
+
+	*clear{
+		Routine{
+			decoderProxy.source = nil;
+			1.wait;
+			kernel.free;
+		}.play;
+	}
 
 }
