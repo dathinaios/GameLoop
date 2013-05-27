@@ -82,8 +82,8 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 	}/*}}}*/
 	
 	remove{var decoderBus;/*{{{*/
-		decoderBus = GameLoopDecoder.decoderBus;
-		//clear everything with given realease time
+		 decoderBus = GameLoopDecoder.decoderBus;
+		 //clear everything with given realease time
 		 out.clear(entity.release);
 		 //remove the node from the summing bus
 		 decoderBus.removeAt(decoderBus.sources.find([out]));

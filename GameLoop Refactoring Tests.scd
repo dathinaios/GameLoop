@@ -3,8 +3,8 @@ CmdPeriod.run
 (
 //AmbiDecoderCentre.startDecoder2('stereo');
 //At the moment the first time it is giving an error. Run again.
-GameLoopDecoder('AmbIEM', 'binaural');
-//GameLoopDecoder('ATK', 'newStereo');
+//GameLoopDecoder('AmbIEM', 'binaural');
+GameLoopDecoder('ATK', 'newStereo');
 //GameLoopDecoder('ATK', 'newListen');
 //Allow time for the decoder to be created....
 //~gameloop = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
@@ -35,6 +35,7 @@ GameLoopDecoder('AmbIEM', 'binaural');
 // chase the entity at [1]
 ~entity[0].forceFunc_({arg entity; Seek.calculate(entity, ~entity[1].position)});
 
+~gameloop.resetCamera;
 //clear the entities
 ~gameloop.clearEntities;
 //clear and close everything

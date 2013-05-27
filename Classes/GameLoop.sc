@@ -106,6 +106,11 @@ GameLoop{
 		cameraActive = false;
 		Camera2D.instance = nil;
 	}
+
+	resetCamera{
+		cameraEntity.reset;	
+	}
+
 	center{
 		^RealVector2D[sceneWidth * 0.5, sceneHeight*0.5];
 	}
