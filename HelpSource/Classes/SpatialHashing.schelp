@@ -1,0 +1,40 @@
+TITLE::SpatialHashing
+summary:: (put short description here)
+categories:: Undocumented classes
+related:: Overviews/GameLoop_Overview, Classes/SoundEntity, EntityManager
+
+DESCRIPTION::
+
+NOTE::
+link::Overviews/GameLoop_Overview##Click here for GameLoop overview and tutorials.::
+::
+
+SpatialHashing is a spatial index used by EntityManager for collision detection. It is based on the paper "Optimization of Large-Scale, Real-Time Simulations by Spatial Hashing" (Erin J. Hastings, Jaruwan Mesit, Ratan K. Guha). I also had a look at the implementation described at: http://www.sgtconker.com/2009/10/spatial-hashing-implementatio-for-fast-2d-collisionsplaceholder/ 
+
+The objects registered in the index should be circles and should have getter methods for position and radius. 
+
+*new(sceneWidth, sceneHeight, cellSize)
+create a new instance of SpatialHashing with the given dimensions and resolution. 
+The dimensions are in metres. The cell size should be able to fully contain the largest
+entity in order to function correctly.
+
+register(an Entity)
+register the entity in the index. 
+
+unregister(an Entity)
+remove the entity in the index. 
+
+finCells(an Entity)
+calculates the cell for the four corners of the square that contains the circle.
+
+getNearest(an Entity)
+returns the objects that are in the same cell as the given entity.
+(todo: a method that finds entities at a given distance)
+
+clearBuckets
+clear the index
+EXAMPLES::
+
+code::
+(some example code)
+::

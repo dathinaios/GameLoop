@@ -3,8 +3,8 @@ CmdPeriod.run
 (
 //AmbiDecoderCentre.startDecoder2('stereo');
 //At the moment the first time it is giving an error. Run again.
-//GameLoopDecoder('AmbIEM', 'binaural');
-GameLoopDecoder('ATK', 'newStereo');
+GameLoopDecoder('AmbIEM', 'binaural');
+//GameLoopDecoder('ATK', 'newStereo');
 //GameLoopDecoder('ATK', 'newListen');
 //Allow time for the decoder to be created....
 //~gameloop = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
@@ -158,3 +158,5 @@ a[0] == a[1]
 
 GameLoopDecoder.decoderBus.sources;
 
+BinAmbi3O.kemarPath
+_("/Applications/SuperCollider/KemarHRTF");

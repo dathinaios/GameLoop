@@ -5,7 +5,12 @@ related:: Classes/GameLoop, SoundEntity
 
 DESCRIPTION::
 
-NOTE:: Make sure you have installed the VectorSpace, MathLib as well as the AmbIEM Quark if you want to use its binaural decoding. Evaluate to install the Quarks:
+NOTE:: 
+If you need a quick introduction without going through the trouble of getting everything go to link::Guides/QuickStart:: and follow the instruction of the first note.
+
+For full functionality:
+NUMBEREDLIST::
+##Install the VectorSpace, MathLib and the AmbIEM Quark (See 3. for how to get the AmbIEM resources). Evaluate the following to install the Quarks:
 
 code::
 Quarks.install("VectorSpace");
@@ -13,14 +18,19 @@ Quarks.install("AmbIEM");
 Quarks.install("MathLib");
 ::
 
-Also get the latest SuperCollider Plugins: http://sourceforge.net/projects/sc3-plugins/files/ 
 
-The Plugins include the required MoogVCF UGen as well as the Ambisonic Toolkit. 
+##Get the latest SuperCollider Plugins: link::http://sourceforge.net/projects/sc3-plugins/files/::. The Plugins include the required MoogVCF UGen as well as the Ambisonic Toolkit. 
 
-Finally AmbIEM also needs the HRTF measurements from http://sound.media.mit.edu/resources/KEMAR.html Get full.tar.Z, unzip, rename the folder as KemarHRTF and place it in the same directory as SuperCollider.app.
+##For AmbIEM you need the HRTF measurements from http://sound.media.mit.edu/resources/KEMAR.html . Get full.tar.Z, unzip, and rename the folder as KemarHRTF. The default directory does not seem to work. I recommend you add 
+code::
+BinAmbi3O.kemarPath_(Platform.userAppSupportDir ++ '/KemarHRTF');
+:: 
+to your startup file and place the Kemar folder in the Application Support directory of your platform.
+##Get the Kernel's for the more advanced decoding methods of the ATK Library. You can find them in the downloads section of the website at link::http://www.ambisonictoolkit.net/wiki/tiki-index.php?page=Downloads::.
+::
 ::
 
-GameLoop is a library for the creation of virtual sound environments inspired by video game techniques.footnote::The design of the library was based on the article 'The Guerrilla Guide to Game Code' that can be found at http://www.gamasutra.com/view/feature/2280/the_guerrilla_guide_to_game_code.php::
+GameLoop is a library for the creation of virtual sound environments inspired by video game techniques.footnote::The design of the library was partly based on the article 'The Guerrilla Guide to Game Code' that can be found at http://www.gamasutra.com/view/feature/2280/the_guerrilla_guide_to_game_code.php::
 
 The library includes:
 LIST::
@@ -41,11 +51,11 @@ section::Main Classes
 Main structure:
 LIST::
 ## link::Classes/GameLoop::
-## link::Clases/Entity::
-## link::Clases/EntityManager::
-## link::Clases/RepresentationManager::
-## link::Clases/SoundEntity::
-## link::Clases/SpatialHashing::
+## link::Classes/Entity::
+## link::Classes/EntityManager::
+## link::Classes/RepresentationManager::
+## link::Classes/SoundEntity::
+## link::Classes/SpatialHashing::
 ::
 
 UGens:

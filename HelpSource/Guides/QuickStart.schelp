@@ -5,19 +5,18 @@ related:: Overviews/GameLoop_Overview, Classes/GameLoop, SoundEntity
 
 This guide is created as a step by step intro to the main features of the GameLoop library.
 
-NOTE:: Make sure you have installed the VectorSpace, MathLib as well as the AmbIEM Quark if you want to use its binaural decoding. Evaluate to install the Quarks:
+NOTE:: To run these examples you will need to:
+LIST::
+##Install the VectorSpace and MathLib Quarks. Evaluate the following to install:
 
 code::
 Quarks.install("VectorSpace");
-Quarks.install("AmbIEM");
 Quarks.install("MathLib");
 ::
 
-Also get the latest SuperCollider Plugins: http://sourceforge.net/projects/sc3-plugins/files/ 
-
-The Plugins include the required MoogVCF UGen as well as the Ambisonic Toolkit. 
-
-Finally AmbIEM also needs the HRTF measurements from http://sound.media.mit.edu/resources/KEMAR.html Get full.tar.Z, unzip, rename the folder as KemarHRTF and place it in the same directory as SuperCollider.app.
+##Get the latest SuperCollider Plugins: http://sourceforge.net/projects/sc3-plugins/files/ The Plugins include the required MoogVCF UGen as well as the Ambisonic Toolkit. 
+::
+These are the resources you need to run the examples. For a full list of resources and instructions see the first note at link::Overviews/GameLoop_Overview::.
 ::
 
 section::Basics
@@ -152,7 +151,7 @@ The collisionFunc argument is passed a function that expects two arguments: 1) a
 
 section::Custom Inputs
 
-GameLoop is using JitLib NodeProxies. The input of a SoundEntity is defined in the input argument. The argument expects a function that is passed the current velocity as an argument. This is very important as it allows us to shape the sound according to its current speed. As we've already seen if nothing is provided the input defaults to 'Jack the Mosquito' but let's try as an input a slightly modified example taken from PlayBuf's help file.
+GameLoop is using JitLib NodeProxies. The input of a SoundEntity is defined in the input argument. The argument expects a function that is passed the current speed as an argument. This is very important as it allows us to shape the sound accordingly. As we've already seen if nothing is provided the input defaults to 'Jack the Mosquito' but let's try as an input a slightly modified example taken from PlayBuf's help file.
 code::
 
 // read a whole sound into memory
@@ -164,11 +163,11 @@ b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav"); // remember 
   position: RealVector2D[25, 20.5], 
   radius: 0.4, 
   maxSpeed: 10.0, 
-  input: {arg vel; var trig, bufnum;
+  input: {arg speed; var trig, bufnum;
     bufnum = b.bufnum;
-    //velocity is used to modulate the rate of the trigger and the startPosition
-    trig = Impulse.kr(vel.linlin(0.0, 10.0, 2.0, 60.0 ));
-    PlayBuf.ar(1, bufnum, BufRateScale.kr(bufnum), trig, vel.linlin(0, 10.0, 5000, BufFrames.kr(bufnum)), 0)*0.5
+    //speed is used to modulate the rate of the trigger and the startPosition
+    trig = Impulse.kr(speed.linlin(0.0, 10.0, 2.0, 60.0 ));
+    PlayBuf.ar(1, bufnum, BufRateScale.kr(bufnum), trig,speed.linlin(0, 10.0, 5000, BufFrames.kr(bufnum)), 0)*0.5
   },
   forceFunc: {arg entity; Arrive.calculate(entity, RealVector2D[18, 20.5])},
 	collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
@@ -188,6 +187,10 @@ newVector = RealVector2D[rrand(15.0, 24.0), rrand(15.0, 25.0)];
 
 ::
 
+section::More on Steering Behaviors
+
+(coming soon...)
+
 section::Navigating the Environment
 
 We can move around the virtual space by adding a camera.
@@ -198,6 +201,3 @@ code::
 
 Focus on the viusalisation window and use the left/right arrows to rotate and front/back to move forward and backwards.
 
-section::More on Steering Behaviors
-
-(coming soon...)

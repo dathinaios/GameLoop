@@ -35,7 +35,6 @@ GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <decoderBus,
 		case 
 		//binaural
 		{library =='AmbIEM' && (type == 'binaural')} {
-			BinAmbi3O.kemarPath_("/Applications/SuperCollider/KemarHRTF");
 			BinAmbi3O.init('1_4_7_4');
 			decoderProxy.source = {
 				var in, out;

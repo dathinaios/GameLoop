@@ -141,6 +141,7 @@ GameLoop{
 		mainView.view.background = Color.black;
 		mainView.onClose = { run = false }; // stop the thread on close
 		mainView.front;
+		mainView.alwaysOnTop = true;
 		//for  space of 700 pixels is 20 meters one meter is 35 pixels
 		meterInPixels = h/(dimensions[1]-dimensions[0]); //assumes h = v
 		cellSizeInPixels = meterInPixels*cellSize;

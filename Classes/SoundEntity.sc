@@ -69,7 +69,8 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 		//here add any additional functionality
 		switch (message) 
 		{\remove} {this.remove};
-		out.set('vel',entity.velocity.norm);
+		//set the speed of the NodeProxy
+		out.set('speed', entity.velocity.norm);
 		//transform the position according to the camera position.
 		if (GameLoop.instance.cameraActive,
 			{transPosition = Camera2D.instance.applyTransformation(entity)+ entity.world.center},
@@ -96,7 +97,7 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 	inputSourse {/*{{{*/
 			out.source = { arg dt;
 						   var x , y;
-						   var rad, azim, elev, in, vel;
+						   var rad, azim, elev, in, speed;
 						    dt = entity.world.dt;
 						  	#x, y = Control.names(#[x, y]).kr([position[0], position[1]]);
 						   	x = Ramp.kr(x, dt); //GameLoop.instance.dt);
@@ -105,15 +106,15 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 						   	//x = MouseX.kr(-20, 20);
 						   	//y = MouseY.kr(-20, 20);
 							//To use the velocity
-							vel = Control.names(\vel).kr(entity.velocity.norm);
-							vel = Ramp.kr(vel, dt); //GameLoop.instance.dt);
+							speed = Control.names(\speed).kr(entity.velocity.norm);
+							speed = Ramp.kr(speed, dt); //GameLoop.instance.dt);
 							//input
 							if(entity.input == nil,
 								{ // A default sound in case there is not input provided
-								in = Impulse.ar(vel.linlin(0,10, 5, rrand(50, 200.0)));
+								in = Impulse.ar(speed.linlin(0,10, 5, rrand(50, 200.0)));
 								in = BPF.ar(in, rrand(2000, 18000.0)*rrand(0.3, 2.0), 0.4);
 								},
-								{in = entity.input.value(vel)}
+								{in = entity.input.value(speed)}
 							);
 							azim = atan2(y,x);
 							rad = hypot(x,y);
