@@ -15,7 +15,7 @@ EntityRepresentation { var entity, <position, <radius;
  		//{message == \collision} {this.collision};
 	} 
 	
-	run { // method to run the representaion without adding to the manager.
+	run { // method to run the sound representaion without adding to the manager.
 		  // Usefull for compensating for the bundle time.
 		"implement run in subclass".error;
 	}
@@ -30,7 +30,8 @@ EntityRepresentation { var entity, <position, <radius;
 	*/
 
 	activate { // this method adds the rep to the manager but does not
-			   // run the representation.
+			   // run the sound representation.
+		"I am in the actiavete method od EntityRepresentation".postln;
 		this.add;
 	
 	}

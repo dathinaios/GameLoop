@@ -93,7 +93,7 @@ CmdPeriod.run
 	width = ~gameloop.center[0]*2;
 	position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
 	radius = 0.4;
-	~entity.add(SoundEntity(
+	~entity = SoundEntity(
 		~gameloop.world,
 		position,
 		radius,
@@ -114,49 +114,15 @@ CmdPeriod.run
 		}
 		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
 	);
-	);
 	//~entity.collisionType_(\mobile);
-	~entity.last.activate;
+	~entity.activate;
 );
-
-//An example of a straightforward collision
-
-(
-~entity1 = SoundEntity(
-  ~gameloop.world,
-  position: RealVector2D[25, 20.5],
-  radius: 0.4,
-  maxSpeed: 10.0,
-  forceFunc: {arg entity; Arrive.calculate(entity, RealVector2D[18, 20.5])},
-	collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
-);
-~entity2 = SoundEntity(
-  ~gameloop.world,
-  position: RealVector2D[15, 20.5],
-  radius: 0.4,
-  maxSpeed: 10.0,
-  forceFunc: {arg entity; Arrive.calculate(entity, RealVector2D[22, 20.5])},
-	collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
-);
-
-//~entity1.collisionType_(\mobile);
-//~entity2.collisionType_(\mobile);
-~entity1.activate;
-~entity2.activate;
-)
-~entity1.remove;
-~entity2.remove;
 
 //some test (delete)
-a = List.new;
-~entity1.dependants.do{arg i; a.add(i.out);};
-~entity2.dependants.do{arg i; a.add(i.out);};
-~entity1.dependants[0].out == ~entity2.dependants[0].out
-~entity1.dependants
-~entity2.dependants
-a[0] == a[1]
+	~entity.remove
+	~entity.add
+	~entity.dependants
 
-GameLoopDecoder.decoderBus.sources;
-
-BinAmbi3O.kemarPath
-_("/Applications/SuperCollider/KemarHRTF");
+Server.default.latency = 3
+Server.default.latency;
+TempoClock.default.latency

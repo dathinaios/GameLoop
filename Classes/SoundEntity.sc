@@ -41,7 +41,7 @@ SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 
 SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 										 	 var <penWidth = 1.5;
-										 	 var <out;
+										 	 var <audioFunc;
 							
 	*new { arg  entity, color, collisionColor;  /*{{{*/
 	^super.newCopyArgs(entity, color, collisionColor).init
@@ -53,13 +53,21 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 		color = color ?? {Color.green};
 		collisionColor = collisionColor ?? {Color.red};
 		//get the right encoder from the GameLoopDecoder class
-		out = GameLoopDecoder.getEncoderProxy;
+		audioFunc = GameLoopDecoder.getEncoderProxy;
 		//plug the proxy to the decoder summing bus
-		GameLoopDecoder.decoderBus.add(out);
-		//this.makeIn;
-		this.inputSourse;
+		GameLoopDecoder.decoderBus.add(audioFunc);
+		this.run;
 	}/*}}}*/
 	
+	/*
+	activate{
+		Routine{
+			this.run;
+			Server.default.latency.wait;
+			this.activate;
+		}.play(TempoClock.default);
+	}
+	*/
 	color { if(entity.colliding, {^collisionColor },{^color})/*{{{*/
 	}/*}}}*/
 
@@ -70,32 +78,37 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 		switch (message) 
 		{\remove} {this.remove};
 		//set the speed of the NodeProxy
-		out.set('speed', entity.velocity.norm);
+		audioFunc.set('speed', entity.velocity.norm);
+		audioFunc.clock = TempoClock.default;
 		//transform the position according to the camera position.
 		if (GameLoop.instance.cameraActive,
 			{transPosition = Camera2D.instance.applyTransformation(entity)+ entity.world.center},
 			{transPosition = position}
 		);
 		//set the syth with the new position values
-		out.set('x', transPosition[0]-20);
-		out.set('y', transPosition[1]-20);
+		audioFunc.set('x', transPosition[0]-20);
+		audioFunc.set('y', transPosition[1]-20);
 
 	}/*}}}*/
 	
 	remove{var decoderBus;/*{{{*/
 		 decoderBus = GameLoopDecoder.decoderBus;
 		 //clear everything with given realease time
-		 out.clear(entity.release);
+		 audioFunc.clear(entity.release);
 		 //remove the node from the summing bus
-		 decoderBus.removeAt(decoderBus.sources.find([out]));
+		 decoderBus.removeAt(decoderBus.sources.find([audioFunc]));
 	}/*}}}*/
+
+	clock_{ arg clock;
+		audioFunc.clock = clock;
+	}
 
 	draw{arg rect; /*{{{*/
 		Pen.strokeOval(rect)
 	}/*}}}*/
 	
-	inputSourse {/*{{{*/
-			out.source = { arg dt;
+	run {/*{{{*/
+			audioFunc.source = { arg dt;
 						   var x , y;
 						   var rad, azim, elev, in, speed;
 						    dt = entity.world.dt;
