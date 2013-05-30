@@ -96,7 +96,7 @@ GameLoop{
 			mass: 0.04,
 			maxSpeed: 20 
 		); 
-		cameraEntity.activate;
+		cameraEntity.prepare;
 		cameraActive = true;
 	}
 

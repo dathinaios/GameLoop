@@ -8,11 +8,11 @@ EntityManager {
 			 var <>dt, <mainRoutine, <mainClock;
 			 var <sceneWidth, <sceneHeight, <repManager;
 
-	*new { arg spatialIndex = SpatialHashing(20, 20, 0.5); 
+	*new { arg spatialIndex = SpatialHashing(20, 20, 0.5); /*{{{*/
 	^super.newCopyArgs(spatialIndex).init
-	} 
+	} /*}}}*/
 	
-	init{
+	init{/*{{{*/
 		dt = 0.05; //20 FPS
 		freeList = List.new;
 		mobList = List.new;
@@ -21,14 +21,18 @@ EntityManager {
 		//get the dimension of the space from the spatial index
 		sceneWidth = spatialIndex.sceneWidth;
 		sceneHeight = spatialIndex.sceneHeight;
-	}
+	}/*}}}*/
 
-	stop{
+	stop{/*{{{*/
 		mainRoutine.stop;
 		//mainRoutine.reset;
+	}/*}}}*/
+
+	prepare{ arg entity;
+		this.changed([entity, \prepare]);
 	}
 
-	add{ arg entity;
+	add{ arg entity;/*{{{*/
 		switch (entity.collisionType)
 		{\free} {freeList.add(entity)}
 		{\mobile} {mobList.add(entity); spatialIndex.register(entity)}
@@ -36,43 +40,43 @@ EntityManager {
 		//notify dependants (represemtationManager) that an entity was added
 		this.changed([entity, \add])
 		//repManager.newEntity(entity);
-	}
+	}/*}}}*/
 
-	remove{ arg entity; 
+	remove{ arg entity; /*{{{*/
 		switch (entity.collisionType)
 		{\free} {freeList.remove(entity)}
 		{\mobile} {mobList.remove(entity); spatialIndex.unregister(entity)}
 		{\static} {staticList.remove(entity); spatialIndex.unregister(entity)};
 		this.changed([entity, \remove]);
-	}
+	}/*}}}*/
 		
-	update{ //update all Entities
+	update{ //update all Entities/*{{{*/
 			freeList.do{arg i; i.update};
 			mobList.do{arg i; i.update};
 			staticList.do{arg i; i.update};
-	}
+	}/*}}}*/
 	
-	clear { var listCopy;
+	clear { var listCopy;/*{{{*/
  		[freeList.copy, mobList.copy, staticList.copy].flat.do{arg i; i.remove};
-	}
+	}/*}}}*/
 	
-	refreshIndex1 { //refresh can not happen simply by clearing buckets as in manager1 because we need to keep
+	refreshIndex1 { //refresh can not happen simply by clearing buckets as in manager1 because we need to keep/*{{{*/
 				 //the registered static elements
 				 
 				mobList.do{arg i;  //unregister for mobile objects
 					spatialIndex.unregister(i);
 				};				 
 
-	}
+	}/*}}}*/
 	
-	refreshIndex2 { //refresh can not happen simply by clearing buckets as in manager1 because we need to keep
+	refreshIndex2 { //refresh can not happen simply by clearing buckets as in manager1 because we need to keep/*{{{*/
 				 //the registered static elements
 				 
 				mobList.do{arg i;  //reregister for mobile objects
 					spatialIndex.register(i);
 				};				 
 
-	}
+	}/*}}}*/
 
 	//Collision detection/*{{{*/
 
@@ -92,8 +96,7 @@ EntityManager {
 //		
 //	}/*}}}*/
 
-
-	collisionCheck{ 
+	collisionCheck{ /*{{{*/
 	
 		mobList.do{ arg i; var nearest, collidingWith;
 			// a list to store the objects that are found to collide with the entity
@@ -153,10 +156,9 @@ EntityManager {
 				};
 		};
 		
-	}
-
+	}/*}}}*/
 	//faster:
-	circlesCollide{ arg cA, cB; //circleA circleB
+	circlesCollide{ arg cA, cB; //circleA circleB/*{{{*/
 				  var r1, r2, dx, dy;
 				  var a;
 			r1 = cA.radius;
@@ -169,11 +171,11 @@ EntityManager {
 	        {^true}
 	        ,{^false});			
 
-	}
+	}/*}}}*/
 	
-	center{
+	center{/*{{{*/
 		^RealVector2D[sceneWidth * 0.5, sceneHeight*0.5];
-	}
+	}/*}}}*/
 
 }
 

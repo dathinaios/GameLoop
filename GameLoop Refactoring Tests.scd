@@ -1,5 +1,4 @@
 CmdPeriod.run
-
 (
 //AmbiDecoderCentre.startDecoder2('stereo');
 //At the moment the first time it is giving an error. Run again.
@@ -10,11 +9,10 @@ GameLoopDecoder('AmbIEM', 'binaural');
 //~gameloop = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
 ~gameloop = GameLoop(40, 40, 1).play(0.05);
 ~gameloop.addCamera;
-~entity = List.new;
 );
 
 (
-	~entity.add(SoundEntity(
+	~entity = SoundEntity(
 		~gameloop.world,
 		position: RealVector2D[18, 22],
 		radius: 0.4,
@@ -22,10 +20,10 @@ GameLoopDecoder('AmbIEM', 'binaural');
 		input: nil, //input can be anything. Velocity is passed as a viariable
 		forceFunc: {arg entity; Arrive.calculate(entity, RealVector2D[22, 22])}
 		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
-	)
 	);
 	//~entity.collisionType_(\mobile);
-	~entity.last.activate;
+	//~entity.last.activate;
+	~entity.prepare;
 );
 
 ~entity[0].forceFunc_({arg entity; Arrive.calculate(entity, RealVector2D[22, 25])});
@@ -115,7 +113,7 @@ CmdPeriod.run
 		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
 	);
 	//~entity.collisionType_(\mobile);
-	~entity.activate;
+	~entity.prepare;
 );
 
 //some test (delete)
@@ -123,6 +121,15 @@ CmdPeriod.run
 	~entity.add
 	~entity.dependants
 
-Server.default.latency = 3
+Server.default.latency = nil
 Server.default.latency;
 TempoClock.default.latency
+a = nil;
+(
+Routine{
+	if(a.notNil) {a.wait};
+	"test".postln;
+}.play;
+)
+
+

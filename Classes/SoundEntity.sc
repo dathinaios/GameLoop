@@ -43,11 +43,12 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 										 	 var <penWidth = 1.5;
 										 	 var <audioFunc;
 							
-	*new { arg  entity, color, collisionColor;  /*{{{*/
-	^super.newCopyArgs(entity, color, collisionColor).init
+	*new { arg  entity, repManager, color, collisionColor;  /*{{{*/
+	^super.newCopyArgs(entity, repManager, color, collisionColor).init
 	}/*}}}*/
 
 	init { /*{{{*/
+		var latency;
 		position = entity.position;
 		radius = entity.radius;
 		color = color ?? {Color.green};
@@ -56,18 +57,18 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 		audioFunc = GameLoopDecoder.getEncoderProxy;
 		//plug the proxy to the decoder summing bus
 		GameLoopDecoder.decoderBus.add(audioFunc);
-		this.run;
-	}/*}}}*/
-	
-	/*
-	activate{
+		//Here we need to run the representation and after the right amount of time 
+		//add the representation and the entity to their respective managers
+		latency = Server.default.latency;
 		Routine{
 			this.run;
-			Server.default.latency.wait;
-			this.activate;
-		}.play(TempoClock.default);
-	}
-	*/
+			if(latency.notNil) {latency.wait};
+			//Add everything at exactly the same time as the bundle
+			entity.add;
+			repManager.add(this);
+		}.play;
+	}/*}}}*/
+	
 	color { if(entity.colliding, {^collisionColor },{^color})/*{{{*/
 	}/*}}}*/
 
@@ -99,9 +100,9 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 		 decoderBus.removeAt(decoderBus.sources.find([audioFunc]));
 	}/*}}}*/
 
-	clock_{ arg clock;
+	clock_{ arg clock;/*{{{*/
 		audioFunc.clock = clock;
-	}
+	}/*}}}*/
 
 	draw{arg rect; /*{{{*/
 		Pen.strokeOval(rect)

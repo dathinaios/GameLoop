@@ -53,8 +53,8 @@ Entity {
 			this.subclassResponsibility(thisMethod);
 	}
 	
-	activate { //this method is the last to be called. It will add the entity and the representations to their managers
-		this.add;
+	prepare{ //this method is the last to be called. It will add the entity and the representations to their managers
+		world.prepare(this);
 		//this.changed(\add); //this change should be dealt in the representation to activate them//reps.do{arg i; i.activate};
 		//this.dependants.do{arg i; i.activate};
 	}

@@ -179,6 +179,8 @@ Camera2DRepresentation : SimpleCircleRepresentation{
 		radius = entity.radius;
 		color = color ?? {Color.white};
 		collisionColor = collisionColor ?? {Color.red};
+		entity.add;
+		repManager.add(this);
 	}
 
 	draw{arg rect; Pen.strokeRect(rect)}

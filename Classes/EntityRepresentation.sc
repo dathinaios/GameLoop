@@ -1,7 +1,7 @@
-EntityRepresentation { var entity, <position, <radius;
+EntityRepresentation { var entity, repManager, <position, <radius;
 
-	*new { arg  entity;  
-	^super.newCopyArgs(entity)
+	*new { arg  entity, repManager;  
+	^super.newCopyArgs(entity, repManager)
 	} 
 
 	// the dependancy passes in the changed and any additional arguments 
@@ -17,21 +17,30 @@ EntityRepresentation { var entity, <position, <radius;
 	
 	run { // method to run the sound representaion without adding to the manager.
 		  // Usefull for compensating for the bundle time.
-		"implement run in subclass".error;
+		"Implement run in subclass".error;
+		"Then add something like this in the init method:
+		Routine{
+			this.run;
+			if(latency.notNil) {latency.wait};
+			//Add everything at exactly the same time as the bundle
+			entity.add;
+			repManager.add(this);
+		}.play;
+		".postln;
 	}
-	/*
-	add{ RepresentationManager.add(this);
+
+	add{ repManager.add(this);
 			//Main.elapsedTime.debug("I'm alive!!")
 	}
 	
+	/*
 	remove {
-		RepresentationManager.remove(this);
+		repManager.remove(this);
 	}
-	*/
 
 	activate { // this method adds the rep to the manager but does not
 			   // run the sound representation.
-		"I am in the actiavete method od EntityRepresentation".postln;
+		"I am in the actiavete method of EntityRepresentation".postln;
 		this.add;
 	
 	}
@@ -41,4 +50,5 @@ EntityRepresentation { var entity, <position, <radius;
 		this.add;
 		this.run;
 	}
+	*/
 }   

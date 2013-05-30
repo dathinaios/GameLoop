@@ -36,39 +36,46 @@ GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <decoderBus,
 		//binaural
 		{library =='AmbIEM' && (type == 'binaural')} {
 			BinAmbi3O.init('1_4_7_4');
-			decoderProxy.source = {
+			Routine{
+				1.wait; //take the time to load the kernel
+				decoderProxy.source = {
 				var in, out;
 				in = \in.ar(0!encoderChannels);
 				out = BinAmbi3O.ar(in);
 				Out.ar(0, out);
-			};
+				};
+				this.readyMsg;
+			}.play;
 		}
 		{library =='ATK' && (type == 'newStereo')} {
 			//get the kernel (in this case it is a matrix)
 			kernel = FoaDecoderMatrix.newStereo(131/2 * pi/180, 0.5); // Cardioids at 131 deg
+			Routine{
+				1.wait; //take the time to load the kernel
 				decoderProxy.source = {
 				var in, out;
 				in = \in.ar(0!encoderChannels);
 				out = FoaDecode.ar(in, kernel);
 				Out.ar(0, out);
 				};
+				this.readyMsg;
+			}.play;
 		}
 		//check here for auto choosing correct decoder: chttp://www.ambisonictoolkit.net/Help/Guides/Intro-to-the-ATK.html
 		{library =='ATK' && (type == 'newListen')} {
 			//get the kernel
 			kernel = FoaDecoderKernel.newListen(1013);
 			Routine{
-				2.5.wait; //take the time to load the kernel
+				1.wait; //take the time to load the kernel
 				decoderProxy.source = {
 				var in, out;
 				in = \in.ar(0!encoderChannels);
 				out = FoaDecode.ar(in, kernel);
 				Out.ar(0, out);
 				};
+				this.readyMsg;
 			}.play;
 		};
-
-		"A decoder was created through GameLoopDecoder".postln;
 
 		// create the summing NodeProxy that will act as the summation bus
 		// see http://new-supercollider-mailing-lists-forums-use-these.2681727.n2.nabble.com/Many-to-One-Audio-Routing-in-Jitlib-td7594874.html
@@ -77,6 +84,10 @@ GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <decoderBus,
 		//route the summation bus to the decoder
 		decoderBus <>> decoderProxy;
 
+	}/*}}}*/
+
+	*readyMsg{/*{{{*/
+		"A decoder was created through GameLoopDecoder".postln;
 	}/*}}}*/
 
 	*getEncoderProxy{/*{{{*/

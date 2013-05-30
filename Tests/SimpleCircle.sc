@@ -36,8 +36,8 @@ SimpleCircleRepresentation : EntityRepresentation { var color, collisionColor;
 										 var <penWidth = 1.5;
 								   
 							
-	*new { arg  entity, color, collisionColor;  
-	^super.newCopyArgs(entity, color, collisionColor).init
+	*new { arg  entity, repManager, color, collisionColor;  
+	^super.newCopyArgs(entity, repManager, color, collisionColor).init
 	}
 
 	init { 
