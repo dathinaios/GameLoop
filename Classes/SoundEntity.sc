@@ -27,7 +27,7 @@ SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 	}/*}}}*/
 
 	init{/*{{{*/
-		"SoundEntity init".postln;
+		//"SoundEntity init".postln;
 		super.init;
 		collisionFunc = collisionFunc ?? {{}};
 		release = release ?? {0.2};
@@ -55,6 +55,7 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 		collisionColor = collisionColor ?? {Color.red};
 		//get the right encoder from the GameLoopDecoder class
 		audioFunc = GameLoopDecoder.getEncoderProxy;
+		audioFunc.clock = TempoClock.default;
 		//plug the proxy to the decoder summing bus
 		GameLoopDecoder.decoderBus.add(audioFunc);
 		//Here we need to run the representation and after the right amount of time 
@@ -73,14 +74,16 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 	}/*}}}*/
 
 	update { arg entity, message; var transPosition; /*{{{*/
-		//first for the standard update from the superclass
+		//first for the standard update from the superclass that gets the new 
+		//position and velocity paramaters
 		super.update(entity, message);
 		//here add any additional functionality
 		switch (message) 
-		{\remove} {this.remove};
-		//set the speed of the NodeProxy
-		audioFunc.set('speed', entity.velocity.norm);
-		audioFunc.clock = TempoClock.default;
+		{\remove} {this.remove}
+		//set the speed of the NodeProxy *after* the integration to account for the lag (interpolation)
+		{\preUpdate}
+		{
+ 		audioFunc.set('speed', entity.velocity.norm);
 		//transform the position according to the camera position.
 		if (GameLoop.instance.cameraActive,
 			{transPosition = Camera2D.instance.applyTransformation(entity)+ entity.world.center},
@@ -89,6 +92,7 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 		//set the syth with the new position values
 		audioFunc.set('x', transPosition[0]-20);
 		audioFunc.set('y', transPosition[1]-20);
+		};
 
 	}/*}}}*/
 	

@@ -29,11 +29,11 @@ EntityRepresentation { var entity, repManager, <position, <radius;
 		".postln;
 	}
 
+	/*
 	add{ repManager.add(this);
 			//Main.elapsedTime.debug("I'm alive!!")
 	}
 	
-	/*
 	remove {
 		repManager.remove(this);
 	}

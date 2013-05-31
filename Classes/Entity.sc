@@ -21,7 +21,7 @@ Entity {
 	//in all the init methods assures that everything will be called. Of course remember 
 	//to call init in the subclass new method to start the domino effect
 	init{ 	
-		 	"entity init".postln;
+		 	//"entity init".postln;
 			position = position ?? {world.center};
 			radius = radius ?? {1.0}; 
 			mass = mass ?? {1.0};
@@ -33,7 +33,7 @@ Entity {
 			colliding = false;
 			//Main.elapsedTime.debug("I'm alive!!")
 			collisionType = \free;
-			"And finally prepare the entity".postln;
+			//"And finally prepare the entity".postln;
 			this.prepare;
 	}
 	
@@ -76,7 +76,7 @@ MobileEntity : Entity { var <>velocity, <>controller;
 	}
 
 	init{
-		"mobile init".postln;
+		//"mobile init".postln;
 		super.init;
 		velocity = velocity ?? {RealVector2D[0,0]};
 		//choose the right controller by adding "controller" to the base name of the class
@@ -95,14 +95,15 @@ MobileEntity : Entity { var <>velocity, <>controller;
 	//Typical:
 	
 	update {
-		this.integrateEuler(controller.getForce(this));
+		//calling update on the dependants ensure that we they always get set
+		//by the integration of the last cycle
 		this.changed(\update);
-		//this.updateReps; //update all active views
+		this.integrateEuler(controller.getForce(this));
+		//and here we update with the future value in case we want to 
+		//use it for prediction as in the case of interpolation (lag) of sound
+		//units
+		this.changed(\preUpdate);
 	}
-	
-	//updateReps{ //update all views (notify them to collect the data from the entity)
-	//	reps.do{arg  i; i.update};
-	//}
 	
 //	addForce { arg force; 
 //			controller.force_(force)
@@ -130,7 +131,7 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 	}
 	
 	init{
-		"vehicle init".postln;
+		//"vehicle init".postln;
 		super.init;
 		maxSpeed = maxSpeed ?? {100};
 		maxForce = maxForce ?? {40};
@@ -138,6 +139,9 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 	}
 
 	integrateEuler{ arg force = 0; //TODO: Do I need an accelaration variable?
+		//calling update on the dependants ensure that we they always get set
+		//by the integration of the last cycle
+		this.changed(\update);
 		//calculate velocity
 		velocity = velocity + ((force/mass) * dt);
 		//trancate the velocity to the maximum allowed
@@ -151,7 +155,10 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 			heading = velocity.normalize;//.debug('heading');
 			side = heading.perp;
 			};
-		this.changed(\update)
+		//and here we update with the future value in case we want to 
+		//use it for prediction as in the case of interpolation (lag) of sound
+		//units
+		this.changed(\preUpdate);
 	}
 
 	/*

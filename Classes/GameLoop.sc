@@ -63,6 +63,7 @@ GameLoop{
 			  if(rate != nil, {entManager.dt = rate});
 				mainRoutine = Routine{
 					inf.do{
+						//Here I should add the collision resolution code
 						entManager.refreshIndex1; //unregisterAll
 						entManager.update; 
 						entManager.refreshIndex2; //reregisterAll
@@ -96,7 +97,6 @@ GameLoop{
 			mass: 0.04,
 			maxSpeed: 20 
 		); 
-		cameraEntity.prepare;
 		cameraActive = true;
 	}/*}}}*/
 
