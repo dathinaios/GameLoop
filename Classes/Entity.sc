@@ -18,9 +18,10 @@ Entity {
 	}
 
 	//The init method is called in the subclass by using super.init. Using super.init
-	//in all the init methods assures that everything will be called
+	//in all the init methods assures that everything will be called. Of course remember 
+	//to call init in the subclass new method to start the domino effect
 	init{ 	
-		 	//"enity init".postln;
+		 	"entity init".postln;
 			position = position ?? {world.center};
 			radius = radius ?? {1.0}; 
 			mass = mass ?? {1.0};
@@ -32,6 +33,8 @@ Entity {
 			colliding = false;
 			//Main.elapsedTime.debug("I'm alive!!")
 			collisionType = \free;
+			"And finally prepare the entity".postln;
+			this.prepare;
 	}
 	
 	add{ world.add(this);
@@ -73,7 +76,7 @@ MobileEntity : Entity { var <>velocity, <>controller;
 	}
 
 	init{
-		//"mobile init".postln;
+		"mobile init".postln;
 		super.init;
 		velocity = velocity ?? {RealVector2D[0,0]};
 		//choose the right controller by adding "controller" to the base name of the class
@@ -127,7 +130,7 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 	}
 	
 	init{
-		//"vehicle init".postln;
+		"vehicle init".postln;
 		super.init;
 		maxSpeed = maxSpeed ?? {100};
 		maxForce = maxForce ?? {40};

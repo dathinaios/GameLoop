@@ -22,12 +22,12 @@ SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 		   .input_(input)
 		   .collisionFunc_(collisionFunc)
 		   .forceFunc_(forceFunc)
-		   .release_(release)
-		   .init;		
+		   .release_(release)	
+		   .init;
 	}/*}}}*/
 
 	init{/*{{{*/
-		//"simplecircle init".postln;
+		"SoundEntity init".postln;
 		super.init;
 		collisionFunc = collisionFunc ?? {{}};
 		release = release ?? {0.2};

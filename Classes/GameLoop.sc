@@ -2,7 +2,7 @@
 GameLoop{
 			 classvar <instance;
 			 var <sceneWidth, <sceneHeight, <cellSize;
-			 var <mainRoutine, <mainClock;
+			 var <mainRoutine;
 			 var <entManager, <repManager;
 			 var <cameraEntity, <cameraActive = false, 
 				 leftRotationRoutine, rightRotationRoutine;
@@ -10,7 +10,7 @@ GameLoop{
 			 var dimensions, gridSize, cellSize, mainView;
 			 var rowSize, cellSizeInPixels;
 
-	*new{ arg sceneWidth = 40, sceneHeight = 40, cellSize = 1;
+	*new{ arg sceneWidth = 40, sceneHeight = 40, cellSize = 1;/*{{{*/
 
 			if(instance.isNil, 
 				{
@@ -18,11 +18,10 @@ GameLoop{
 				},
 				{"There is already an active instance of GameLoop".error;}
 			);		
-	}
+	}/*}}}*/
 
-	init{
+	init{/*{{{*/
 		instance = this;
-		mainClock = TempoClock.new;
 		entManager = EntityManager(SpatialHashing(sceneWidth, sceneHeight, cellSize));
 		//create the representation manager
 		repManager = RepresentationManager.new;
@@ -50,15 +49,15 @@ GameLoop{
 		};
 		//run the visualisation
 		this.run;
-	}
+	}/*}}}*/
 
-	world{ // at the moment we are returning the entManager
+	world{ // at the moment we are returning the entManager/*{{{*/
 		   // but in the future we could return one of
 		   // a collection of worlds
 		^entManager
-	}
+	}/*}}}*/
 
-	play{ arg rate; //start the gameloop at framerate rate
+	play{ arg rate; //start the gameloop at framerate rate/*{{{*/
 		if (mainRoutine.isNil,
 			{ //1st condition
 			  if(rate != nil, {entManager.dt = rate});
@@ -71,24 +70,25 @@ GameLoop{
 						{this.render}.defer; //render!!
 						entManager.dt.wait;
 						}
-				}.play(mainClock)
+				}.play(TempoClock.default)
 			}, 
 			{ //2nd condition
 			  mainRoutine.reset.play;
 			}
 		);
-	}
+	}/*}}}*/
 
-	stop{
+	stop{/*{{{*/
 		mainRoutine.stop;
 		//mainRoutine.reset;
-	}
+	}/*}}}*/
 
-	render {
-		mainView.refresh;
-	}
+	render {/*{{{*/
+		//compensate fot the latency used in the audio
+			mainView.refresh;
+	}/*}}}*/
 	
-	addCamera{  
+	addCamera{  /*{{{*/
 		cameraEntity = Camera2D(
 			entManager, 
 			entManager.center, //position
@@ -98,42 +98,43 @@ GameLoop{
 		); 
 		cameraEntity.prepare;
 		cameraActive = true;
-	}
+	}/*}}}*/
 
-	removeCamera{
+	removeCamera{/*{{{*/
 		entManager.remove(cameraEntity);
 		cameraEntity.changed(\remove);
 		cameraActive = false;
 		Camera2D.instance = nil;
-	}
+	}/*}}}*/
 
-	resetCamera{
+	resetCamera{/*{{{*/
 		cameraEntity.reset;	
-	}
+	}/*}}}*/
 
-	center{
+	center{/*{{{*/
 		^RealVector2D[sceneWidth * 0.5, sceneHeight*0.5];
-	}
+	}/*}}}*/
 
-	close {
+	close {/*{{{*/
 		mainView.close;
-	}
+	}/*}}}*/
 
-	dt{ //in case I need to get the dt of the world from here. 
+	dt{ //in case I need to get the dt of the world from here. /*{{{*/
 		//If I implement mulitple worlds this is going away.
 		^entManager.dt;
-	}
+	}/*}}}*/
 
-	clear{
+	clear{/*{{{*/
 		this.removeCamera;
 		entManager.clear;
 		mainView.close;
 		instance = nil;
-	}
+	}/*}}}*/
 
-	clearEntities{
+	clearEntities{/*{{{*/
 		entManager.clear;
-	}
+	}/*}}}*/
+
 	run{/*{{{*/
 
 		var   h = 400, v = 400, seed, run = true,  spaceUnits, spaceUnits2, meterInPixels,  speakerRadInPixels;
@@ -151,7 +152,6 @@ GameLoop{
 		Pen.width = 2;
 		
 		//to draw the obstacles 
-		//spaceUnits2 = repList.collect({arg item; item.position});
 		
 		Pen.use {   var divisions, subOrAdd;
 					var repList;
@@ -217,7 +217,6 @@ GameLoop{
 					{123}{leftRotationRoutine.stop}
 					{124}{rightRotationRoutine.stop}
 				};
-
 
 /* COMMENTED OUT{{{*/
 //				//draw the grid

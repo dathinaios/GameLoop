@@ -23,7 +23,6 @@ GameLoopDecoder('AmbIEM', 'binaural');
 	);
 	//~entity.collisionType_(\mobile);
 	//~entity.last.activate;
-	~entity.prepare;
 );
 
 ~entity[0].forceFunc_({arg entity; Arrive.calculate(entity, RealVector2D[22, 25])});
@@ -112,24 +111,13 @@ CmdPeriod.run
 		}
 		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
 	);
-	//~entity.collisionType_(\mobile);
-	~entity.prepare;
+
 );
 
 //some test (delete)
-	~entity.remove
-	~entity.add
-	~entity.dependants
+~entity.remove
+~entity.velocity
 
-Server.default.latency = nil
+Server.default.latency = 3
 Server.default.latency;
 TempoClock.default.latency
-a = nil;
-(
-Routine{
-	if(a.notNil) {a.wait};
-	"test".postln;
-}.play;
-)
-
-
