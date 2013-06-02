@@ -143,9 +143,6 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 	}
 
 	integrateEuler{ arg force = 0; //TODO: Do I need an accelaration variable?
-		//calling update on the dependants ensure that we they always get set
-		//by the integration of the last cycle
-		this.changed(\update);
 		//calculate velocity
 		velocity = velocity + ((force/mass) * dt);
 		//trancate the velocity to the maximum allowed
@@ -159,10 +156,6 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 			heading = velocity.normalize;//.debug('heading');
 			side = heading.perp;
 			};
-		//and here we update with the future value in case we want to 
-		//use it for prediction as in the case of interpolation (lag) of sound
-		//units
-		this.changed(\preUpdate);
 	}
 
 	/*
