@@ -4,6 +4,20 @@ EntityRepresentation { var entity, repManager, <position, <radius;
 	^super.newCopyArgs(entity, repManager)
 	} 
 
+	init{ var latency;
+		"Implement init in subclass. Check EntityRepresentation fot example code".error;
+		//Here we need to run the representation and after the right amount of time 
+		//add the representation and the entity to their respective managers
+		latency = Server.default.latency;
+		Routine{
+			this.run;
+			//wait for 'latency' before adding to managers so that everything is in sync.
+			if(latency.notNil) {latency.wait};
+			//Add everything at exactly the same time as the bundle
+			entity.add;
+			repManager.add(this);
+		}.play;
+	}
 	// the dependancy passes in the changed and any additional arguments 
 	update { arg entity, message;  //entity var is theChanger
 		//in the subclass call super.update to do this and then add your own like:
@@ -18,15 +32,6 @@ EntityRepresentation { var entity, repManager, <position, <radius;
 	run { // method to run the sound representaion without adding to the manager.
 		  // Usefull for compensating for the bundle time.
 		"Implement run in subclass".error;
-		"Then add something like this in the init method:
-		Routine{
-			this.run;
-			if(latency.notNil) {latency.wait};
-			//Add everything at exactly the same time as the bundle
-			entity.add;
-			repManager.add(this);
-		}.play;
-		".postln;
 	}
 
 	/*
@@ -50,5 +55,14 @@ EntityRepresentation { var entity, repManager, <position, <radius;
 		this.add;
 		this.run;
 	}
+		"Then add something like this in the init method:
+		Routine{
+			this.run;
+			if(latency.notNil) {latency.wait};
+			//Add everything at exactly the same time as the bundle
+			entity.add;
+			repManager.add(this);
+		}.play;
+		".postln;
 	*/
 }   

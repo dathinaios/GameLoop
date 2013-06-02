@@ -63,6 +63,7 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 		latency = Server.default.latency;
 		Routine{
 			this.run;
+			//wait for 'latency' before adding to managers so that everything is in sync.
 			if(latency.notNil) {latency.wait};
 			//Add everything at exactly the same time as the bundle
 			entity.add;
