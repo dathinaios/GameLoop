@@ -7,7 +7,7 @@ Entity {
 		var <>world, <>position, <>radius, <>mass;
 		var <dt, <id; //we Do not need the param reps anymore since we are using the dependants mechanism
 		var <>colliding;
-		var <>collisionType;
+		//var <>collisionType; Moved to mobile entity
 
 	*new{ arg world, position, radius, mass;
 		  ^super.newCopyArgs(world, 
@@ -32,7 +32,6 @@ Entity {
 			//set colliding to false for start
 			colliding = false;
 			//Main.elapsedTime.debug("I'm alive!!")
-			collisionType = \free;
 			//"And finally prepare the entity".postln;
 			this.prepare;
 	}
@@ -64,15 +63,16 @@ Entity {
 
 }     
 
-MobileEntity : Entity { var <>velocity, <>controller;
+MobileEntity : Entity { var <>velocity, <>controller, <>collisionType;
 
-	*new{ arg world, position, radius, mass, velocity, controller;
+	*new{ arg world, position, radius, mass, velocity, controller, collisionType;
 		  ^super.new(world, 
 					 position, 
 					 radius, 
 					 mass
 		  ).velocity_(velocity)
-		   .controller_(controller);
+		   .controller_(controller)
+		   .collisionType_(collisionType);
 	}
 
 	init{
@@ -81,6 +81,9 @@ MobileEntity : Entity { var <>velocity, <>controller;
 		velocity = velocity ?? {RealVector2D[0,0]};
 		//choose the right controller by adding "controller" to the base name of the class
 		controller = controller ?? {(this.class.asString++"Controller").asSymbol.asClass.new(this)};
+		controller = controller ?? {(this.class.asString++"Controller").asSymbol.asClass.new(this)};
+		//set the collision type
+		collisionType  = collisionType ?? {\free};
 	}
 
 	integrateEuler{ arg force = 0;
@@ -115,7 +118,7 @@ MobileEntity : Entity { var <>velocity, <>controller;
 Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTurnRate; 
 					  	 //var steering;
 	
-	*new{ arg world, position, radius, mass, velocity, controller,
+	*new{ arg world, position, radius, mass, velocity, controller, collisionType,
 			  heading, side, maxSpeed, maxForce, maxTurnRate;
 		  ^super.new(world, 
 					 position, 
@@ -123,6 +126,7 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 					 mass
 		  ).velocity_(velocity)
 		   .controller_(controller)
+		   .collisionType_(collisionType)
 		   .heading_(heading)
 		   .side_(side)
 		   .maxSpeed_(maxSpeed)

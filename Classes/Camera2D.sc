@@ -3,7 +3,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 					 var <>collisionFunc, <>arrivePosition, <>rotation;
 
 
-	*new{ arg world, position, radius, mass, velocity, controller,
+	*new{ arg world, position, radius, mass, velocity, controller, collisionType,
 			heading, side, maxSpeed, maxForce, maxTurnRate, collisionFunc;
 
 			if(instance.isNil, 
@@ -14,6 +14,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 							mass
 				).velocity_(velocity)
 				.controller_(controller)
+		   		.collisionType_(collisionType)
 				.heading_(heading)
 				.side_(side)
 				.maxSpeed_(maxSpeed)

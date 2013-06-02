@@ -63,7 +63,8 @@ GameLoop{
 			  if(rate != nil, {entManager.dt = rate});
 				mainRoutine = Routine{
 					inf.do{
-						//Here I should add the collision resolution code
+						//First let's resolve all the collisions
+						entManager.collisionResolution;
 						entManager.refreshIndex1; //unregisterAll
 						entManager.update; 
 						entManager.refreshIndex2; //reregisterAll
@@ -95,7 +96,7 @@ GameLoop{
 			entManager.center, //position
 			0.5, //radius 
 			mass: 0.04,
-			maxSpeed: 20 
+			maxSpeed: 20
 		); 
 		cameraActive = true;
 	}/*}}}*/

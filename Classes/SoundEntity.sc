@@ -5,7 +5,7 @@
 
 SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 	
-	*new{ arg world, position, radius, mass, velocity, controller,/*{{{*/
+	*new{ arg world, position, radius, mass, velocity, controller, collisionType,/*{{{*/
 			  heading, side, maxSpeed, maxForce, maxTurnRate, input,
 			  collisionFunc, forceFunc, release;
 		  ^super.new(world, 
@@ -14,6 +14,7 @@ SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 					 mass
 		  ).velocity_(velocity)
 		   .controller_(controller)
+		   .collisionType_(collisionType)
 		   .heading_(heading)
 		   .side_(side)
 		   .maxSpeed_(maxSpeed)
@@ -34,7 +35,7 @@ SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 	}/*}}}*/
 
 	collision { arg entList; colliding = true;/*{{{*/
-				collisionFunc.value(entList, this);
+				collisionFunc.value(this, entList);
 	}/*}}}*/
 
 }
@@ -97,16 +98,17 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 
 	}/*}}}*/
 	
-	remove{var decoderBus;/*{{{*/
+	remove{var decoderBus, release;/*{{{*/
 		 decoderBus = GameLoopDecoder.decoderBus;
-		 //clear everything with given realease time
-		 audioFunc.clear(entity.release);
-		 //remove the node from the summing bus
-		 decoderBus.removeAt(decoderBus.sources.find([audioFunc]));
-	}/*}}}*/
-
-	clock_{ arg clock;/*{{{*/
-		audioFunc.clock = clock;
+		 release = entity.release;
+		 Routine{
+			//clear everything with given realease time
+			audioFunc.clear(release);
+			//wait for the release to finish
+			release.wait;
+			//remove the node from the summing bus
+			decoderBus.removeAt(decoderBus.sources.find([audioFunc]));
+	 	}.play(TempoClock.default);
 	}/*}}}*/
 
 	draw{arg rect; /*{{{*/

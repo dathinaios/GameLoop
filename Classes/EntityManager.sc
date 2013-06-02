@@ -7,6 +7,7 @@ EntityManager {
 			 var <freeList, <mobList, <staticList;
 			 var <>dt, <mainRoutine, <mainClock;
 			 var <sceneWidth, <sceneHeight, <repManager;
+			 var <currentCollisionList;
 
 	*new { arg spatialIndex = SpatialHashing(20, 20, 0.5); /*{{{*/
 	^super.newCopyArgs(spatialIndex).init
@@ -17,6 +18,8 @@ EntityManager {
 		freeList = List.new;
 		mobList = List.new;
 		staticList = List.new;
+		//initialise the current collision List
+		currentCollisionList = List.new;
 		//mainClock = TempoClock.new;
 		//get the dimension of the space from the spatial index
 		sceneWidth = spatialIndex.sceneWidth;
@@ -28,9 +31,9 @@ EntityManager {
 		//mainRoutine.reset;
 	}/*}}}*/
 
-	prepare{ arg entity;
+	prepare{ arg entity;/*{{{*/
 		this.changed([entity, \prepare]);
-	}
+	}/*}}}*/
 
 	add{ arg entity;/*{{{*/
 		switch (entity.collisionType)
@@ -78,7 +81,7 @@ EntityManager {
 
 	}/*}}}*/
 
-	//Collision detection/*{{{*/
+	//Collision detection INACTIVE /*{{{*/
 
 //	collisionCheck{ 
 //	
@@ -98,7 +101,7 @@ EntityManager {
 
 	collisionCheck{ /*{{{*/
 	
-		mobList.do{ arg i; var nearest, collidingWith;
+		mobList.do{ arg i; var nearest, collidingWith;/*{{{*/
 			// a list to store the objects that are found to collide with the entity
 			collidingWith = List.new; //I use a list to allow for any number of objects
 			//get the near by objects
@@ -109,8 +112,14 @@ EntityManager {
 						if(this.circlesCollide(i, i2)) {collidingWith = collidingWith.add(i2)};
 					};
 					if(collidingWith.size != 0,//if there are results
+						/*OLD IMPLEMENTATION
 						// call the collision function passing the list as an argument
 						{i.collision(collidingWith)},
+						*/
+						//Store the entity and the colldingWith objects in an array
+						//of the form [entity, [ListofCollidingWithEntities]]
+						//for use on the collisionResolution method
+						{currentCollisionList.add([i, collidingWith])},
 						//else set the colliding to false
 						{i.colliding_(false)}
 					);
@@ -120,13 +129,11 @@ EntityManager {
 					i.colliding_(false)
 					}
 			);
-		};
+		};/*}}}*/
 		
 		//and now for the static entities
-		/*
-			TODO line 243 the take this method may not be very efficient
-		*/
-		staticList.do{ arg i; var nearest, collidingWith;
+		/* TODO line 243 the take this method may not be very efficient */
+		staticList.do{ arg i; var nearest, collidingWith;/*{{{*/
 			//dont do anything unless it was found to collide
 			if(i.colliding)//if it was found to collide find with which and send the collision msg.
 				{
@@ -142,8 +149,10 @@ EntityManager {
 							if(this.circlesCollide(i, i2)) {collidingWith = collidingWith.add(i2)};
 						};
 						if(collidingWith.size != 0,//if there are results
-							// call the collision function passing the list as an argument
-							{i.collision(collidingWith)},
+							//Store the entity and the colldingWith objects in an array
+							//of the form [entity, [ListofCollidingWithEntities]]
+							//for use on the collisionResolution method
+							{currentCollisionList.add([i, collidingWith])},
 							//else set the colliding to false
 							{i.colliding_(false)}
 						);
@@ -154,7 +163,7 @@ EntityManager {
 						}
 				);
 				};
-		};
+		};/*}}}*/
 		
 	}/*}}}*/
 	//faster:
@@ -171,6 +180,17 @@ EntityManager {
 	        {^true}
 	        ,{^false});			
 
+	}/*}}}*/
+
+	collisionResolution{/*{{{*/
+		//At the moment I am simply calling the collide function for every object
+		//but here we could have much more elaborate collision resolutions.
+		currentCollisionList.do{arg i;
+			//Calling: entityColliding.collision(collidingWith)
+			i[0].collision(i[1]);
+		};
+		//and clear the list to prepare for next time
+		currentCollisionList.clear;
 	}/*}}}*/
 	
 	center{/*{{{*/

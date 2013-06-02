@@ -51,13 +51,14 @@ GameLoop.instance.dt
 ~entity.do{arg i; i.remove;};
 ~entity[1].remove
 
-~gameloop.repManager.cameraEntity.moveFwd(4);
-~gameloop.repManager.cameraEntity.moveBack(4);
-~gameloop.repManager.cameraEntity.goto(RealVector2D[rrand(5.0, 35.0),rrand(6.0, 30.0)]);
-~gameloop.repManager.cameraEntity.rotateLeft(0.1pi);
-~gameloop.repManager.cameraEntity.rotateRight(0.1pi);
-~gameloop.repManager.cameraEntity.reset;
-~gameloop.repManager.repList
+~gameloop.cameraEntity.collisionType
+~gameloop.cameraEntity.moveFwd(4);
+~gameloop.cameraEntity.moveBack(4);
+~gameloop.cameraEntity.goto(RealVector2D[rrand(5.0, 35.0),rrand(6.0, 30.0)]);
+~gameloop.cameraEntity.rotateLeft(0.1pi);
+~gameloop.cameraEntity.rotateRight(0.1pi);
+~gameloop.cameraEntity.reset;
+~gameloop.repList
 
 (
 r = Routine{ //test
@@ -108,15 +109,22 @@ CmdPeriod.run
 			path = Path(Array.fill(rrand(2.0, 38.0),
 			{RealVector2D[position[0] + rrand(-33, 33.0), position[1] + rrand(-33.0, 33.0)]}),true);
 			PathFollowing.calculate(entity,path, 0.5);
-		}
-		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
+		},
+		//collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}},
+		//collisionType: \mobile
 	);
 
 );
 
 //some test (delete)
 ~entity.remove
-~entity.velocity
+~entity.collisionType
+~gameloop.clearEntities
+~gameloop.entManager.freeList;
+~gameloop.entManager.freeList.choose.remove
+
+GameLoopDecoder.decoderBus.sources;
+GameLoopDecoder.decoderProxy.sources
 
 Server.default.latency = 3
 Server.default.latency;
