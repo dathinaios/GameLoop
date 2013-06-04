@@ -42,7 +42,6 @@ Entity {
 	
 	remove { world.remove(this);
 			 this.changed(\remove);
-			 //this.release; //release all dependants; I do not need that becasue the depndants release themselves
 	}
 	
 	attach { arg dependant;

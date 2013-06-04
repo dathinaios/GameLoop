@@ -42,14 +42,14 @@ SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 
 SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 										 	 var <penWidth = 1.5;
-										 	 var <audioFunc;
+										 	 var <audioFunc, <audioFuncIndex;
 							
 	*new { arg  entity, repManager, color, collisionColor;  /*{{{*/
 	^super.newCopyArgs(entity, repManager, color, collisionColor).init
 	}/*}}}*/
 
 	init { /*{{{*/
-		var latency;
+		var latency, decoderBus;
 		position = entity.position;
 		radius = entity.radius;
 		color = color ?? {Color.green};
@@ -58,7 +58,10 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 		audioFunc = GameLoopDecoder.getEncoderProxy;
 		audioFunc.clock = TempoClock.default;
 		//plug the proxy to the decoder summing bus
-		GameLoopDecoder.decoderBus.add(audioFunc);
+		decoderBus = GameLoopDecoder.decoderBus;
+		//Always put the new Node in an extra slot of the Summing nodeRpoxy
+		audioFuncIndex = decoderBus.sources.size - 1;
+		decoderBus.put(audioFuncIndex, audioFunc);
 		//Here we need to run the representation and after the right amount of time 
 		//add the representation and the entity to their respective managers
 		latency = Server.default.latency;
@@ -107,7 +110,7 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 			//wait for the release to finish
 			release.wait;
 			//remove the node from the summing bus
-			decoderBus.removeAt(decoderBus.sources.find([audioFunc]));
+			decoderBus.removeAt(audioFuncIndex);
 	 	}.play(TempoClock.default);
 	}/*}}}*/
 

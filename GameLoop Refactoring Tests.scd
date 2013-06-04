@@ -121,11 +121,11 @@ CmdPeriod.run
 ~entity.collisionType
 ~gameloop.clearEntities
 ~gameloop.entManager.freeList;
-~gameloop.entManager.freeList.choose.remove
-
+~gameloop.entManager.freeList.choose.remove;
 GameLoopDecoder.decoderBus.sources;
-GameLoopDecoder.decoderProxy.sources
+//GameLoopDecoder.decoderBus.removeAll;
 
 Server.default.latency = 3
 Server.default.latency;
 TempoClock.default.latency
+NodeProxy
