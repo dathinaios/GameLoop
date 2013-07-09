@@ -75,24 +75,6 @@ EntityManager {
 				};				 
 	}
 
-	//Collision detection INACTIVE 
-
-//	collisionCheck{ 
-//	
-//		mobList.do{ arg i; var nearest;
-//			//get the near by objects
-//			nearest = spatialIndex.getNearest(i);
-//			//if there were objects found check for collisions
-//			if(nearest.size>0, {
-//					nearest.do{arg i2; 
-//						if(this.circlesCollide(i, i2)) {i.collision(i2)};
-//					};
-//					}
-//			);
-//		};
-//		
-//	}
-
 	collisionCheck{ 
 	
 		mobList.do{ arg i; var nearest, collidingWith;
@@ -104,15 +86,7 @@ EntityManager {
 						if(this.circlesCollide(i, i2)) {collidingWith = collidingWith.add(i2)};
 					};
 					if(collidingWith.size != 0,
-						/*OLD IMPLEMENTATION
-						// call the collision function passing the list as an argument
-						{i.collision(collidingWith)},
-						*/
-						//Store the entity and the colldingWith objects in an array
-						//of the form [entity, [ListofCollidingWithEntities]]
-						//for use on the collisionResolution method
-						{currentCollisionList.add([i, collidingWith])},
-						//else
+						{currentCollisionList.add([i, collidingWith])}, //form is [entity, [ListofCollidingWithEntities]]
 						{i.colliding_(false)}
 					);
 					},
@@ -124,7 +98,6 @@ EntityManager {
 		
 		//and now for the static entities
 		staticList.do{ arg i; var nearest, collidingWith;
-			//dont do anything unless it was found to collide
 			if(i.colliding)
 				{
 				collidingWith = List.new;
