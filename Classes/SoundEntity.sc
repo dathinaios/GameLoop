@@ -5,7 +5,7 @@
 
 SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 	
-	*new{ arg world, position, radius, mass, velocity, controller, collisionType,/*{{{*/
+	*new{ arg world, position, radius, mass, velocity, controller, collisionType,
 			  heading, side, maxSpeed, maxForce, maxTurnRate, input,
 			  collisionFunc, forceFunc, release;
 		  ^super.new(world, 
@@ -25,18 +25,18 @@ SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 		   .forceFunc_(forceFunc)
 		   .release_(release)	
 		   .init;
-	}/*}}}*/
+	}
 
-	init{/*{{{*/
+	init{
 		//"SoundEntity init".postln;
 		super.init;
 		collisionFunc = collisionFunc ?? {{}};
 		release = release ?? {0.2};
-	}/*}}}*/
+	}
 
-	collision { arg entList; colliding = true;/*{{{*/
+	collision { arg entList; colliding = true;
 				collisionFunc.value(this, entList);
-	}/*}}}*/
+	}
 
 }
 
@@ -44,11 +44,11 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 										 	 var <penWidth = 1.5;
 										 	 var <audioFunc, <audioFuncIndex;
 							
-	*new { arg  entity, repManager, color, collisionColor;  /*{{{*/
+	*new { arg  entity, repManager, color, collisionColor;  
 	^super.newCopyArgs(entity, repManager, color, collisionColor).init
-	}/*}}}*/
+	}
 
-	init { /*{{{*/
+	init { 
 		var latency, decoderBus;
 		position = entity.position;
 		radius = entity.radius;
@@ -73,12 +73,12 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 			entity.add;
 			repManager.add(this);
 		}.play;
-	}/*}}}*/
+	}
 	
-	color { if(entity.colliding, {^collisionColor },{^color})/*{{{*/
-	}/*}}}*/
+	color { if(entity.colliding, {^collisionColor },{^color})
+	}
 
-	update { arg entity, message; var transPosition; /*{{{*/
+	update { arg entity, message; var transPosition; 
 		//first for the standard update from the superclass that gets the new 
 		//position and velocity paramaters
 		super.update(entity, message);
@@ -99,9 +99,9 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 		audioFunc.set('y', transPosition[1]-20);
 		};
 
-	}/*}}}*/
+	}
 	
-	remove{var decoderBus, release;/*{{{*/
+	remove{var decoderBus, release;
 		 decoderBus = GameLoopDecoder.decoderBus;
 		 release = entity.release;
 		 Routine{
@@ -112,13 +112,13 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 			//remove the node from the summing bus
 			decoderBus.removeAt(audioFuncIndex);
 	 	}.play(TempoClock.default);
-	}/*}}}*/
+	}
 
-	draw{arg rect; /*{{{*/
+	draw{arg rect; 
 		Pen.strokeOval(rect)
-	}/*}}}*/
+	}
 	
-	run {/*{{{*/
+	run {
 			audioFunc.source = { arg dt;
 						   var x , y;
 						   var rad, azim, elev, in, speed;
@@ -152,13 +152,13 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 								ampCenter: 0.9
 							);
 						};
-	}/*}}}*/
+	}
 
 }   
 
 SoundEntityController : Controller{ 
 
-	getForce { var forceFunc; /*{{{*/
+	getForce { var forceFunc; 
 		//the variable antity is declared in the superclass Controller
 		forceFunc = entity.forceFunc;
 		// The steering is using the forceFunction supplied. Else the Entity remain static
@@ -166,7 +166,7 @@ SoundEntityController : Controller{
 				{^0},
 				{^forceFunc.value(entity)}
 			);
-	}/*}}}*/
+	}
 
 }
 

@@ -1,14 +1,13 @@
-CmdPeriod.run
 (
-//AmbiDecoderCentre.startDecoder2('stereo');
-//At the moment the first time it is giving an error. Run again.
-GameLoopDecoder('AmbIEM', 'binaural');
-//GameLoopDecoder('ATK', 'newStereo');
-//GameLoopDecoder('ATK', 'newListen');
-//Allow time for the decoder to be created....
-//~gameloop = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
-~gameloop = GameLoop(40, 40, 1).play(0.05);
-~gameloop.addCamera;
+	//AmbiDecoderCentre.startDecoder2('stereo');
+	//At the moment the first time it is giving an error. Run again.
+	GameLoopDecoder('AmbIEM', 'binaural');
+	//GameLoopDecoder('ATK', 'newStereo');
+	//GameLoopDecoder('ATK', 'newListen');
+	//Allow time for the decoder to be created....
+	//~gameloop = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
+	~gameloop = GameLoop(40, 40, 1).play(0.05);
+	~gameloop.addCamera;
 );
 
 (
@@ -113,19 +112,44 @@ CmdPeriod.run
 		//collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}},
 		//collisionType: \mobile
 	);
-
 );
 
 //some test (delete)
-~entity.remove
-~entity.collisionType
-~gameloop.clearEntities
+~entity.remove;
+~entity.collisionType;
+~gameloop.clearEntities;
 ~gameloop.entManager.freeList;
 ~gameloop.entManager.freeList.choose.remove;
 GameLoopDecoder.decoderBus.sources;
 //GameLoopDecoder.decoderBus.removeAll;
-
-Server.default.latency = 3
+Server.default.latency = 3;
 Server.default.latency;
-TempoClock.default.latency
-NodeProxy
+TempoClock.default.latency;
+
+"This is a test".postln
+"This is a test".postln;
+"This is a test".postln;
+"This is a test".postln;
+"This is a test".postln;
+"This is a test".postln;
+
+Quarks.gui
+Help.methodArgs("LPF.ar")
+SCVim.generateTagsFile()
+GameLoop(
+a = String.new(
+String.find()
+
+//TESTS
+SinOsc.ar(
+GameLoop(
+testing.add(
+testing.split(
+MobileEntity(
+ResponseDefs.add(
+TGrains.ar(bufnum:0, numChannels)
+a = "test string"
+a.first()
+
+
+

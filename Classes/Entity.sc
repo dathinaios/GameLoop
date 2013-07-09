@@ -6,9 +6,9 @@ Entity {
 
 	*new{ arg world, position, radius, mass;
 		  ^super.newCopyArgs(world, 
-		  					 position, 
-		  					 radius, 
-		  				     mass
+												position, 
+												radius, 
+												mass
 		  );
 	}
 
@@ -25,6 +25,10 @@ Entity {
 			this.prepare;
 	}
 	
+	prepare{
+		world.prepare(this);
+	}
+
 	add{ world.add(this);
 	}
 	
@@ -39,10 +43,6 @@ Entity {
 	//the message send once a collision is detected
 	collision { arg entitiesArray; 
 			this.subclassResponsibility(thisMethod);
-	}
-	
-	prepare{
-		world.prepare(this);
 	}
 
 }     

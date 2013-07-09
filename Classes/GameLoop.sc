@@ -10,26 +10,22 @@ GameLoop{
 			 var dimensions, gridSize, cellSize, mainView;
 			 var rowSize, cellSizeInPixels;
 
-	*new{ arg sceneWidth = 40, sceneHeight = 40, cellSize = 1;/*{{{*/
-
+	*new{ arg sceneWidth = 40, sceneHeight = 40, cellSize = 1;
 			if(instance.isNil, 
 				{
 				^super.newCopyArgs(sceneWidth, sceneHeight, cellSize).init;
 				},
 				{"There is already an active instance of GameLoop".error;}
 			);		
-	}/*}}}*/
+	}
 
-	init{/*{{{*/
+	init{
 		instance = this;
 		entManager = EntityManager(SpatialHashing(sceneWidth, sceneHeight, cellSize));
-		//create the representation manager
 		repManager = RepresentationManager.new;
 		//add the representationManager as a dependant to the entManager
-		//in order to notfy of new additions
 		entManager.addDependant(repManager);
 		CmdPeriod.add({this.clear});
-		//TODO: Tidy up visualisation
 		dimensions = [0, entManager.center[0]*2];
 		gridSize = 10;
 		cellSize = entManager.spatialIndex.cellSize;
@@ -48,16 +44,15 @@ GameLoop{
 			};
 		};
 		//run the visualisation
-		this.run;
-	}/*}}}*/
+		this.gui;
+	}
 
-	world{ // at the moment we are returning the entManager/*{{{*/
-		   // but in the future we could return one of
-		   // a collection of worlds
+	world{ //could be a collection of worlds...
 		^entManager
-	}/*}}}*/
+	}
 
-	play{ arg rate; //start the gameloop at framerate rate/*{{{*/
+	//start the gameloop at framerate rate
+	play{ arg rate;
 		if (mainRoutine.isNil,
 			{ //1st condition
 			  if(rate != nil, {entManager.dt = rate});
@@ -78,65 +73,62 @@ GameLoop{
 			  mainRoutine.reset.play;
 			}
 		);
-	}/*}}}*/
+	}
 
-	stop{/*{{{*/
+	stop{
 		mainRoutine.stop;
-		//mainRoutine.reset;
-	}/*}}}*/
+	}
 
-	render {/*{{{*/
-		//compensate fot the latency used in the audio
+	render {
 			mainView.refresh;
-	}/*}}}*/
+	}
 	
-	addCamera{  /*{{{*/
+	addCamera{  
 		cameraEntity = Camera2D(
 			entManager, 
-			entManager.center, //position
-			0.5, //radius 
+			position: entManager.center,
+			radius: 0.5,
 			mass: 0.04,
 			maxSpeed: 20
 		); 
 		cameraActive = true;
-	}/*}}}*/
+	}
 
-	removeCamera{/*{{{*/
+	removeCamera{
 		entManager.remove(cameraEntity);
 		cameraEntity.changed(\remove);
 		cameraActive = false;
 		Camera2D.instance = nil;
-	}/*}}}*/
+	}
 
-	resetCamera{/*{{{*/
+	resetCamera{
 		cameraEntity.reset;	
-	}/*}}}*/
+	}
 
-	center{/*{{{*/
+	center{
 		^RealVector2D[sceneWidth * 0.5, sceneHeight*0.5];
-	}/*}}}*/
+	}
 
-	close {/*{{{*/
+	close {
 		mainView.close;
-	}/*}}}*/
+	}
 
-	dt{ //in case I need to get the dt of the world from here. /*{{{*/
-		//If I implement mulitple worlds this is going away.
+	dt{ //in case I need to get the dt of the world from here. 
 		^entManager.dt;
-	}/*}}}*/
+	}
 
-	clear{/*{{{*/
+	clear{
 		this.removeCamera;
 		entManager.clear;
 		mainView.close;
 		instance = nil;
-	}/*}}}*/
+	}
 
-	clearEntities{/*{{{*/
+	clearEntities{
 		entManager.clear;
-	}/*}}}*/
+	}
 
-	run{/*{{{*/
+	gui{
 
 		var   h = 400, v = 400, seed, run = true,  spaceUnits, spaceUnits2, meterInPixels,  speakerRadInPixels;
 		mainView = Window("Visuals", Rect(0, 0, h, v), false);
@@ -219,7 +211,6 @@ GameLoop{
 					{124}{rightRotationRoutine.stop}
 				};
 
-/* COMMENTED OUT{{{*/
 //				//draw the grid
 //				
 //				rowSize.do{ arg i;
@@ -238,7 +229,7 @@ GameLoop{
 //					Pen.stroke;
 //				};
 		};
-	};/*}}}*/
-	}/*}}}*/
+	};
+	}
 
 }
