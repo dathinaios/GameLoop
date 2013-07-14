@@ -36,10 +36,6 @@ Entity {
 			 this.changed(\remove);
 	}
 	
-	attach { arg dependant;
-			this.addDependant(dependant);
-	}
-	
 	//the message send once a collision is detected
 	collision { arg entitiesArray; 
 			this.subclassResponsibility(thisMethod);

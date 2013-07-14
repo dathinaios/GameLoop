@@ -18,7 +18,7 @@ RepresentationManager{ var <repList;
 			//order to allow the EntityRepresemtation to add itself later)
 			representation = 
 				(message[0].class.asString++"Representation").asSymbol.asClass.new(message[0], this);
-			representation ?? message[0].attach(representation);
+			representation ?? message[0].addDependant(representation);
 		}
 		{\remove} {
 			//remove the representation from the repList variable
