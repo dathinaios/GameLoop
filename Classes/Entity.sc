@@ -1,10 +1,10 @@
 
 Entity {
 		var <>world, <>position, <>radius, <>mass;
-		var <dt, <id; 
+		var <dt;
 		var <>colliding;
 
-	*new{ arg world, position, radius, mass;
+	*new{ arg world, position = RealVector2D[15,15], radius = 1.0, mass = 1.0;
 		  ^super.newCopyArgs(world, 
 												position, 
 												radius, 
@@ -20,7 +20,6 @@ Entity {
 			radius = radius ?? {1.0}; 
 			mass = mass ?? {1.0};
 			dt = world.dt;
-			id = UniqueID.next;
 			colliding = false;
 			this.prepare;
 	}
@@ -43,24 +42,27 @@ Entity {
 
 }     
 
-MobileEntity : Entity { var <>velocity, <>controller, <>collisionType;
+MobileEntity : Entity { var <>velocity, <>collisionType;
+												var <>controller;
 
-	*new{ arg world, position, radius, mass, velocity, controller, collisionType;
+	*new{ arg world, position = RealVector2D[15,15], 
+	          radius = 1.0, mass = 1.0, velocity = RealVector2D[0,0], 
+	          collisionType = \free;
 		  ^super.new(world, 
 					 position, 
 					 radius, 
 					 mass
 		  ).velocity_(velocity)
-		   .controller_(controller)
 		   .collisionType_(collisionType);
 	}
 
 	init{
 		super.init;
 		velocity = velocity ?? {RealVector2D[0,0]};
+		collisionType  = collisionType ?? {\free};
+
 		//choose the right controller by adding "controller" to the base name of the class
 		controller = controller ?? {(this.class.asString++"Controller").asSymbol.asClass.new(this)};
-		collisionType  = collisionType ?? {\free};
 	}
 
 	integrateEuler{ arg force = 0;
@@ -85,14 +87,14 @@ MobileEntity : Entity { var <>velocity, <>controller, <>collisionType;
 
 Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTurnRate; 
 	
-	*new{ arg world, position, radius, mass, velocity, controller, collisionType,
-			  heading, side, maxSpeed, maxForce, maxTurnRate;
+	*new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 1.0, 
+						velocity = RealVector2D[0, 0], collisionType = \free, heading, 
+						side, maxSpeed = 100, maxForce = 40, maxTurnRate = 2;
 		  ^super.new(world, 
 					 position, 
 					 radius, 
 					 mass
 		  ).velocity_(velocity)
-		   .controller_(controller)
 		   .collisionType_(collisionType)
 		   .heading_(heading)
 		   .side_(side)
