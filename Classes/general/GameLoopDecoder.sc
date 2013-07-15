@@ -1,8 +1,8 @@
 
 GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <decoderBus, 
-				 		  encoderChannels, decoderChannels,
-				 		  <>library, <>type, <>dp, order,
-				 		  kernel;
+									encoderChannels, decoderChannels,
+									<>library, <>type, <>dp, order,
+									kernel;
 
 	*new{ arg library = 'AmbIEM', type = 'binaural', dp = true; /*{{{*/
 		

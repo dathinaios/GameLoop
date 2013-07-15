@@ -29,6 +29,7 @@ GameLoop{
 		dimensions = [0, entManager.center[0]*2];
 		gridSize = 10;
 		cellSize = entManager.spatialIndex.cellSize;
+
 		//define the rotation routine
 		leftRotationRoutine = Routine{ //test
 			loop{
