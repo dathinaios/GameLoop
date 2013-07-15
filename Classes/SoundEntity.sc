@@ -27,7 +27,6 @@ SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 	}
 
 	init{
-		//"SoundEntity init".postln;
 		super.init;
 		collisionFunc = collisionFunc ?? {{}};
 		release = release ?? {0.2};
@@ -48,54 +47,76 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 	}
 
 	init { 
-		var latency, decoderBus;
+
+		/* defaults */
 		position = entity.position;
 		radius = entity.radius;
 		color = color ?? {Color.green};
 		collisionColor = collisionColor ?? {Color.red};
-		//get the right encoder from the GameLoopDecoder class
-		audioFunc = GameLoopDecoder.getEncoderProxy;
+
+		/* decoder init */
+		this.initializeDecoder;
+
+		/* make some sound */
+		this.play;
+
+	}
+
+	initializeDecoder{
+		var decoderBus;
 		audioFunc.clock = TempoClock.default;
-		//plug the proxy to the decoder summing bus
+		/* get the right encoder from the GameLoopDecoder class */
+		audioFunc = GameLoopDecoder.getEncoderProxy;
+		/* plug the proxy to the decoder summing bus */
 		decoderBus = GameLoopDecoder.decoderBus;
-		//Always put the new Node in an extra slot of the Summing nodeRpoxy
+		/* Always put the new Node in an extra slot of the Summing nodeRpoxy */
 		audioFuncIndex = decoderBus.sources.size - 1;
 		decoderBus.put(audioFuncIndex, audioFunc);
-		//Here we need to run the representation and after the right amount of time 
-		//add the representation and the entity to their respective managers
+	}
+	
+	play {
+		var latency;
+
 		latency = Server.default.latency;
+
 		Routine{
-			this.run;
-			//wait for 'latency' before adding to managers so that everything is in sync.
+			this.addSource;
+			/* wait for 'latency' before adding to managers so that everything is in sync. */
 			if(latency.notNil) {latency.wait};
-			//Add everything at exactly the same time as the bundle
+			/* Add everything at exactly the same time as the bundle */
 			entity.add;
 			repManager.add(this);
 		}.play;
 	}
-	
+
+
 	color { if(entity.colliding, {^collisionColor },{^color})
 	}
 
-	update { arg entity, message; var transPosition; 
-		//first for the standard update from the superclass that gets the new 
-		//position and velocity paramaters
+	update { arg entity, message; 
+					 var transPosition; 
+
+		/*first for the standard update from the superclass that gets the new 
+			position and velocity paramaters*/
 		super.update(entity, message);
-		//here add any additional functionality
+		
+		/* here add any additional functionality */
 		switch (message) 
 		{\remove} {this.remove}
-		//set the speed of the NodeProxy *after* the integration to account for the lag (interpolation)
+
+		/* NOTE: set the speed of the NodeProxy *after* the integration to 
+		account for the lag (interpolation) */
 		{\preUpdate}
 		{
- 		audioFunc.set('speed', entity.velocity.norm);
-		//transform the position according to the camera position.
-		if (GameLoop.instance.cameraActive,
-			{transPosition = Camera2D.instance.applyTransformation(entity)+ entity.world.center},
-			{transPosition = position}
-		);
-		//set the syth with the new position values
-		audioFunc.set('x', transPosition[0]-20);
-		audioFunc.set('y', transPosition[1]-20);
+			audioFunc.set('speed', entity.velocity.norm);
+			/* transform the position according to the camera position. */
+			if (GameLoop.instance.cameraActive,
+				{transPosition = Camera2D.instance.applyTransformation(entity)+ entity.world.center},
+				{transPosition = position}
+			);
+			/* set the syth with the new position values */
+			audioFunc.set('x', transPosition[0]-20);
+			audioFunc.set('y', transPosition[1]-20);
 		};
 
 	}
@@ -117,41 +138,44 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 		Pen.strokeOval(rect)
 	}
 	
-	run {
+	addSource{
 			audioFunc.source = { arg dt;
-						   var x , y;
-						   var rad, azim, elev, in, speed;
-						    dt = entity.world.dt;
-						  	#x, y = Control.names(#[x, y]).kr([position[0], position[1]]);
-						   	x = Ramp.kr(x, dt); //GameLoop.instance.dt);
-						   	y = Ramp.kr(y, dt); //GameLoop.instance.dt);
-						   	//debugging
-						   	//x = MouseX.kr(-20, 20);
-						   	//y = MouseY.kr(-20, 20);
-							//To use the velocity
-							speed = Control.names(\speed).kr(entity.velocity.norm);
-							speed = Ramp.kr(speed, dt); //GameLoop.instance.dt);
-							//input
-							if(entity.input == nil,
-								{ // A default sound in case there is not input provided
-								in = Impulse.ar(speed.linlin(0,10, 5, rrand(50, 200.0)));
-								in = BPF.ar(in, rrand(2000, 18000.0)*rrand(0.3, 2.0), 0.4);
-								},
-								{in = entity.input.value(speed)}
-							);
-							azim = atan2(y,x);
-							rad = hypot(x,y);
-							elev = 0;
-							//get and use the relevant encoder
-							GameLoopDecoder.getEncoder.ar(
-								in, 
-								azim, 
-								rad, 
-								elev: elev, 
-								ampCenter: 0.9
-							);
-						};
+				var x , y;
+				var rad, azim, elev, in, speed;
+
+				/* needs knowledge of the world */
+				dt = entity.world.dt;
+
+				/* Ramp is used to interpolate between updates */
+				#x, y = Control.names(#[x, y]).kr([position[0], position[1]]);
+				x = Ramp.kr(x, dt);
+				y = Ramp.kr(y, dt);
+
+				speed = Control.names(\speed).kr(entity.velocity.norm);
+				speed = Ramp.kr(speed, dt); 
+
+				/* play default if input is not supplied */
+				if(entity.input == nil,
+					{
+						in = Impulse.ar(speed.linlin(0,10, 5, rrand(50, 200.0)));
+						in = BPF.ar(in, rrand(2000, 18000.0)*rrand(0.3, 2.0), 0.4);
+					},
+					{in = entity.input.value(speed)}
+				);
+
+				/* calculate azimuth and radius */
+				azim = atan2(y,x);
+				rad = hypot(x,y);
+				elev = 0;
+
+				/* get and use the relevant encoder */
+				GameLoopDecoder.getEncoder.ar(
+					in, 
+					azim, 
+					rad, 
+					elev: elev, 
+					ampCenter: 0.9
+				);
+			};
 	}
-
 }   
-
