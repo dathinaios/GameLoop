@@ -3,7 +3,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 					 var <>collisionFunc, <>arrivePosition, <>rotation;
 
 
-	*new{ arg world, position, radius, mass, velocity, controller, collisionType,
+	*new{ arg world, position, radius, mass, velocity, collisionType,
 			heading, side, maxSpeed, maxForce, maxTurnRate, collisionFunc;
 
 			if(instance.isNil, 
@@ -13,8 +13,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 							radius, 
 							mass
 				).velocity_(velocity)
-				.controller_(controller)
-		   		.collisionType_(collisionType)
+		   	.collisionType_(collisionType)
 				.heading_(heading)
 				.side_(side)
 				.maxSpeed_(maxSpeed)
@@ -33,6 +32,15 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 		heading = heading ?? {RealVector2D[0,0]};
 		instance = this;
 		arrivePosition = position;
+		force = { 
+							arg entity;
+							Arrive.calculate( 
+								entity, 
+								entity.arrivePosition,
+								deceleration: 2,
+								tweak: 0.3 
+							);
+						};
 		//the arbitrary rotation value...
 		rotation = 0;
 	}
@@ -111,6 +119,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 //*position_{ arg i;
 //	instance.position_(i);
 //}
+/*
 Camera2DController : Controller{
 	
 	getForce { arg entity;
@@ -125,7 +134,7 @@ Camera2DController : Controller{
 				tweak: 0.3 
 			);
 	}
-
+*/
 	/*
 	getForce { arg entity, amount = 9, rotAmount = 0.025pi; 
 			var theta, x,y, fwd, back, rotLeft, rotRight;
@@ -169,9 +178,9 @@ Camera2DController : Controller{
 				}
 			)
 	}
-	*/
 
 }
+*/
 
 Camera2DRepresentation : SimpleCircleRepresentation{
 

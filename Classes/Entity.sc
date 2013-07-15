@@ -43,7 +43,7 @@ Entity {
 }     
 
 MobileEntity : Entity { var <>velocity, <>collisionType;
-												var <>controller;
+												var <>force = 0;
 
 	*new{ arg world, position = RealVector2D[15,15], 
 	          radius = 1.0, mass = 1.0, velocity = RealVector2D[0,0], 
@@ -60,9 +60,6 @@ MobileEntity : Entity { var <>velocity, <>collisionType;
 		super.init;
 		velocity = velocity ?? {RealVector2D[0,0]};
 		collisionType  = collisionType ?? {\free};
-
-		//choose the right controller by adding "controller" to the base name of the class
-		controller = controller ?? {(this.class.asString++"Controller").asSymbol.asClass.new(this)};
 	}
 
 	integrateEuler{ arg force = 0;
@@ -76,7 +73,7 @@ MobileEntity : Entity { var <>velocity, <>collisionType;
 		/* calling update on the dependants ensure that we always get set
 		by the integration of the last cycle */
 		this.changed(\update);
-		this.integrateEuler(controller.getForce(this));
+		this.integrateEuler(force.value(this));
 		/* and here we update with the future value in case we want to 
 		use it for prediction as in the case of interpolation (lag) of sound 
 		units */

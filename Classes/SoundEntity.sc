@@ -8,7 +8,7 @@ SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 	*new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 1.0, 
 						velocity = RealVector2D[0, 0], collisionType = \free, heading, 
 						side, maxSpeed = 100, maxForce = 40, maxTurnRate = 2, input,
-						collisionFunc, forceFunc, release = 0.2;
+						collisionFunc, release = 0.2;
 		  ^super.new(world, 
 					 position, 
 					 radius, 
@@ -22,7 +22,6 @@ SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 		   .maxTurnRate_(maxTurnRate)
 		   .input_(input)
 		   .collisionFunc_(collisionFunc)
-		   .forceFunc_(forceFunc)
 		   .release_(release)	
 		   .init;
 	}
@@ -155,18 +154,4 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 	}
 
 }   
-
-SoundEntityController : Controller{ 
-
-	getForce { var forceFunc; 
-		//the variable antity is declared in the superclass Controller
-		forceFunc = entity.forceFunc;
-		// The steering is using the forceFunction supplied. Else the Entity remain static
-			if(forceFunc == nil,
-				{^0},
-				{^forceFunc.value(entity)}
-			);
-	}
-
-}
 

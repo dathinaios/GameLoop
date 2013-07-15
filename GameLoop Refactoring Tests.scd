@@ -16,20 +16,18 @@
 		position: RealVector2D[18, 22],
 		radius: 0.4,
 		maxSpeed: 10.0,
-		input: nil, //input can be anything. Velocity is passed as a viariable
-		forceFunc: {arg entity; Arrive.calculate(entity, RealVector2D[22, 22])}
+		input: nil //input can be anything. Velocity is passed as a viariable
 		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
 	);
 	//~entity.collisionType_(\mobile);
 	//~entity.last.activate;
 );
 
-~entity[0].forceFunc_({arg entity; Arrive.calculate(entity, RealVector2D[22, 25])});
-~entity[0].forceFunc_({arg entity; Arrive.calculate(entity, RealVector2D[16, 22])});
-~entity[0].forceFunc_({arg entity; Arrive.calculate(entity, RealVector2D[21, 21])});
-~entity[0].forceFunc_({arg entity; Arrive.calculate(entity, RealVector2D[19, 20.5])});
-// chase the entity at [1]
-~entity[0].forceFunc_({arg entity; Seek.calculate(entity, ~entity[1].position)});
+~entity.velocity = RealVector2D[0, 0]
+~entity.force = {arg entity; Arrive.calculate(entity, RealVector2D[22, 25])};
+~entity.force = {arg entity; Arrive.calculate(entity, RealVector2D[16, 22])};
+~entity.force = {arg entity; Arrive.calculate(entity, RealVector2D[21, 21])};
+~entity.force = {arg entity; Arrive.calculate(entity, RealVector2D[19, 20.5])};
 
 ~gameloop.resetCamera;
 //clear the entities
@@ -102,16 +100,15 @@ CmdPeriod.run
 				 LFPulse.ar(linlin(0,10, 5, rrand(10, 20.0)), mul: 0.5, add: 0.5);
 			in = BPF.ar(in, rrand(200, 18000.0)*MouseX.kr(0.3, 2, lag: rrand(2.0, 6.0)), 0.4);
 		},*/
-		forceFunc:
+		//collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}},
+		//collisionType: \mobile
+	).force_(
 		{ arg entity; var position, path;
 			position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
 			path = Path(Array.fill(rrand(2.0, 38.0),
 			{RealVector2D[position[0] + rrand(-33, 33.0), position[1] + rrand(-33.0, 33.0)]}),true);
 			PathFollowing.calculate(entity,path, 0.5);
-		},
-		//collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}},
-		//collisionType: \mobile
-	);
+		});
 );
 
 //some test (delete)
@@ -151,5 +148,5 @@ TGrains.ar(bufnum:0, numChannels)
 a = "test string"
 a.first()
 
-
-
+a = 2;
+RealVector2D[0.2,0].value(TGrains)
