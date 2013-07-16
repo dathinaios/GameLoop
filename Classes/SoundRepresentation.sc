@@ -34,7 +34,7 @@
 }
 */
 
-SoundEntityRepresentation : EntityRepresentation { 
+SoundRepresentation : EntityRepresentation { 
 
 	var input, collisionFunc, release = 0.2;
 	var color, collisionColor;
