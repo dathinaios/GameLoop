@@ -20,12 +20,12 @@ RepresentationManager{ var <repList;
 	}
 	*/ 
 
-	add{arg entity; 
-		repList.add(entity);
+	add{arg rep; 
+		repList.add(rep);
 	}
 
-	remove{ arg entity; 
-		repList.remove(entity);
+	remove{ arg rep; 
+		repList.remove(rep);
 	}
 	
 	clear{repList.clear;

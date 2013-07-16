@@ -23,8 +23,8 @@ EntityRepresentation { var repManager;
 				if (attached.isNil or:{attached.not},
 						{ attached = true; 
 							entity = ent; 
-							this.init; },
-						{ "You can only have one model per view (but many views per model)".error; }
+							this.init; }
+						/* { "You can only have one model per view (but many views per model)".error; } */
 				)
 			};
 
