@@ -33,8 +33,10 @@ Entity {
 	add{ world.add(this);
 	}
 	
-	remove { world.remove(this);
-			 this.changed(\remove);
+	remove { 
+		world.remove(this);
+		this.dependants.do{arg i; this.remove(i)};
+		this.changed(\remove);
 	}
 	
 	collision { arg entitiesArray; 

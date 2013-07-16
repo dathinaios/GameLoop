@@ -20,7 +20,7 @@
 );
 
 (
-	~rep = SoundEntityRepresentation(
+	~rep = SoundRepresentation(
 		~entity,
 		~gameloop.repManager,
 		input: nil //input can be anything. Velocity is passed as a viariable
@@ -29,6 +29,10 @@
 	//~entity.collisionType_(\mobile);
 	//~entity.last.activate;
 );
+
+//with entity everything is removed
+~entity.remove;
+~rep.remove;
 
 ~entity.velocity = RealVector2D[0, 0]
 ~entity.force = {arg entity; Arrive.calculate(entity, RealVector2D[22, 25])};
