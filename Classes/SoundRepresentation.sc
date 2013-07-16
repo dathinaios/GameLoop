@@ -5,21 +5,18 @@
 
 SoundRepresentation : EntityRepresentation { 
 
-	var input, collisionFunc, release = 0.2;
-	var color, collisionColor;
+	var >input, >collisionFunc, >release = 0.2, >color, >collisionColor;
 	var <penWidth = 1.5;
 	var <audioFunc, <audioFuncIndex;
 							
 	*new { arg  repManager, input, collisionFunc, 
 							release, color, collisionColor;  
-		^super.newCopyArgs(
-			repManager, 
-			input, 
-			collisionFunc, 
-			release, 
-			color, 
-			collisionColor
-		)
+		^super.new(repManager)
+					.input_(input) 
+					.collisionFunc_(collisionFunc) 
+					.release_(release) 
+					.color_(color) 
+					.collisionColor_(collisionColor);
 	}
 
 	init { 
@@ -61,7 +58,7 @@ SoundRepresentation : EntityRepresentation {
 			/* wait for 'latency' before adding to managers so that everything is in sync. */
 			if(latency.notNil) {latency.wait};
 			/* Add everything at exactly the same time as the bundle */
-			entity.add;
+			if (entity.active.not){entity.add};
 			repManager.add(this);
 		}.play;
 	}
@@ -152,6 +149,7 @@ SoundRepresentation : EntityRepresentation {
 			//remove the node from the summing bus
 			decoderBus.removeAt(audioFuncIndex);
 			repManager.remove(this);
+			attached = false;
 	 	}.play(TempoClock.default);
 	}
 

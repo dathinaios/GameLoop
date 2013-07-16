@@ -11,34 +11,58 @@
 );
 
 (
+
 	~entity = Vehicle(
 		~gameloop.world,
 		position: RealVector2D[18, 22],
 		radius: 0.4,
 		maxSpeed: 10.0
 	).init;
-);
 
-(
 	~rep = SoundRepresentation(
 		~gameloop.repManager,
-		input: nil //input can be anything. Velocity is passed as a viariable
+		input: nil //{WhiteNoise.ar(0.1)} 
 		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
 	);
 	//~entity.collisionType_(\mobile);
-	//~entity.last.activate;
+	~entity.attach(~rep);
+
+	{var path;
+	/* steering bahavior */
+	path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(3, 33.0), rrand(3.0, 33.0)]}), true);
+
+	~entity.force_(
+		{ arg entity;
+			PathFollowing.calculate(entity,path, 0.5);
+		});
+	}.value;
+
 );
 
-~entity.attach(~rep)
 //with entity everything is removed
 ~entity.remove;
 ~rep.remove;
+~gameloop.clearEntities;
 
 ~entity.velocity = RealVector2D[0, 0]
 ~entity.force = {arg entity; Arrive.calculate(entity, RealVector2D[22, 25])};
 ~entity.force = {arg entity; Arrive.calculate(entity, RealVector2D[16, 22])};
 ~entity.force = {arg entity; Arrive.calculate(entity, RealVector2D[21, 21])};
 ~entity.force = {arg entity; Arrive.calculate(entity, RealVector2D[19, 20.5])};
+
+(
+	var width, position, radius;
+	width = ~gameloop.world.center[0]*2;
+	position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
+	radius = 0.4;
+	~entity.force_(
+		{ arg entity; var position, path;
+			position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
+			path = Path(Array.fill(rrand(2.0, 38.0),
+			{RealVector2D[position[0] + rrand(-33, 33.0), position[1] + rrand(-33.0, 33.0)]}),true);
+			PathFollowing.calculate(entity,path, 0.5);
+		});
+)
 
 ~gameloop.resetCamera;
 //clear the entities

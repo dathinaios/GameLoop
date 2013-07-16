@@ -1,4 +1,5 @@
-EntityRepresentation { var repManager, <position, <radius, entity, attached = false;
+EntityRepresentation { var repManager;
+	var <position, <radius, entity, attached = false;
 
 	*new { arg repManager;  
 		^super.newCopyArgs(repManager)
@@ -16,7 +17,7 @@ EntityRepresentation { var repManager, <position, <radius, entity, attached = fa
 		{\update} 
 		{position = entity.position; radius = entity.radius}
 		{\remove} 
-		{this.remove; attached = false;}
+		{this.remove;}
 		{\attach} 
 			{
 				if (attached.isNil or:{attached.not},
@@ -37,6 +38,8 @@ EntityRepresentation { var repManager, <position, <radius, entity, attached = fa
 	} 
 
 	remove{
-		repManager.remove(this);
+		this.subclassResponsibility;
+		repManager.remove(this); 
+		attached = false;
 	}
 }   

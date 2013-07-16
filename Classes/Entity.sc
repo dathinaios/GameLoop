@@ -2,7 +2,7 @@
 Entity {
 		var <>world, <>position, <>radius, <>mass;
 		var <dt;
-		var <>colliding;
+		var <colliding, <active;
 
 	*new{ arg world, position = RealVector2D[15,15], radius = 1.0, mass = 1.0;
 		  ^super.newCopyArgs(world, 
@@ -21,6 +21,7 @@ Entity {
 			mass = mass ?? {1.0};
 			dt = world.dt;
 			colliding = false;
+			active = false;
 	}
 
 	attach{arg rep;
@@ -30,11 +31,13 @@ Entity {
 	
 	add{ 
 		world.add(this);
+		active = true;
 		this.changed(\add, this);
 	}
 	
 	remove { 
 		world.remove(this);
+		active = false;
 		this.changed(\remove);
 		this.releaseDependants;
 	}
