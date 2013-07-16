@@ -26,6 +26,10 @@ EntityManager {
 		mainRoutine.stop;
 	}
 
+	activeEntities{
+		^(freeList.size + mobList.size + staticList.size)
+	}
+
 	/* 
 	prepare{ arg entity;
 		this.changed([entity, \prepare]);

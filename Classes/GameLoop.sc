@@ -135,6 +135,7 @@ GameLoop{
 	gui{
 
 		var   h = 400, v = 400, seed, run = true,  spaceUnits, spaceUnits2, meterInPixels,  speakerRadInPixels;
+		var text;
 		mainView = Window("Visuals", Rect(0, 0, h, v), false);
 		mainView.view.background = Color.black;
 		mainView.onClose = { run = false }; // stop the thread on close
@@ -147,12 +148,19 @@ GameLoop{
 		speakerRadInPixels = 2 * meterInPixels;
 		mainView.drawFunc= {
 		Pen.width = 2;
-		
+
+		/* display some useful info */
+		text = StaticText(mainView, Rect(3, 3, 200, 20)).stringColor_(Color.grey);
 		//to draw the obstacles 
 		
-		Pen.use {   var divisions, subOrAdd;
-					var repList;
+		mainView.drawFunc = {
+
+		/* Pen.use { */
+			var divisions, subOrAdd;
+			var repList;
 			
+			text.string = "Ents: " + entManager.activeEntities.asString + 
+									  "- Reps: " + repManager.activeReps.asString;
 			repList = repManager.repList;
 			repList.size.do { 
 				arg index; 

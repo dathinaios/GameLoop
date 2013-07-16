@@ -12,12 +12,12 @@
 
 (
 
-	~entity = Vehicle(
-		~gameloop.world,
-		position: RealVector2D[18, 22],
-		radius: 0.4,
-		maxSpeed: 10.0
-	).init;
+	/* ~entity = Vehicle( */
+	/* 	~gameloop.world, */
+	/* 	position: RealVector2D[18, 22], */
+	/* 	radius: 0.4, */
+	/* 	maxSpeed: 10.0 */
+	/* ).init; */
 
 	~rep = SoundRepresentation(
 		~gameloop.repManager,
