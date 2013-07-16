@@ -4,7 +4,7 @@
 */
 
  
-SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>release;
+/* SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>release; 
 	
 	*new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 1.0, 
 						velocity = RealVector2D[0, 0], collisionType = \free, heading, 
@@ -32,6 +32,7 @@ SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>release;
 		release = release ?? {0.2};
 	}
 }
+*/
 
 SoundEntityRepresentation : EntityRepresentation { 
 

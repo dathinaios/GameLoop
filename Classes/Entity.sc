@@ -99,7 +99,7 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 		   .side_(side)
 		   .maxSpeed_(maxSpeed)
 		   .maxForce_(maxForce)
-		   .maxTurnRate_(maxTurnRate).init;
+		   .maxTurnRate_(maxTurnRate);
 	}
 	
 	init{
