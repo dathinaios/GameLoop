@@ -21,7 +21,6 @@
 
 (
 	~rep = SoundRepresentation(
-		~entity,
 		~gameloop.repManager,
 		input: nil //input can be anything. Velocity is passed as a viariable
 		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
@@ -30,6 +29,7 @@
 	//~entity.last.activate;
 );
 
+~entity.attach(~rep)
 //with entity everything is removed
 ~entity.remove;
 ~rep.remove;
@@ -158,5 +158,6 @@ TGrains.ar(bufnum:0, numChannels)
 a = "test string"
 a.first()
 
-a = 2;
-RealVector2D[0.2,0].value(TGrains)
+
+
+

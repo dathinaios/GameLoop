@@ -19,18 +19,23 @@ Entity {
 			position = position ?? {world.center};
 			radius = radius ?? {1.0}; 
 			mass = mass ?? {1.0};
-			world.postln;
 			dt = world.dt;
 			colliding = false;
 	}
+
+	attach{arg rep;
+		this.addDependant(rep);
+		this.changed(\attach, this)
+	}
 	
-	add{ world.add(this);
+	add{ 
+		world.add(this);
+		this.changed(\add, this);
 	}
 	
 	remove { 
 		world.remove(this);
 		this.changed(\remove);
-		//this.dependants.do{arg i; this.remove(i)};
 		this.releaseDependants;
 	}
 	

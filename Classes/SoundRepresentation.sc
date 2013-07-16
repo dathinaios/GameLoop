@@ -10,17 +10,16 @@ SoundRepresentation : EntityRepresentation {
 	var <penWidth = 1.5;
 	var <audioFunc, <audioFuncIndex;
 							
-	*new { arg  entity, repManager, input, collisionFunc, 
+	*new { arg  repManager, input, collisionFunc, 
 							release, color, collisionColor;  
 		^super.newCopyArgs(
-			entity, 
 			repManager, 
 			input, 
 			collisionFunc, 
 			release, 
 			color, 
 			collisionColor
-		).init
+		)
 	}
 
 	init { 
