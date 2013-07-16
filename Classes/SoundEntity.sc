@@ -3,12 +3,12 @@
 	This is a basic Mobile Unit with varying sound input
 */
 
-SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
+ 
+SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>release;
 	
 	*new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 1.0, 
 						velocity = RealVector2D[0, 0], collisionType = \free, heading, 
-						side, maxSpeed = 100, maxForce = 40, maxTurnRate = 2, input,
-						collisionFunc, release = 0.2;
+						side, maxSpeed = 100, maxForce = 40, maxTurnRate = 2, input, collisionFunc, release = 0.2;
 		  ^super.new(world, 
 					 position, 
 					 radius, 
@@ -31,26 +31,34 @@ SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>forceFunc, <>release;
 		collisionFunc = collisionFunc ?? {{}};
 		release = release ?? {0.2};
 	}
-
-	collision { arg entList; colliding = true;
-				collisionFunc.value(this, entList);
-	}
-
 }
 
-SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
-										 	 var <penWidth = 1.5;
-										 	 var <audioFunc, <audioFuncIndex;
+SoundEntityRepresentation : EntityRepresentation { 
+
+	var input, collisionFunc, release = 0.2;
+	var color, collisionColor;
+	var <penWidth = 1.5;
+	var <audioFunc, <audioFuncIndex;
 							
-	*new { arg  entity, repManager, color, collisionColor;  
-	^super.newCopyArgs(entity, repManager, color, collisionColor).init
+	*new { arg  entity, repManager, input, collisionFunc, 
+							release, color, collisionColor;  
+		^super.newCopyArgs(
+			entity, 
+			repManager, 
+			input, 
+			collisionFunc, 
+			release, 
+			color, 
+			collisionColor
+		).init
 	}
 
 	init { 
 
-		/* defaults */
-		position = entity.position;
-		radius = entity.radius;
+		super.init;
+		collisionFunc = collisionFunc ?? {{}};
+		release = release ?? {0.2};
+
 		color = color ?? {Color.green};
 		collisionColor = collisionColor ?? {Color.red};
 
@@ -60,6 +68,9 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 		/* make some sound */
 		this.play;
 
+	}
+
+	prepare{
 	}
 
 	initializeDecoder{
@@ -89,12 +100,52 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 		}.play;
 	}
 
+	addSource{
+			audioFunc.source = { arg dt;
+				var x , y;
+				var rad, azim, elev, in, speed;
+
+				/* needs knowledge of the world */
+				dt = entity.world.dt;
+
+				/* Ramp is used to interpolate between updates */
+				#x, y = Control.names(#[x, y]).kr([position[0], position[1]]);
+				x = Ramp.kr(x, dt);
+				y = Ramp.kr(y, dt);
+
+				speed = Control.names(\speed).kr(entity.velocity.norm);
+				speed = Ramp.kr(speed, dt); 
+
+				/* play default if input is not supplied */
+				if(input == nil,
+					{
+						in = Impulse.ar(speed.linlin(0,10, 5, rrand(50, 200.0)));
+						in = BPF.ar(in, rrand(2000, 18000.0)*rrand(0.3, 2.0), 0.4);
+					},
+					{in = input.value(speed)}
+				);
+
+				/* calculate azimuth and radius */
+				azim = atan2(y,x);
+				rad = hypot(x,y);
+				elev = 0;
+
+				/* get and use the relevant encoder */
+				GameLoopDecoder.getEncoder.ar(
+					in, 
+					azim, 
+					rad, 
+					elev: elev, 
+					ampCenter: 0.9
+				);
+			};
+	}
 
 	color { if(entity.colliding, {^collisionColor },{^color})
 	}
 
-	update { arg entity, message; 
-					 var transPosition; 
+	update {arg entity, message; /* entity is the changer */
+					var transPosition; 
 
 		/*first for the standard update from the superclass that gets the new 
 			position and velocity paramaters*/
@@ -117,13 +168,17 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 			/* set the syth with the new position values */
 			audioFunc.set('x', transPosition[0]-20);
 			audioFunc.set('y', transPosition[1]-20);
+		}
+
+		{\collision}{
+			/* message should be an entList */
+			collisionFunc.value(this, message);
 		};
 
 	}
 	
-	remove{var decoderBus, release;
+	remove{var decoderBus;
 		 decoderBus = GameLoopDecoder.decoderBus;
-		 release = entity.release;
 		 Routine{
 			//clear everything with given realease time
 			audioFunc.clear(release);
@@ -136,46 +191,5 @@ SoundEntityRepresentation : EntityRepresentation { var color, collisionColor;
 
 	draw{arg rect; 
 		Pen.strokeOval(rect)
-	}
-	
-	addSource{
-			audioFunc.source = { arg dt;
-				var x , y;
-				var rad, azim, elev, in, speed;
-
-				/* needs knowledge of the world */
-				dt = entity.world.dt;
-
-				/* Ramp is used to interpolate between updates */
-				#x, y = Control.names(#[x, y]).kr([position[0], position[1]]);
-				x = Ramp.kr(x, dt);
-				y = Ramp.kr(y, dt);
-
-				speed = Control.names(\speed).kr(entity.velocity.norm);
-				speed = Ramp.kr(speed, dt); 
-
-				/* play default if input is not supplied */
-				if(entity.input == nil,
-					{
-						in = Impulse.ar(speed.linlin(0,10, 5, rrand(50, 200.0)));
-						in = BPF.ar(in, rrand(2000, 18000.0)*rrand(0.3, 2.0), 0.4);
-					},
-					{in = entity.input.value(speed)}
-				);
-
-				/* calculate azimuth and radius */
-				azim = atan2(y,x);
-				rad = hypot(x,y);
-				elev = 0;
-
-				/* get and use the relevant encoder */
-				GameLoopDecoder.getEncoder.ar(
-					in, 
-					azim, 
-					rad, 
-					elev: elev, 
-					ampCenter: 0.9
-				);
-			};
 	}
 }   

@@ -19,6 +19,8 @@ Entity {
 			position = position ?? {world.center};
 			radius = radius ?? {1.0}; 
 			mass = mass ?? {1.0};
+			"asdfjklasdfjklasdfjklasdfjkl".postln;
+			world.postln;
 			dt = world.dt;
 			colliding = false;
 			this.prepare;
@@ -35,9 +37,9 @@ Entity {
 			 this.changed(\remove);
 	}
 	
-	//the message send once a collision is detected
 	collision { arg entitiesArray; 
-			this.subclassResponsibility(thisMethod);
+					colliding = true;
+					this.changed(\collision, entitiesArray);
 	}
 
 }     
@@ -97,7 +99,7 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 		   .side_(side)
 		   .maxSpeed_(maxSpeed)
 		   .maxForce_(maxForce)
-		   .maxTurnRate_(maxTurnRate);
+		   .maxTurnRate_(maxTurnRate).init;
 	}
 	
 	init{

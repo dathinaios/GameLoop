@@ -23,9 +23,12 @@ GameLoop{
 		instance = this;
 		entManager = EntityManager(SpatialHashing(sceneWidth, sceneHeight, cellSize));
 		repManager = RepresentationManager.new;
-		//add the representationManager as a dependant to the entManager
+
+		/* add entityManager dependant */
 		entManager.addDependant(repManager);
+
 		CmdPeriod.add({this.clear});
+
 		dimensions = [0, entManager.center[0]*2];
 		gridSize = 10;
 		cellSize = entManager.spatialIndex.cellSize;

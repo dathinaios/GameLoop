@@ -7,15 +7,22 @@
 	//Allow time for the decoder to be created....
 	//~gameloop = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
 	~gameloop = GameLoop(40, 40, 1).play(0.05);
-	~gameloop.addCamera;
+	//~gameloop.addCamera;
 );
 
 (
-	~entity = SoundEntity(
+	~entity = Vehicle(
 		~gameloop.world,
 		position: RealVector2D[18, 22],
 		radius: 0.4,
-		maxSpeed: 10.0,
+		maxSpeed: 10.0
+	);
+);
+
+(
+	~rep = SoundEntityRepresentation(
+		~entity,
+		~gameloop.repManager,
 		input: nil //input can be anything. Velocity is passed as a viariable
 		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
 	);
@@ -36,6 +43,7 @@
 ~gameloop.clear;
 ~gameloop.removeCamera;
 
+~gameloop.repManager.repList
 GameLoopDecoder.clear
 GameLoopDecoder.decoderBus.sources;
 GameLoopDecoder.decoderProxy.sources
@@ -55,7 +63,6 @@ GameLoop.instance.dt
 ~gameloop.cameraEntity.rotateLeft(0.1pi);
 ~gameloop.cameraEntity.rotateRight(0.1pi);
 ~gameloop.cameraEntity.reset;
-~gameloop.repList
 
 (
 r = Routine{ //test
@@ -73,7 +80,6 @@ r.stop
 ~gameloop.stop
 ~gameloop.play
 ~gameloop.world.freeList;
-~gameloop.mobList;
 ~gameloop.staticList;
 ~routiniaris.stop
 
