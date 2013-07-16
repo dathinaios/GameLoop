@@ -19,24 +19,19 @@ Entity {
 			position = position ?? {world.center};
 			radius = radius ?? {1.0}; 
 			mass = mass ?? {1.0};
-			"asdfjklasdfjklasdfjklasdfjkl".postln;
 			world.postln;
 			dt = world.dt;
 			colliding = false;
-			this.prepare;
 	}
 	
-	prepare{
-		world.prepare(this);
-	}
-
 	add{ world.add(this);
 	}
 	
 	remove { 
 		world.remove(this);
-		this.dependants.do{arg i; this.remove(i)};
 		this.changed(\remove);
+		//this.dependants.do{arg i; this.remove(i)};
+		this.releaseDependants;
 	}
 	
 	collision { arg entitiesArray; 

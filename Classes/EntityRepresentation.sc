@@ -16,8 +16,7 @@ EntityRepresentation { var entity, repManager, <position, <radius;
 
 		switch (message)//a typical use of a .changed notification (could be case for multiple)
 		{\update} {position = entity.position; radius = entity.radius}
-		{\prepare} {this.prepare};
-
+		{\remove} {this.remove};
 		/* 
 		in subclass you can use: 
 
@@ -29,7 +28,7 @@ EntityRepresentation { var entity, repManager, <position, <radius;
  		*/
 	} 
 
-	prepare{
-		this.subclassResponsibility;
+	remove{
+		repManager.remove(this);
 	}
 }   

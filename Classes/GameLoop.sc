@@ -25,7 +25,7 @@ GameLoop{
 		repManager = RepresentationManager.new;
 
 		/* add entityManager dependant */
-		entManager.addDependant(repManager);
+		//entManager.addDependant(repManager);
 
 		CmdPeriod.add({this.clear});
 

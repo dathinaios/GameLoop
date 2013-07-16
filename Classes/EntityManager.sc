@@ -26,9 +26,11 @@ EntityManager {
 		mainRoutine.stop;
 	}
 
+	/* 
 	prepare{ arg entity;
 		this.changed([entity, \prepare]);
-	}
+	} 
+	*/
 
 	/* EntityManager has three types of objects. Ones that dont collide,
 	ones that collide with everything and ones that collide but not 
@@ -39,7 +41,7 @@ EntityManager {
 		{\mobile} {mobList.add(entity); spatialIndex.register(entity)}
 		{\static} {staticList.add(entity); spatialIndex.register(entity)};
 		//notify dependants that an entity was added passing the entity
-		this.changed([entity, \add])
+		//this.changed([entity, \add])
 	}
 
 	remove{ arg entity; 
@@ -47,7 +49,7 @@ EntityManager {
 		{\free} {freeList.remove(entity)}
 		{\mobile} {mobList.remove(entity); spatialIndex.unregister(entity)}
 		{\static} {staticList.remove(entity); spatialIndex.unregister(entity)};
-		this.changed([entity, \remove]);
+		//this.changed([entity, \remove]);
 	}
 		
 	update{

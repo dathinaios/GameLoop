@@ -40,9 +40,6 @@ SoundRepresentation : EntityRepresentation {
 
 	}
 
-	prepare{
-	}
-
 	initializeDecoder{
 		var decoderBus;
 		audioFunc.clock = TempoClock.default;
@@ -123,7 +120,6 @@ SoundRepresentation : EntityRepresentation {
 		
 		/* here add any additional functionality */
 		switch (message) 
-		{\remove} {this.remove}
 
 		/* NOTE: set the speed of the NodeProxy *after* the integration to 
 		account for the lag (interpolation) */
