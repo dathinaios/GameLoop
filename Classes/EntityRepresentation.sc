@@ -12,8 +12,8 @@ EntityRepresentation { var repManager;
 	}
 
 	/* dependant notification from entity */
-	update { arg theChanger, message;
-		switch (message)
+	update { arg theChanged, message;
+		switch (message[0])
 		{\update} 
 		{position = entity.position; radius = entity.radius}
 		{\remove} 
@@ -22,14 +22,14 @@ EntityRepresentation { var repManager;
 		{
 			if (attached.isNil or:{attached.not},
 					{ attached = true; 
-						entity = theChanger; 
+						entity = theChanged; 
 						this.init; }
 					/* { "You can only have one model per view (but many views per model)".error; } */
 			)
 		}
 		{\detach}
 		{
-			if (attached, {attached = false; this.remove; });
+			if (attached and:{message[1] == this}, {attached = false; this.remove;});
 		};
 
 		/* 

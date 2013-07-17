@@ -24,11 +24,11 @@ Entity {
 
 	attach{arg rep;
 		this.addDependant(rep);
-		this.changed(\attach, this)
+		this.changed([\attach])
 	}
 
 	detach{arg rep;
-		this.changed(\detach);
+		this.changed([\detach, rep]);
 		this.removeDependant(rep);
 	}
 
@@ -39,19 +39,19 @@ Entity {
 	add{ 
 		world.add(this);
 		active = true;
-		this.changed(\add, this);
+		this.changed([\add]);
 	}
 	
 	remove { 
 		world.remove(this);
 		active = false;
-		this.changed(\remove);
+		this.changed([\remove]);
 		this.releaseDependants;
 	}
 	
 	collision { arg entitiesArray; 
 					colliding = true;
-					this.changed(\collision, entitiesArray);
+					this.changed([\collision, entitiesArray]);
 	}
 
 	dt{
@@ -90,12 +90,12 @@ MobileEntity : Entity { var <>velocity, <>collisionType;
 	update {
 		/* calling update on the dependants ensure that we always get set
 		by the integration of the last cycle */
-		this.changed(\update);
+		this.changed([\update]);
 		this.integrateEuler(force.value(this));
 		/* and here we update with the future value in case we want to 
 		use it for prediction as in the case of interpolation (lag) of sound 
 		units */
-		this.changed(\preUpdate);
+		this.changed([\preUpdate]);
 	}
 
 }

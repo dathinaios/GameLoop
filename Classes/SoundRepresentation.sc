@@ -104,15 +104,15 @@ SoundRepresentation : EntityRepresentation {
 	color { if(this.colliding, {^collisionColor },{^color})
 	}
 
-	update {arg entity, message; /* entity is the changer */
+	update {arg theChanged, message; /* entity is the changer */
 					var transPosition; 
 
 		/*first for the standard update from the superclass that gets the new 
 			position and velocity paramaters*/
-		super.update(entity, message);
+		super.update(theChanged, message);
 		
 		/* here add any additional functionality */
-		switch (message) 
+		switch (message[0]) 
 
 		/* NOTE: set the speed of the NodeProxy *after* the integration to 
 		account for the lag (interpolation) */
@@ -121,7 +121,7 @@ SoundRepresentation : EntityRepresentation {
 			encoderProxy.set('speed', this.velocity.norm);
 			/* transform the position according to the camera position. */
 			if (GameLoop.instance.cameraActive,
-				{transPosition = Camera2D.instance.applyTransformation(entity)+ entity.world.center},
+				{transPosition = Camera2D.instance.applyTransformation(theChanged)+theChanged.world.center},
 				{transPosition = position}
 			);
 			/* set the syth with the new position values */
