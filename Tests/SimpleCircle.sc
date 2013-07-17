@@ -1,79 +1,75 @@
 
+/*
+	This is a basic Mobile Unit with varying sound input
+*/
 
-SimpleCircle : Vehicle { var  >collisionFunc, >forceFunc;
-	
+SimpleCircleRep : EntityRepresentation { 
 
-	*new{ arg world, position, radius, mass, velocity, controller,
-			  heading, side, maxSpeed, maxForce, maxTurnRate, collisionFunc, forceFunc;
-		  ^super.new(world, 
-					 position, 
-					 radius, 
-					 mass
-		  ).velocity_(velocity)
-		   .controller_(controller)
-		   .heading_(heading)
-		   .side_(side)
-		   .maxSpeed_(maxSpeed)
-		   .maxForce_(maxForce)
-		   .maxTurnRate_(maxTurnRate)
-		   .collisionFunc_(collisionFunc)
-		   .forceFunc_(forceFunc)
-		   .init;		
-	}
-
-	init{
-		//"simplecircle init".postln;
-		super.init;
-		collisionFunc = collisionFunc ?? {{}};
-	}
-
-	collision { arg entList; colliding = true;
-				collisionFunc.value(entList, this);
-	}
-}
-
-SimpleCircleRepresentation : EntityRepresentation { var color, collisionColor;
-										 var <penWidth = 1.5;
-								   
+	var >collisionFunc, >color, >collisionColor;
+	var <penWidth = 1.5;
 							
-	*new { arg  entity, repManager, color, collisionColor;  
-	^super.newCopyArgs(entity, repManager, color, collisionColor).init
+	*new { arg  repManager, collisionFunc, 
+							color, collisionColor;  
+		^super.new(repManager)
+					.collisionFunc_(collisionFunc) 
+					.color_(color) 
+					.collisionColor_(collisionColor);
 	}
 
 	init { 
-		position = entity.position;
-		radius = entity.radius;
+
+		super.init;
+		collisionFunc = collisionFunc ?? {{}};
+
 		color = color ?? {Color.green};
 		collisionColor = collisionColor ?? {Color.red};
-	}
-	
-	color { if(entity.colliding, {^collisionColor },{^color})
+		this.play;
+
 	}
 
-	update { arg entity, message; 
-		//first fo the standard update from the superclass
-		super.update(entity, message);
-		//here add anyadditional functionality
-		//message.debug("update method in simple circle - message");
-		/*
-		switch (message) 
-		{\remove} {"removal update".postln; this.remove};
-		*/
+	play {
+			if (entity.active.not){entity.add};
+			repManager.add(this);
+	}
+
+	color { if(this.colliding, {^collisionColor },{^color})
+	}
+
+	update {arg theChanged, message; /* entity is the changer */
+					var transPosition; 
+
+		/*first for the standard update from the superclass that gets the new 
+			position and velocity paramaters*/
+		super.update(theChanged, message);
+		
+		/* here add any additional functionality */
+		switch (message[0]) 
+
+		/* NOTE: set the speed of the NodeProxy *after* the integration to 
+		account for the lag (interpolation) */
+		{\preUpdate}
+		{
+			/* transform the position according to the camera position. */
+			if (GameLoop.instance.cameraActive,
+				{transPosition = Camera2D.instance.applyTransformation(theChanged)+theChanged.world.center},
+				{transPosition = position}
+			);
+		}
+
+		{\collision}{
+			/* message should be a list with the colliding with entities*/
+			collisionFunc.value(this, message);
+		};
+
 	}
 	
-	draw{arg rect; Pen.strokeOval(rect)}
-	
-	setFR{}
-	
+	remove{
+			repManager.remove(this);
+			attached = false;
+	}
+
+	draw{arg rect; 
+		Pen.strokeOval(rect)
+	}
 }   
 
-SimpleCircleController : Controller{
-
-	getForce { arg entity; var path, position, width;
-			width =entity.world.center[0]*2;
-			position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
-			path = Path(Array.fill(rrand(8.0, 20.0),
-			{RealVector2D[position[0] + rrand(-33, 33.0), position[1] + rrand(-33.0, 33.0)]}),true);
-			^PathFollowing.calculate(entity,path, 0.5);
-	}
-}
