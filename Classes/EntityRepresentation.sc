@@ -22,7 +22,7 @@ EntityRepresentation { var repManager;
 		{
 			if (attached.isNil or:{attached.not},
 					{ attached = true; 
-						entity = theChanged; 
+						this.setEntity(theChanged);
 						this.init; }
 					/* { "You can only have one model per view (but many views per model)".error; } */
 			)
@@ -45,6 +45,10 @@ EntityRepresentation { var repManager;
 		this.subclassResponsibility;
 		repManager.remove(this); 
 		attached = false;
+	}
+
+	setEntity{ arg item;
+		entity = item;
 	}
 
 	velocity{
