@@ -7,7 +7,7 @@ SoundRepresentation : EntityRepresentation {
 
 	var >input, >collisionFunc, >release = 0.2, >color, >collisionColor;
 	var <penWidth = 1.5;
-	var <audioFunc, <audioFuncIndex;
+	var encoder, <encoderProxy, decoderBus, <encoderProxyIndex;
 							
 	*new { arg  repManager, input, collisionFunc, 
 							release, color, collisionColor;  
@@ -37,22 +37,20 @@ SoundRepresentation : EntityRepresentation {
 	}
 
 	initializeDecoder{
-		var decoderBus;
-		audioFunc.clock = TempoClock.default;
+		encoder = GameLoopDecoder.getEncoder;
 		/* get the right encoder from the GameLoopDecoder class */
-		audioFunc = GameLoopDecoder.getEncoderProxy;
+		encoderProxy = GameLoopDecoder.getEncoderProxy;
+		encoderProxy.clock = TempoClock.default;
 		/* plug the proxy to the decoder summing bus */
 		decoderBus = GameLoopDecoder.decoderBus;
 		/* Always put the new Node in an extra slot of the Summing nodeRpoxy */
-		audioFuncIndex = decoderBus.sources.size - 1;
-		decoderBus.put(audioFuncIndex, audioFunc);
+		encoderProxyIndex = decoderBus.sources.size - 1;
+		decoderBus.put(encoderProxyIndex, encoderProxy);
 	}
 	
 	play {
 		var latency;
-
 		latency = Server.default.latency;
-
 		Routine{
 			this.addSource;
 			/* wait for 'latency' before adding to managers so that everything is in sync. */
@@ -64,7 +62,7 @@ SoundRepresentation : EntityRepresentation {
 	}
 
 	addSource{
-			audioFunc.source = { arg dt;
+			encoderProxy.source = { arg dt;
 				var x , y;
 				var rad, azim, elev, in, speed;
 
@@ -94,7 +92,7 @@ SoundRepresentation : EntityRepresentation {
 				elev = 0;
 
 				/* get and use the relevant encoder */
-				GameLoopDecoder.getEncoder.ar(
+				encoder.ar(
 					in, 
 					azim, 
 					rad, 
@@ -121,15 +119,15 @@ SoundRepresentation : EntityRepresentation {
 		account for the lag (interpolation) */
 		{\preUpdate}
 		{
-			audioFunc.set('speed', entity.velocity.norm);
+			encoderProxy.set('speed', entity.velocity.norm);
 			/* transform the position according to the camera position. */
 			if (GameLoop.instance.cameraActive,
 				{transPosition = Camera2D.instance.applyTransformation(entity)+ entity.world.center},
 				{transPosition = position}
 			);
 			/* set the syth with the new position values */
-			audioFunc.set('x', transPosition[0]-20);
-			audioFunc.set('y', transPosition[1]-20);
+			encoderProxy.set('x', transPosition[0]-20);
+			encoderProxy.set('y', transPosition[1]-20);
 		}
 
 		{\collision}{
@@ -139,15 +137,14 @@ SoundRepresentation : EntityRepresentation {
 
 	}
 	
-	remove{var decoderBus;
-		 decoderBus = GameLoopDecoder.decoderBus;
+	remove{
 		 Routine{
 			//clear everything with given realease time
-			audioFunc.clear(release);
+			encoderProxy.clear(release);
 			//wait for the release to finish
 			release.wait;
 			//remove the node from the summing bus
-			decoderBus.removeAt(audioFuncIndex);
+			decoderBus.removeAt(encoderProxyIndex);
 			repManager.remove(this);
 			attached = false;
 	 	}.play(TempoClock.default);
