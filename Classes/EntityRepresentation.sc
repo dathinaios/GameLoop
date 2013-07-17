@@ -19,14 +19,18 @@ EntityRepresentation { var repManager;
 		{\remove} 
 		{this.remove;}
 		{\attach} 
-			{
-				if (attached.isNil or:{attached.not},
-						{ attached = true; 
-							entity = ent; 
-							this.init; }
-						/* { "You can only have one model per view (but many views per model)".error; } */
-				)
-			};
+		{
+			if (attached.isNil or:{attached.not},
+					{ attached = true; 
+						entity = ent; 
+						this.init; }
+					/* { "You can only have one model per view (but many views per model)".error; } */
+			)
+		}
+		{\detach}
+		{
+			if (attached, {attached = false; this.remove; });
+		};
 
 		/* 
 		in subclass you can use: 

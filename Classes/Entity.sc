@@ -28,6 +28,15 @@ Entity {
 		this.addDependant(rep);
 		this.changed(\attach, this)
 	}
+
+	detach{arg rep;
+		this.changed(\detach);
+		this.removeDependant(rep);
+	}
+
+	detachAll{
+		this.dependants.do{arg i; this.detach(i)};
+	}
 	
 	add{ 
 		world.add(this);

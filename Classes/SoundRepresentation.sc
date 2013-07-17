@@ -131,7 +131,7 @@ SoundRepresentation : EntityRepresentation {
 		}
 
 		{\collision}{
-			/* message should be an entList */
+			/* message should be a list with the colliding with entities*/
 			collisionFunc.value(this, message);
 		};
 
