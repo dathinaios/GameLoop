@@ -51,14 +51,6 @@ EntityRepresentation { var repManager;
 		entity = item;
 	}
 
-	velocity{
-		^entity.velocity;
-	}
-
-	colliding{
-		^entity.colliding;
-	}
-
 	dt{
 		^entity.dt;
 	}

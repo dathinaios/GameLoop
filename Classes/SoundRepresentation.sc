@@ -73,7 +73,7 @@ SoundRepresentation : EntityRepresentation {
 				x = Ramp.kr(x, dt);
 				y = Ramp.kr(y, dt);
 
-				speed = Control.names(\speed).kr(this.velocity.norm);
+				speed = Control.names(\speed).kr(entity.velocity.norm);
 				speed = Ramp.kr(speed, dt); 
 
 				/* play default if input is not supplied */
@@ -101,7 +101,7 @@ SoundRepresentation : EntityRepresentation {
 			};
 	}
 
-	color { if(this.colliding, {^collisionColor },{^color})
+	color { if(entity.colliding, {^collisionColor },{^color})
 	}
 
 	update {arg theChanged, message; /* entity is the changer */
@@ -118,7 +118,7 @@ SoundRepresentation : EntityRepresentation {
 		account for the lag (interpolation) */
 		{\preUpdate}
 		{
-			encoderProxy.set('speed', this.velocity.norm);
+			encoderProxy.set('speed',entity.velocity.norm);
 			/* transform the position according to the camera position. */
 			if (GameLoop.instance.cameraActive,
 				{transPosition = Camera2D.instance.applyTransformation(theChanged)+theChanged.world.center},
