@@ -12,7 +12,7 @@ EntityRepresentation { var repManager;
 	}
 
 	/* dependant notification from entity */
-	update { arg ent, message;
+	update { arg theChanger, message;
 		switch (message)
 		{\update} 
 		{position = entity.position; radius = entity.radius}
@@ -22,7 +22,7 @@ EntityRepresentation { var repManager;
 		{
 			if (attached.isNil or:{attached.not},
 					{ attached = true; 
-						entity = ent; 
+						entity = theChanger; 
 						this.init; }
 					/* { "You can only have one model per view (but many views per model)".error; } */
 			)
@@ -45,5 +45,17 @@ EntityRepresentation { var repManager;
 		this.subclassResponsibility;
 		repManager.remove(this); 
 		attached = false;
+	}
+
+	velocity{
+		^entity.velocity;
+	}
+
+	colliding{
+		^entity.colliding;
+	}
+
+	dt{
+		^entity.dt;
 	}
 }   

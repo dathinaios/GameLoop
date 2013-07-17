@@ -1,7 +1,6 @@
 
 Entity {
 		var <>world, <>position, <>radius, <>mass;
-		var <dt;
 		var <colliding, <active;
 
 	*new{ arg world, position = RealVector2D[15,15], radius = 1.0, mass = 1.0;
@@ -19,7 +18,6 @@ Entity {
 			position = position ?? {world.center};
 			radius = radius ?? {1.0}; 
 			mass = mass ?? {1.0};
-			dt = world.dt;
 			colliding = false;
 			active = false;
 	}
@@ -56,6 +54,10 @@ Entity {
 					this.changed(\collision, entitiesArray);
 	}
 
+	dt{
+		^world.dt;
+	}
+
 }     
 
 MobileEntity : Entity { var <>velocity, <>collisionType;
@@ -79,8 +81,8 @@ MobileEntity : Entity { var <>velocity, <>collisionType;
 	}
 
 	integrateEuler{ arg force = 0;
-		velocity = velocity + ((force/mass) * dt);
-		position = position + (velocity *dt);
+		velocity = velocity + ((force/mass) * this.dt);
+		position = position + (velocity *this.dt);
 	}
 	
 	//implement update in subclass if needed
@@ -124,9 +126,9 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 	}
 
 	integrateEuler{ arg force = 0; 
-		velocity = velocity + ((force/mass) * dt);
+		velocity = velocity + ((force/mass) * this.dt);
 		velocity = velocity.limit(maxSpeed);
-		position = position + (velocity * dt);
+		position = position + (velocity * this.dt);
 		// update the heading and side (only if velocity is greater than *from AI by example book*)
 		if (velocity.magSq > 0.00000001)
 			{
