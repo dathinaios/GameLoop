@@ -1,7 +1,7 @@
 
 Entity {
 		var <>world, <>position, <>radius, <>mass;
-		var <colliding, <active;
+		var <>colliding, <active;
 
 	*new{ arg world, position = RealVector2D[15,15], radius = 1.0, mass = 1.0;
 		  ^super.newCopyArgs(world, 

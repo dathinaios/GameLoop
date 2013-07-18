@@ -9,9 +9,9 @@ SoundRepresentation : EntityRepresentation {
 	var <penWidth = 1.5;
 	var encoderClass, <encoderProxy, summingProxy, <encoderProxyIndex;
 							
-	*new { arg  repManager, input, 
+	*new { arg  repManager, collisionFunc, input, 
 							release, color, collisionColor;  
-		^super.new(repManager)
+		^super.new(repManager, collisionFunc)
 					.input_(input) 
 					.release_(release) 
 					.color_(color) 
@@ -129,10 +129,6 @@ SoundRepresentation : EntityRepresentation {
 		encoderProxy.set('y', transPosition[1]-20);
 	}
 
-	collision{ arg message;
-		/* message should have a list at [1] with the colliding with entities*/
-		collisionFunc.value(this, message[1]);
-	}
 
 	
 }   

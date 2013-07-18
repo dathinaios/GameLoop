@@ -1,4 +1,4 @@
-EntityRepresentation { var repManager, >collisionFunc;
+EntityRepresentation { var repManager, <>collisionFunc;
 	var <position, <radius, <speed, entity, attached = false;
 
 	*new { arg repManager, collisionFunc;  
@@ -80,6 +80,11 @@ EntityRepresentation { var repManager, >collisionFunc;
 		this.subclassResponsibility;
 		repManager.remove(this); 
 		attached = false;
+	}
+
+	collision{ arg message;
+		/* message should have a list at [1] with the colliding with entities*/
+		collisionFunc.value(entity, message[1]);
 	}
 
 }   
