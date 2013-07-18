@@ -5,24 +5,21 @@
 
 SoundRepresentation : EntityRepresentation { 
 
-	var >input, >collisionFunc, >release = 0.2, >color, >collisionColor;
+	var >input, >release = 0.2, >color, >collisionColor;
 	var <penWidth = 1.5;
 	var encoderClass, <encoderProxy, summingProxy, <encoderProxyIndex;
 							
-	*new { arg  repManager, input, collisionFunc, 
+	*new { arg  repManager, input, 
 							release, color, collisionColor;  
 		^super.new(repManager)
 					.input_(input) 
-					.collisionFunc_(collisionFunc) 
 					.release_(release) 
 					.color_(color) 
 					.collisionColor_(collisionColor);
 	}
 
 	init { 
-
 		super.init;
-		collisionFunc = collisionFunc ?? {{}};
 		release = release ?? {0.2};
 
 		color = color ?? {Color.green};
@@ -125,36 +122,17 @@ SoundRepresentation : EntityRepresentation {
 	color { if(entity.colliding, {^collisionColor },{^color})
 	}
 
-	update {arg theChanged, message; /* entity is the changer */
-					var transPosition; 
-
-		/*first for the standard update from the superclass that gets the new 
-			position and velocity paramaters*/
-		super.update(theChanged, message);
-		
-		/* here add any additional functionality */
-		switch (message[0]) 
-
-		/* NOTE: set the speed of the NodeProxy *after* the integration to 
-		account for the lag (interpolation) */
-		{\preUpdate}
-		{
-			encoderProxy.set('speed',entity.velocity.norm);
-			/* transform the position according to the camera position. */
-			if (false, //GameLoop.instance.cameraActive,
-				{transPosition = Camera2D.instance.applyTransformation(theChanged)+theChanged.world.center},
-				{transPosition = position}
-			);
-			/* set the syth with the new position values */
-			encoderProxy.set('x', transPosition[0]-20);
-			encoderProxy.set('y', transPosition[1]-20);
-		}
-
-		{\collision}{
-			/* message should be a list with the colliding with entities*/
-			collisionFunc.value(this, message);
-		};
-
+	preUpdate{ arg theChanged, transPosition;
+		/* set the syth with the new position values */
+		encoderProxy.set('speed',entity.velocity.norm);
+		encoderProxy.set('x', transPosition[0]-20);
+		encoderProxy.set('y', transPosition[1]-20);
 	}
+
+	collision{ arg message;
+		/* message should have a list at [1] with the colliding with entities*/
+		collisionFunc.value(this, message[1]);
+	}
+
 	
 }   
