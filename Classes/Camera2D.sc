@@ -1,47 +1,32 @@
 
 Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
-					 var <>collisionFunc, <>arrivePosition, <>rotation;
+										 var <>arrivePosition, <>rotation;
 
-
-	*new{ arg world, position, radius, mass, velocity, collisionType,
-			heading, side, maxSpeed, maxForce, maxTurnRate, collisionFunc;
+	*new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 1.0, 
+				velocity = RealVector2D[0, 0], collisionType = \free, heading, 
+				side, maxSpeed = 100, maxForce = 40, maxTurnRate = 2;
 
 			if(instance.isNil, 
 				{
-				^super.new(world, 
-							position, 
-							radius, 
-							mass
-				).velocity_(velocity)
-		   	.collisionType_(collisionType)
-				.heading_(heading)
-				.side_(side)
-				.maxSpeed_(maxSpeed)
-				.maxForce_(maxForce)
-				.maxTurnRate_(maxTurnRate)
-				.collisionFunc_(collisionFunc)
-				.init;		
+					^super.new(world, 
+						position, 
+						radius, 
+						mass
+					).velocity_(velocity)
+					.collisionType_(collisionType)
+					.heading_(heading)
+					.side_(side)
+					.maxSpeed_(maxSpeed)
+					.maxForce_(maxForce)
+					.maxTurnRate_(maxTurnRate);
 				},
 				{"There is already an active instance of Camera2D".error;}
 			);		
 	}
 
 	init{
-		//"simplecircle init".postln;
 		super.init;
-		heading = heading ?? {RealVector2D[0,0]};
 		instance = this;
-		arrivePosition = position;
-		force = { 
-							arg entity;
-							Arrive.calculate( 
-								entity, 
-								entity.arrivePosition,
-								deceleration: 2,
-								tweak: 0.3 
-							);
-						};
-		//the arbitrary rotation value...
 		rotation = 0;
 	}
 
@@ -105,122 +90,14 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 
 }
 
-//moveLeft{arg amount = 0.23; 
-//	position = position - RealVector2D[amount, 0]
-//}
-//*applyTransformation{ arg ent;
-//	^instance.applyTransformation(ent);
-//}
-//
-//*position{
-//	^instance.position
-//}
-//
-//*position_{ arg i;
-//	instance.position_(i);
-//}
-/*
-Camera2DController : Controller{
-	
-	getForce { arg entity;
-		//I could use an arrive behavior and change the 
-		//position according to the move forward etc.
-			//entity.position.debug("position");
-			//^RealVector2D[0,0];
-			^Arrive.calculate( 
-				entity, 
-				entity.arrivePosition,
-				deceleration: 2,
-				tweak: 0.3 
-			);
+
+Camera2DRepresentation : SimpleCircleRep{
+
+	draw{arg rect; 
+		Pen.strokeRect(rect)
 	}
-*/
-	/*
-	getForce { arg entity, amount = 9, rotAmount = 0.025pi; 
-			var theta, x,y, fwd, back, rotLeft, rotRight;
-			fwd = Camera2D.fwd;
-			back = Camera2D.back;
-			rotLeft = Camera2D.rotLeft;
-			rotRight = Camera2D.rotRight;
-			if(fwd || back || rotLeft || rotRight,
-				{
-				  case
-					{fwd}
-					{ 	
-						Camera2D.fwd_(false);
-						theta = heading;
-						y = theta.cos;
-						x = theta.sin;
-						^(entity.velocity + (amount *RealVector2D[x, y].normalize));
-					}
-					{back}
-					{ 	
-						Camera2D.back_(false);
-						theta = heading;
-						y = theta.cos;
-						x = theta.sin;
-						^(entity.velocity - (amount *RealVector2D[x, y].normalize));
-					}
-					{rotLeft}
-					{ 	Camera2D.rotLeft_(false);
-						heading = heading - rotAmount;
-						^RealVector2D[0,0]
-					}
-					{rotRight}
-					{ 	Camera2D.rotRight_(false);
-						heading = heading + rotAmount;
-						^RealVector2D[0,0]
-					};
-				},
-				{
-					entity.velocity = entity.velocity * 0.5;
-					^RealVector2D[0,0]
-				}
-			)
+
+	color { ^Color.white; 
 	}
 
 }
-*/
-
-/*
-Camera2DRepresentation : SimpleCircleRepresentation{
-
-	init { 
-		position = entity.position;
-		radius = entity.radius;
-		color = color ?? {Color.white};
-		collisionColor = collisionColor ?? {Color.red};
-		entity.add;
-		repManager.add(this);
-	}
-
-	draw{arg rect; Pen.strokeRect(rect)}
-
-}
-
-/*
-*initClass{
-	//initialise the values for the keyboard hack
-	fwd = false;
-	back = false;
-	rotLeft = false;
-	rotRight = false;
-	//make the menus with the shortcuts for the keyboard hack
-	if(GUI.current.asSymbol == 'CocoaGUI',	
-		{
-		MenuItem.add(["Camera2D motion", "frw"],
-			{Camera2D.fwd_(true)})
-			.setShortCut ("i", true);
-		MenuItem.add(["Camera2D motion", "back"],
-			{Camera2D.back_(true)})
-			.setShortCut (",", true);
-		MenuItem.add(["Camera2D motion", "left"],
-			{Camera2D.rotLeft_(true)})
-			.setShortCut ("j", true);
-		MenuItem.add(["Camera2D motion", "right"],
-			{Camera2D.rotRight_(true)})
-			.setShortCut ("l", true);
-	});
-
-}
-*/
