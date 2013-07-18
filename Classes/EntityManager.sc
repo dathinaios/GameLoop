@@ -1,9 +1,8 @@
 
-
 EntityManager {
 			 var <spatialIndex;
 			 var <freeList, <mobList, <staticList;
-			 var <>dt, <mainRoutine;
+			 var <>dt;
 			 var <sceneWidth, <sceneHeight, <repManager;
 			 var <currentCollisionList;
 
@@ -22,12 +21,21 @@ EntityManager {
 		sceneHeight = spatialIndex.sceneHeight;
 	}
 
-	stop{
-		mainRoutine.stop;
-	}
-
 	activeEntities{
 		^(freeList.size + mobList.size + staticList.size)
+	}
+
+	center{
+		^RealVector2D[sceneWidth * 0.5, sceneHeight*0.5];
+	}
+
+	doAll{
+		//First let's resolve all the collisions
+		this.collisionResolution;
+		this.refreshIndex1; //unregisterAll
+		this.update; 
+		this.refreshIndex2; //reregisterAll
+		this.collisionCheck; 
 	}
 
 	/* EntityManager has three types of objects. Ones that dont collide,
@@ -119,6 +127,7 @@ EntityManager {
 		};
 		
 	}
+
 	circlesCollide{ arg cA, cB; //circleA circleB
 				  var r1, r2, dx, dy;
 				  var a;
@@ -145,8 +154,5 @@ EntityManager {
 		currentCollisionList.clear;
 	}
 	
-	center{
-		^RealVector2D[sceneWidth * 0.5, sceneHeight*0.5];
-	}
 }
 
