@@ -1,14 +1,13 @@
 EntityRepresentation { var repManager, >collisionFunc;
-	var <position, <radius, entity, attached = false;
+	var <position, <radius, <speed, entity, attached = false;
 
 	*new { arg repManager, collisionFunc;  
 		^super.newCopyArgs(repManager, collisionFunc)
 	} 
 
 	init{ var latency;
-		/* defaults */
-		position = entity.position;
-		radius = entity.radius;
+		/* initialize data */
+		this.getData;
 		collisionFunc = collisionFunc ?? {{}};
 	}
 
@@ -21,7 +20,7 @@ EntityRepresentation { var repManager, >collisionFunc;
 		  this.preUpdate(theChanged, transPosition);
 		}
 		{\update} 
-		{position = entity.position; radius = entity.radius}
+		{this.getData}
 		{\attach} 
 		{this.attach(theChanged) }
 		{\remove} 
@@ -55,8 +54,22 @@ EntityRepresentation { var repManager, >collisionFunc;
 		this.subclassResponsibility;
 	}
 
+	getData{
+		position = entity.position;
+		radius = entity.radius;
+		speed = entity.velocity.norm;
+	}
+
+	addEntity{
+		if (entity.active.not){entity.add};
+	}
+
 	storeEntity{ arg item;
 		entity = item;
+	}
+
+	colliding{
+		^entity.colliding;
 	}
 
 	dt{

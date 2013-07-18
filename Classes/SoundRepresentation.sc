@@ -74,7 +74,7 @@ SoundRepresentation : EntityRepresentation {
 			/* wait for 'latency' before adding to managers so that everything is in sync. */
 			if(latency.notNil) {latency.wait};
 			/* Add everything at exactly the same time as the bundle */
-			if (entity.active.not){entity.add};
+			this.addEntity;
 			repManager.add(this);
 		}.play;
 	}
@@ -82,7 +82,7 @@ SoundRepresentation : EntityRepresentation {
 	addSource{
 			encoderProxy.source = { arg dt;
 				var x , y;
-				var rad, azim, elev, in, speed;
+				var rad, azim, elev, in, speedValue;
 
 				dt = this.dt;
 
@@ -91,16 +91,16 @@ SoundRepresentation : EntityRepresentation {
 				x = Ramp.kr(x, dt);
 				y = Ramp.kr(y, dt);
 
-				speed = Control.names(\speed).kr(entity.velocity.norm);
-				speed = Ramp.kr(speed, dt); 
+				speedValue = Control.names(\speed).kr(speed);
+				speedValue = Ramp.kr(speedValue, dt); 
 
 				/* play default if input is not supplied */
 				if(input == nil,
 					{
-						in = Impulse.ar(speed.linlin(0,10, 5, rrand(50, 200.0)));
+						in = Impulse.ar(speedValue.linlin(0,10, 5, rrand(50, 200.0)));
 						in = BPF.ar(in, rrand(2000, 18000.0)*rrand(0.3, 2.0), 0.4);
 					},
-					{in = input.value(speed)}
+					{in = input.value(speedValue)}
 				);
 
 				/* calculate azimuth and radius */
@@ -119,12 +119,12 @@ SoundRepresentation : EntityRepresentation {
 			};
 	}
 
-	color { if(entity.colliding, {^collisionColor },{^color})
+	color { if(this.colliding, {^collisionColor },{^color})
 	}
 
 	preUpdate{ arg theChanged, transPosition;
 		/* set the syth with the new position values */
-		encoderProxy.set('speed',entity.velocity.norm);
+		encoderProxy.set('speed', speed);
 		encoderProxy.set('x', transPosition[0]-20);
 		encoderProxy.set('y', transPosition[1]-20);
 	}
