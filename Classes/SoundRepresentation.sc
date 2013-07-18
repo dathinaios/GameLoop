@@ -141,7 +141,7 @@ SoundRepresentation : EntityRepresentation {
 		{
 			encoderProxy.set('speed',entity.velocity.norm);
 			/* transform the position according to the camera position. */
-			if (GameLoop.instance.cameraActive,
+			if (false, //GameLoop.instance.cameraActive,
 				{transPosition = Camera2D.instance.applyTransformation(theChanged)+theChanged.world.center},
 				{transPosition = position}
 			);
