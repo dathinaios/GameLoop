@@ -7,7 +7,7 @@ SoundRepresentation : EntityRepresentation {
 
 	var >input, >collisionFunc, >release = 0.2, >color, >collisionColor;
 	var <penWidth = 1.5;
-	var encoder, <encoderProxy, decoderBus, <encoderProxyIndex;
+	var encoderClass, <encoderProxy, summingProxy, <encoderProxyIndex;
 							
 	*new { arg  repManager, input, collisionFunc, 
 							release, color, collisionColor;  
@@ -36,16 +36,37 @@ SoundRepresentation : EntityRepresentation {
 
 	}
 
+	/* public */
+
+	remove{
+		 Routine{
+			//clear everything with given realease time
+			encoderProxy.clear(release);
+			//wait for the release to finish
+			release.wait;
+			//remove the node from the summing bus
+			summingProxy.removeAt(encoderProxyIndex);
+			repManager.remove(this);
+			attached = false;
+	 	}.play(TempoClock.default);
+	}
+
+	draw{arg rect; 
+		Pen.strokeOval(rect)
+	}
+
+	/* private */
+
 	initializeDecoder{
-		encoder = GameLoopDecoder.getEncoder;
-		/* get the right encoder from the GameLoopDecoder class */
+		encoderClass = GameLoopDecoder.getEncoderClass;
+		/* get the right proxy from the GameLoopDecoder class */
 		encoderProxy = GameLoopDecoder.getEncoderProxy;
 		encoderProxy.clock = TempoClock.default;
-		/* plug the proxy to the decoder summing bus */
-		decoderBus = GameLoopDecoder.decoderBus;
+		/* plug the proxy to the proxy acting as summing bus */
+		summingProxy = GameLoopDecoder.summingProxy;
 		/* Always put the new Node in an extra slot of the Summing nodeRpoxy */
-		encoderProxyIndex = decoderBus.sources.size - 1;
-		decoderBus.put(encoderProxyIndex, encoderProxy);
+		encoderProxyIndex = summingProxy.sources.size - 1;
+		summingProxy.put(encoderProxyIndex, encoderProxy);
 	}
 	
 	play {
@@ -91,7 +112,7 @@ SoundRepresentation : EntityRepresentation {
 				elev = 0;
 
 				/* get and use the relevant encoder */
-				encoder.ar(
+				encoderClass.ar(
 					in, 
 					azim, 
 					rad, 
@@ -136,22 +157,6 @@ SoundRepresentation : EntityRepresentation {
 
 	}
 	
-	remove{
-		 Routine{
-			//clear everything with given realease time
-			encoderProxy.clear(release);
-			//wait for the release to finish
-			release.wait;
-			//remove the node from the summing bus
-			decoderBus.removeAt(encoderProxyIndex);
-			repManager.remove(this);
-			attached = false;
-	 	}.play(TempoClock.default);
-	}
-
-	draw{arg rect; 
-		Pen.strokeOval(rect)
-	}
 }   
  
 /* SoundEntity : Vehicle { var  <>input, <>collisionFunc, <>release; 

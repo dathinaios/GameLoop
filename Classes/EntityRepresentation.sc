@@ -22,9 +22,8 @@ EntityRepresentation { var repManager;
 		{
 			if (attached.isNil or:{attached.not},
 					{ attached = true; 
-						this.setEntity(theChanged);
+						this.storeEntity(theChanged);
 						this.init; }
-					/* { "You can only have one model per view (but many views per model)".error; } */
 			)
 		}
 		{\detach}
@@ -41,17 +40,18 @@ EntityRepresentation { var repManager;
  		*/
 	} 
 
-	remove{
-		this.subclassResponsibility;
-		repManager.remove(this); 
-		attached = false;
-	}
-
-	setEntity{ arg item;
+	storeEntity{ arg item;
 		entity = item;
 	}
 
 	dt{
 		^entity.dt;
 	}
+
+	remove{
+		this.subclassResponsibility;
+		repManager.remove(this); 
+		attached = false;
+	}
+
 }   

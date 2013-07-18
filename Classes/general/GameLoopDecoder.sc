@@ -1,5 +1,5 @@
 
-GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <decoderBus, 
+GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <summingProxy, 
 									encoderChannels, decoderChannels,
 									<>library, <>type, <>dp, order,
 									kernel;
@@ -80,9 +80,9 @@ GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <decoderBus,
 		// create the summing NodeProxy that will act as the summation bus
 		// see http://new-supercollider-mailing-lists-forums-use-these.2681727.n2.nabble.com/Many-to-One-Audio-Routing-in-Jitlib-td7594874.html
 
-		decoderBus = NodeProxy(Server.default, 'audio', encoderChannels);
+		summingProxy = NodeProxy(Server.default, 'audio', encoderChannels);
 		//route the summation bus to the decoder
-		decoderBus <>> decoderProxy;
+		summingProxy <>> decoderProxy;
 
 	}/*}}}*/
 
@@ -95,7 +95,7 @@ GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <decoderBus,
 		^NodeProxy(Server.default, 'audio', encoderChannels);
 	}/*}}}*/
 
-	*getEncoder{/*{{{*/
+	*getEncoderClass{/*{{{*/
 		//return the right encoder class
 		case 
 		//binaural
