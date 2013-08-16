@@ -3,10 +3,8 @@ GameLoopRender{
 			 classvar <instance;
 			 var <entManager, <repManager;
 			 var <mainRoutine;
-			 var <cameraEntity, <cameraActive = false, leftRotationRoutine, rightRotationRoutine;
-			 //visualisation vars
 			 var dimensions, gridSize, cellSize, mainView;
-			 var rowSize, cellSizeInPixels;
+			 var <cameraEntity, <cameraActive = false, leftRotationRoutine, rightRotationRoutine;
 
 	*new{ arg entManager, repManager;
 			if(instance.isNil, 
@@ -20,6 +18,7 @@ GameLoopRender{
 	init{
 		instance = this;
 		CmdPeriod.add({this.clear});
+		cameraActive = true;
 
 		dimensions = [0, entManager.center[0]*2];
 
@@ -37,7 +36,7 @@ GameLoopRender{
 			};
 		};
 		//run the visualisation
-		this.gui;
+		/* this.gui; */
 	}
 
 	render {
@@ -48,10 +47,6 @@ GameLoopRender{
 		mainView.close;
 	}
 
-	dt{ //in case I need to get the dt of the world from here. 
-		^entManager.dt;
-	}
-
 	addCamera{  
 		cameraEntity = Camera2D(
 			entManager, 
@@ -60,7 +55,6 @@ GameLoopRender{
 			mass: 0.04,
 			maxSpeed: 20
 		); 
-		cameraActive = true;
 	}
 
 	removeCamera{
@@ -116,8 +110,8 @@ GameLoopRender{
 					{
 					obstacPos = 
 					if(obstacle.class == Camera2DRepresentation,
-						{entManager.center},
-						{cameraEntity.applyTransformation(obstacle)+entManager.center});
+						{entManager.center;},
+						{Camera2D.instance.applyTransformation(obstacle)+entManager.center});
 					},
 					{obstacPos = obstacle.position}
 				);

@@ -1,48 +1,74 @@
 (
-	//AmbiDecoderCentre.startDecoder2('stereo');
-	//At the moment the first time it is giving an error. Run again.
 	GameLoopDecoder('AmbIEM', 'binaural');
 	//GameLoopDecoder('ATK', 'newStereo');
 	//GameLoopDecoder('ATK', 'newListen');
 	//Allow time for the decoder to be created....
-	//~gameloop = EntityManager(SpatialHashing(40, 40, 1)).play(0.05);
 	~gameloop = GameLoop(40, 40, 1).play(0.05);
 	//~gameloop.addCamera;
+	~camera = Camera2D(
+		~gameloop.world,
+		position: ~gameloop.world.center,
+		radius: 0.8,
+		maxSpeed: 3 
+	).init;
+
+	~cameraForcePath = {var path;
+	/* steering bahavior */
+	path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
+	~camera.force_(
+		{ arg entity;
+			PathFollowing.calculate(entity,path, 0.5);
+		});
+	};
+	~camrep = Camera2DRepresentation(~gameloop.repManager);
+	~camera.attach(~camrep);
 );
 
-(
+UnitTestScript.gui;
+Quarks.help("UnitTesting")
 
-	/* ~entity = Vehicle( */
-	/* 	~gameloop.world, */
-	/* 	position: RealVector2D[18, 22], */
-	/* 	radius: 0.4, */
-	/* 	maxSpeed: 10.0 */
-	/* ).init; */
+(
+	~entity = Vehicle(
+		~gameloop.world,
+		position: RealVector2D[18, 22],
+		radius: 0.4,
+		maxSpeed: 10.6
+	).init;
 
 	~rep = SoundRepresentation(
 		~gameloop.repManager,
-		input: nil //{WhiteNoise.ar(0.1)} 
-		//collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
-	);
+		input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)} 
+		//input: {SoundIn.ar(0)} 
+		//collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}}
+	 ); 
 	//~entity.collisionType_(\mobile);
 	~entity.attach(~rep);
 
-	{var path;
-	/* steering bahavior */
-	path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(3, 33.0), rrand(3.0, 33.0)]}), true);
-
+	~randForcePath = {var path;
+	/* steerinl bahavior */
+	path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
 	~entity.force_(
 		{ arg entity;
 			PathFollowing.calculate(entity,path, 0.5);
 		});
-	}.value;
-
+	};
+~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[19,20.2]);});
 );
 
-//with entity everything is removed
+~entity.dependants
+~entity.detachAll;
+~entity.detach(~rep);
 ~entity.remove;
 ~rep.remove;
 ~gameloop.clearEntities;
+~gameloop.repManager.repList;
+~camera.force_({arg ent; Arrive.calculate(ent, RealVector2D[20,20])}); ~camera.reset;
+
+~cameraForcePath.value;
+~randForcePath.value;
+~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[19,20.2]);});
+
+
 
 ~entity.velocity = RealVector2D[0, 0]
 ~entity.force = {arg entity; Arrive.calculate(entity, RealVector2D[22, 25])};

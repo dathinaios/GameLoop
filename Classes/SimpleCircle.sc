@@ -50,7 +50,7 @@ SimpleCircleRep : EntityRepresentation {
 		{\preUpdate}
 		{
 			/* transform the position according to the camera position. */
-			if (GameLoop.instance.cameraActive,
+			if (false, //GameLoop.instance.cameraActive,
 				{transPosition = Camera2D.instance.applyTransformation(theChanged)+theChanged.world.center},
 				{transPosition = position}
 			);
@@ -70,6 +70,9 @@ SimpleCircleRep : EntityRepresentation {
 
 	draw{arg rect; 
 		Pen.strokeOval(rect)
+	}
+
+	preUpdate{
 	}
 }   
 

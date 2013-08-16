@@ -19,9 +19,7 @@ GameLoop{
 		entManager = EntityManager(SpatialHashing(sceneWidth, sceneHeight, cellSize));
 		repManager = RepresentationManager.new;
 		renderer   = GameLoopRender(entManager,repManager);
-
 		CmdPeriod.add({this.clear});
-
 		/* visuals */
 		renderer.gui;
 	}
