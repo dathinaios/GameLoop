@@ -125,8 +125,8 @@ SoundRepresentation : EntityRepresentation {
 	preUpdate{ arg theChanged, transPosition;
 		/* set the syth with the new position values */
 		encoderProxy.set('speed', speed);
-		encoderProxy.set('x', transPosition[0]-20);
-		encoderProxy.set('y', transPosition[1]-20);
+		encoderProxy.set('x', transPosition[0]);
+		encoderProxy.set('y', transPosition[1]);
 	}
 
 

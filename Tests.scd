@@ -24,9 +24,6 @@
 	~camera.attach(~camrep);
 );
 
-UnitTestScript.gui;
-Quarks.help("UnitTesting")
-
 (
 	~entity = Vehicle(
 		~gameloop.world,
@@ -59,15 +56,16 @@ Quarks.help("UnitTesting")
 ~entity.detachAll;
 ~entity.detach(~rep);
 ~entity.remove;
-~rep.remove;
 ~gameloop.clearEntities;
 ~gameloop.repManager.repList;
-~camera.force_({arg ent; Arrive.calculate(ent, RealVector2D[20,20])}); ~camera.reset;
+~camera.force_({arg ent; Arrive.calculate(ent, RealVector2D[24,20])}); 
+~camera.reset;
 
 ~cameraForcePath.value;
 ~randForcePath.value;
 ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[19,20.2]);});
 
+GameLoopRender.instance.mainView.bounds
 
 
 ~entity.velocity = RealVector2D[0, 0]

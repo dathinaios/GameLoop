@@ -3,7 +3,7 @@ GameLoopRender{
 			 classvar <instance;
 			 var <entManager, <repManager;
 			 var <mainRoutine;
-			 var dimensions, gridSize, cellSize, mainView;
+			 var dimensions, gridSize, cellSize, <mainView;
 			 var <cameraEntity, <cameraActive = false, leftRotationRoutine, rightRotationRoutine;
 
 	*new{ arg entManager, repManager;
@@ -77,7 +77,7 @@ GameLoopRender{
 
 		var   h = 400, v = 400, seed, run = true,  spaceUnits, spaceUnits2, meterInPixels,  speakerRadInPixels;
 		var text;
-		mainView = Window("Visuals", Rect(0, 0, h, v), false);
+		mainView = Window("Visuals", Rect(-450, 400, h, v), false);
 		mainView.view.background = Color.black;
 		mainView.onClose = { run = false }; // stop the thread on close
 		mainView.front;
