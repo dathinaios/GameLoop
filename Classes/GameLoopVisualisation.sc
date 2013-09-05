@@ -47,27 +47,6 @@ GameLoopVisualisation{
 		mainView.close;
 	}
 
-	addCamera{  
-		cameraEntity = Camera2D(
-			entManager, 
-			position: entManager.center,
-			radius: 0.5,
-			mass: 0.04,
-			maxSpeed: 20
-		); 
-	}
-
-	removeCamera{
-		entManager.remove(cameraEntity);
-		cameraEntity.changed(\remove);
-		cameraActive = false;
-		Camera2D.instance = nil;
-	}
-
-	resetCamera{
-		cameraEntity.reset;	
-	}
-
 	clear{
 		mainView.close;
 		instance = nil;

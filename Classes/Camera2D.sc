@@ -4,7 +4,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 
 	*new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 1.0, 
 				velocity = RealVector2D[0, 0], collisionType = \free, heading, 
-				side, maxSpeed = 100, maxForce = 40, maxTurnRate = 2;
+				side, maxSpeed = 100000, maxForce = 400000, maxTurnRate = 2;
 
 			if(instance.isNil, 
 				{
@@ -27,6 +27,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 	init{
 		super.init;
 		instance = this;
+		arrivePosition = position;
 		rotation = 0;
 	}
 
@@ -61,6 +62,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 		//y.debug("y"); x.debug("y");
 		//position = position + (amount *RealVector2D[x, y]);
 		arrivePosition = arrivePosition + (amount *RealVector2D[x, y]);
+		this.goto(arrivePosition);
 	}
 
 	moveBack{arg amount = 0.02; var theta, x, y;
@@ -69,6 +71,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 		x = theta.sin;
 		//position = position - (amount *RealVector2D[x, y]);
 		arrivePosition = arrivePosition - (amount *RealVector2D[x, y]);
+		this.goto(arrivePosition);
 	}
 
 	rotateLeft{arg amount = 0.001pi;
@@ -81,15 +84,16 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 
 	goto{ arg target;
 		arrivePosition = target;
+		this.force_({arg ent; Arrive.calculate(ent, arrivePosition)}); 
 	}
 
 	reset{
 		arrivePosition = world.center;
 		rotation = 0;
+		this.goto(arrivePosition);
 	}
 
 }
-
 
 Camera2DRepresentation : SimpleCircleRep{
 
