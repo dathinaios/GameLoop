@@ -46,18 +46,17 @@ GameLoopVisualisation{
 		//for  space of 700 pixels is 20 meters one meter is 35 pixels
 		meterInPixels = h/(dimensions[1]-dimensions[0]); //assumes h = v
 		speakerRadInPixels = 2 * meterInPixels;
-		Pen.width = 2;
 
-		/* display some useful info */
-		text = StaticText(mainView, Rect(3, 3, 200, 20)).stringColor_(Color.grey);
-		//to draw the obstacles 
 		
 		mainView.drawFunc = {
-
-		/* Pen.use { */
+			/* Pen.use { */
 			var divisions, subOrAdd;
 			var repList;
 			
+			/* display some useful info */
+			text = StaticText(mainView, Rect(3, 3, 200, 20)).stringColor_(Color.grey);
+			//to draw the obstacles 
+			Pen.width = 2;
 			text.string = "Ents: " + entManager.activeEntities.asString + 
 									  "- Reps: " + repManager.activeReps.asString;
 			repList = repManager.repList;
