@@ -60,7 +60,6 @@ GameLoop{
 
 	clear{
 		entManager.clear;
-		renderer.clear;
 		instance = nil;
 	}
 

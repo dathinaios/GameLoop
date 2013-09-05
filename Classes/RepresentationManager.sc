@@ -34,4 +34,5 @@ RepresentationManager{ var <repList;
 	activeReps{
 		^repList.size;
 	}
+	
 }       

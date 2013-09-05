@@ -44,9 +44,9 @@ EntityRepresentation { var repManager, <>collisionFunc;
 	}
 
 	cameraTransform{arg theChanged; 
-		if (Camera2D.instance.notNil, //GameLoop.instance.cameraActive,
+		if (Camera2D.active,
 			{^(Camera2D.instance.applyTransformation(theChanged))},
-			{^position}
+			{^position - theChanged.world.center}
 		);
 	}
 
