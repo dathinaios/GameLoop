@@ -1,5 +1,5 @@
 
-GameLoopRender{
+GameLoopVisualisation{
 			 classvar <instance;
 			 var <entManager, <repManager;
 			 var <mainRoutine;
