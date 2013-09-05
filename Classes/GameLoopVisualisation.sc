@@ -2,9 +2,9 @@
 GameLoopVisualisation{
 			 classvar <instance;
 			 var <entManager, <repManager;
-			 var <mainRoutine;
 			 var dimensions, gridSize, cellSize, <mainView;
-			 var <cameraEntity, <cameraActive = false, leftRotationRoutine, rightRotationRoutine;
+			 /* shrtcuts for control of camera for focused window. These are going to be moved somewhere else */
+			 var leftRotationRoutine, rightRotationRoutine;
 
 	*new{ arg entManager, repManager;
 			if(instance.isNil, 
@@ -18,25 +18,7 @@ GameLoopVisualisation{
 	init{
 		instance = this;
 		CmdPeriod.add({this.clear});
-		cameraActive = true;
-
 		dimensions = [0, entManager.center[0]*2];
-
-		leftRotationRoutine = Routine{ 
-			loop{
-			cameraEntity.rotateLeft(0.01pi);
-			0.05.wait;
-			};
-		};
-
-		rightRotationRoutine = Routine{
-			loop{
-			cameraEntity.rotateRight(0.01pi);
-			0.05.wait;
-			};
-		};
-		//run the visualisation
-		/* this.gui; */
 	}
 
 	render {
@@ -64,7 +46,6 @@ GameLoopVisualisation{
 		//for  space of 700 pixels is 20 meters one meter is 35 pixels
 		meterInPixels = h/(dimensions[1]-dimensions[0]); //assumes h = v
 		speakerRadInPixels = 2 * meterInPixels;
-		mainView.drawFunc= {
 		Pen.width = 2;
 
 		/* display some useful info */
@@ -85,7 +66,7 @@ GameLoopVisualisation{
 				var spaceIn, currentObst, curRadPix, curWidth, obstacle, obstacPos; 
 				obstacle = repList[index]; //get the current object
 				//get position using camera if active
-				if(cameraActive,
+				if(Camera2D.active,
 					{
 					obstacPos = 
 					if(obstacle.class == Camera2DRepresentation,
@@ -105,12 +86,34 @@ GameLoopVisualisation{
 				obstacle.draw((Rect((obstacPos[0]*meterInPixels)-curRadPix, ((obstacPos[1]*meterInPixels).linlin(0, h, v, 0))-curRadPix, curWidth, curWidth)))
 			};
 
+	};
+	}
+
+	/* Shortcuts for control of camera from focused window */
+
+	initCameraRoutines{
+		leftRotationRoutine = Routine{ 
+			loop{
+			Camera2D.instance.rotateLeft(0.01pi);
+			0.05.wait;
+			};
+		};
+
+		rightRotationRoutine = Routine{
+			loop{
+			Camera2D.instance.rotateRight(0.01pi);
+			0.05.wait;
+			};
+		};
+	}
+
+	setWindowKeyActions{
 			//Specific mainview setting and keyboard controls
 			mainView.view.keyDownAction = 
 				{arg view, char, modifiers, unicode, keycode;
 					switch (keycode)
-					{126}{cameraEntity.moveFwd(4)}
-					{125}{cameraEntity.moveBack(4)}
+					{126}{Camera2D.instance.moveFwd(4)}
+					{125}{Camera2D.instance.moveBack(4)}
 					{123}
 					{
 						if(leftRotationRoutine.isPlaying.not)
@@ -130,8 +133,6 @@ GameLoopVisualisation{
 					{124}{rightRotationRoutine.stop}
 				};
 
-		};
-	};
 	}
 
 }

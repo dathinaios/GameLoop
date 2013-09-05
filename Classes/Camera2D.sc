@@ -24,6 +24,13 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 			);		
 	}
 
+	*active{
+		if(instance.isNil,
+			{^false},
+			{^true}
+		);
+	}
+
 	init{
 		super.init;
 		instance = this;
@@ -32,8 +39,11 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 	}
 
 	remove {
-		"WARNING: To remove the camera you will need to call .removeCamera on GameLoop".postln;
+		/* "WARNING: To remove the camera you will need to call .removeCamera on GameLoop".postln; */
+		super.remove;
+		instance = nil;
 	}
+
 
 	/*There were issues with the transformation. I was using the heading of the camera entity in a weird manner.
 	what I did here instead is define a new var for rotation. It takes a value from 0 to 2pi and works as expected.
