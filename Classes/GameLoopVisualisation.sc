@@ -11,7 +11,7 @@ GameLoopVisualisation{
 				{
 				^super.newCopyArgs(entManager, repManager).init;
 				},
-				{"There is already an active instance of GameLoopRender".error;}
+				{"There is already an active instance of GameLoopVisualisation".error;}
 			);		
 	}
 
@@ -22,7 +22,7 @@ GameLoopVisualisation{
 	}
 
 	render {
-			mainView.refresh;
+		if(mainView.notNil, {mainView.refresh});
 	}
 
 	close {

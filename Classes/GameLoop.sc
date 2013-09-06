@@ -2,7 +2,7 @@
 GameLoop{
 			 classvar <instance;
 			 var <sceneWidth, <sceneHeight, <cellSize;
-			 var <entManager, <repManager, renderer;
+			 var <entManager, <repManager, visualisation;
 			 var <mainRoutine;
 
 	*new{ arg sceneWidth = 40, sceneHeight = 40, cellSize = 1;
@@ -18,10 +18,18 @@ GameLoop{
 		instance   = this;
 		entManager = EntityManager(SpatialHashing(sceneWidth, sceneHeight, cellSize));
 		repManager = RepresentationManager.new;
-		renderer   = GameLoopVisualisation(entManager,repManager);
+		visualisation   = GameLoopVisualisation(entManager,repManager);
 		CmdPeriod.add({this.clear});
 		/* visuals */
-		renderer.gui;
+		/* visualisation.gui; */
+	}
+
+	gui{ 
+		visualisation.gui;
+	}
+
+	guiClose{
+		visualisation.close;
 	}
 
 	world{ //could be a collection of worlds...
@@ -35,7 +43,7 @@ GameLoop{
 				mainRoutine = Routine{
 					inf.do{
 						entManager.doAll;
-						{renderer.render}.defer;
+						{visualisation.render}.defer;
 						entManager.dt.wait;
 						}
 				}.play(TempoClock.default)
