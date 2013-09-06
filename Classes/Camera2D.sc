@@ -105,13 +105,8 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 
 }
 
-Camera2DRepresentation : SimpleCircleRep{
-
+Camera2DRepresentation : SimpleVisual{
 	draw{arg rect; 
 		Pen.strokeRect(rect)
 	}
-
-	color { ^Color.white; 
-	}
-
 }
