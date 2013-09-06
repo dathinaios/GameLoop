@@ -2,7 +2,7 @@
 GameLoop{
 			 classvar <instance;
 			 var <sceneWidth, <sceneHeight, <cellSize;
-			 var <entManager, <repManager, visualisation;
+			 var <entManager, <repManager, <visualisation;
 			 var <mainRoutine;
 
 	*new{ arg sceneWidth = 40, sceneHeight = 40, cellSize = 1;
@@ -67,7 +67,9 @@ GameLoop{
 	}
 
 	clear{
+		mainRoutine.stop;
 		entManager.clear;
+		visualisation.clear;
 		instance = nil;
 	}
 

@@ -26,11 +26,11 @@ GameLoopVisualisation{
 	}
 
 	close {
-		mainView.close;
+		if(mainView.notNil, {mainView.close}, {"There is no view open for GameLoopVisualisatino".error});
 	}
 
 	clear{
-		mainView.close;
+		if(mainView.notNil, {mainView.close});
 		instance = nil;
 	}
 

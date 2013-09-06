@@ -1,12 +1,12 @@
 
 GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <summingProxy, 
-									encoderChannels, decoderChannels,
+									encoderChannels, decoderChannels, <active = false,
 									<>library, <>type, <>dp, order,
 									kernel;
 
 	*new{ arg library = 'AmbIEM', type = 'binaural', dp = true; /*{{{*/
 		
-
+		active = true;
 		this.library_(library);
 		this.type_(type);
 		this.dp_(dp);
@@ -125,6 +125,7 @@ GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <summingProxy,
 			decoderProxy.source = nil;
 			1.wait;
 			kernel.free;
+			active = false;
 		}.play;
 	}
 
