@@ -1,15 +1,17 @@
+
 (
-	GameLoopDecoder('AmbIEM', 'binaural');
 	//GameLoopDecoder('ATK', 'newStereo');
 	//GameLoopDecoder('ATK', 'newListen');
+	GameLoopDecoder('AmbIEM', 'binaural');
 	//Allow time for the decoder to be created....
 	~gameloop = GameLoop(40, 40, 1).play(0.05);
-	//~gameloop.addCamera;
+	~gameloop.gui; 
+)
+(
 	~camera = Camera2D(
 		~gameloop.world,
 		position: ~gameloop.world.center,
-		radius: 0.8,
-		maxSpeed: 3 
+		radius: 0.8
 	).init;
 
 	~cameraForcePath = {var path;
@@ -58,15 +60,21 @@
 ~entity.remove;
 ~gameloop.clearEntities;
 ~gameloop.repManager.repList;
+~gameloop.clear;
 ~camera.force_({arg ent; Arrive.calculate(ent, RealVector2D[24,20])}); 
+~camera.moveFwd(2);
+~camera.moveBack(2);
 ~camera.reset;
-
+~camera.rotateRight(0.4pi);
+~camera.rotateLeft(0.4pi);
+~camera.remove
+~gameloop.guiClose; 
 ~cameraForcePath.value;
 ~randForcePath.value;
 ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[19,20.2]);});
 
-GameLoopRender.instance.mainView.bounds
-
+UnitTest.gui
+UnitTestScript.run;
 
 ~entity.velocity = RealVector2D[0, 0]
 ~entity.force = {arg entity; Arrive.calculate(entity, RealVector2D[22, 25])};
@@ -205,6 +213,8 @@ ResponseDefs.add(
 TGrains.ar(bufnum:0, numChannels)
 a = "test string"
 a.first()
+
+Server
 
 
 
