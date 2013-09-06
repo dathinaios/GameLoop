@@ -15,6 +15,7 @@ SimpleVisual : EntityRepresentation {
 
 		super.init;
 		collisionFunc = collisionFunc ?? {{}};
+		type = 'visual';
 
 		color = color ?? {Color.green};
 		collisionColor = collisionColor ?? {Color.red};

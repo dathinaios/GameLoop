@@ -63,25 +63,28 @@ GameLoopVisualisation{
 				arg index; 
 				var spaceIn, currentObst, curRadPix, curWidth, obstacle, obstacPos; 
 				obstacle = repList[index]; //get the current object
-				//get position using camera if active
-				if(Camera2D.active,
-					{
-					obstacPos = 
-					if(obstacle.class == Camera2DRepresentation,
-						{entManager.center;},
-						{Camera2D.instance.applyTransformation(obstacle)+entManager.center});
-					},
-					{obstacPos = obstacle.position}
-				);
-				Pen.width = obstacle.penWidth;
-				Pen.color = obstacle.color.alpha_(0.7);
-				Pen.beginPath;
-				//find the radius in meters and then in pixels
-				currentObst = obstacle.radius;
-				curRadPix = currentObst*meterInPixels;
-				curWidth = curRadPix + curRadPix;
-				//Pen.strokeOval(Rect((obstacle.position[0]*meterInPixels)-curRadPix, ((obstacle.position[1]*meterInPixels).linlin(0, 700, 700, 0))-curRadPix, curWidth, curWidth));
-				obstacle.draw((Rect((obstacPos[0]*meterInPixels)-curRadPix, ((obstacPos[1]*meterInPixels).linlin(0, h, v, 0))-curRadPix, curWidth, curWidth)))
+				if(obstacle.type == 'visual')
+				{
+					//get position using camera if active
+					if(Camera2D.active,
+						{
+						obstacPos = 
+						if(obstacle.class == Camera2DRepresentation,
+							{entManager.center;},
+							{Camera2D.instance.applyTransformation(obstacle)+entManager.center});
+						},
+						{obstacPos = obstacle.position}
+					);
+					Pen.width = obstacle.penWidth;
+					Pen.color = obstacle.color.alpha_(0.7);
+					Pen.beginPath;
+					//find the radius in meters and then in pixels
+					currentObst = obstacle.radius;
+					curRadPix = currentObst*meterInPixels;
+					curWidth = curRadPix + curRadPix;
+					//Pen.strokeOval(Rect((obstacle.position[0]*meterInPixels)-curRadPix, ((obstacle.position[1]*meterInPixels).linlin(0, 700, 700, 0))-curRadPix, curWidth, curWidth));
+					obstacle.draw((Rect((obstacPos[0]*meterInPixels)-curRadPix, ((obstacPos[1]*meterInPixels).linlin(0, h, v, 0))-curRadPix, curWidth, curWidth)))
+			  }
 			};
 
 	};

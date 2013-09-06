@@ -1,5 +1,6 @@
 EntityRepresentation { var repManager, <>collisionFunc;
 	var <position, <radius, <speed, entity, attached = false;
+	var <>type = 'sound';
 
 	*new { arg repManager, collisionFunc;  
 		^super.newCopyArgs(repManager, collisionFunc)

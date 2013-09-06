@@ -5,25 +5,19 @@
 
 SoundRepresentation : EntityRepresentation { 
 
-	var >input, >release = 0.2, >color, >collisionColor;
-	var <penWidth = 1.5;
+	var >input, >release = 0.2;
 	var encoderClass, <encoderProxy, summingProxy, <encoderProxyIndex;
 							
 	*new { arg  repManager, collisionFunc, input, 
-							release, color, collisionColor;  
+							release;  
 		^super.new(repManager, collisionFunc)
 					.input_(input) 
-					.release_(release) 
-					.color_(color) 
-					.collisionColor_(collisionColor);
+					.release_(release);
 	}
 
 	init { 
 		super.init;
 		release = release ?? {0.2};
-
-		color = color ?? {Color.green};
-		collisionColor = collisionColor ?? {Color.red};
 
 		/* decoder init */
 		this.initializeDecoder;
@@ -46,10 +40,6 @@ SoundRepresentation : EntityRepresentation {
 			repManager.remove(this);
 			attached = false;
 	 	}.play(TempoClock.default);
-	}
-
-	draw{arg rect; 
-		Pen.strokeOval(rect)
 	}
 
 	/* private */
@@ -117,9 +107,6 @@ SoundRepresentation : EntityRepresentation {
 					ampCenter: 0.9
 				);
 			};
-	}
-
-	color { if(this.colliding, {^collisionColor },{^color})
 	}
 
 	preUpdate{ arg theChanged, transPosition;

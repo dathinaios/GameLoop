@@ -17,7 +17,7 @@ TestGeneral : UnitTest{	var gameloop;
 
 		test_general{
 			var camera, cameraForcePath, camrep;
-			var entity, rep, randForcePath;
+			var entity, soundrep, visrep, randForcePath;
 			camera = Camera2D(
 				gameloop.world,
 				position: gameloop.world.center,
@@ -43,13 +43,16 @@ TestGeneral : UnitTest{	var gameloop;
 				maxSpeed: 10.6
 			).init;
 
-			rep = SoundRepresentation(
+			soundrep = SoundRepresentation(
 				gameloop.repManager,
 				input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)} 
 				//collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}}
 			); 
 			//entity.collisionType_(\mobile);
-			entity.attach(rep);
+			entity.attach(soundrep);
+
+			visrep = SimpleVisual(gameloop.repManager);
+			entity.attach(visrep);
 
 			randForcePath = {var path;
 			path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
