@@ -31,7 +31,7 @@ TestGeneral : UnitTest{	var gameloop;
 						PathFollowing.calculate(entity,path, 0.5);
 					});
 			};
-			camrep = Camera2DRepresentation(gameloop.repManager);
+			camrep = SimpleVisual(gameloop.repManager, Color.white).shape_(1);
 			camera.attach(camrep);
 
 			/* setup an entity */
