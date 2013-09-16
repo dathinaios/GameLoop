@@ -22,7 +22,7 @@ TestGeneral : UnitTest{	var gameloop;
 				gameloop.world,
 				position: gameloop.world.center,
 				radius: 0.8
-			).init;
+			);
 
 			cameraForcePath = {var path;
 				path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
@@ -41,7 +41,7 @@ TestGeneral : UnitTest{	var gameloop;
 				position: RealVector2D[18, 22],
 				radius: 0.4,
 				maxSpeed: 10.6
-			).init;
+			);
 
 			soundrep = SoundRepresentation(
 				gameloop.repManager,

@@ -8,7 +8,7 @@ Entity {
 												position, 
 												radius, 
 												mass
-		  );
+		  ).init;
 	}
 
 	/* The init method is called in the subclass by using super.init. Using super.init
@@ -71,7 +71,7 @@ MobileEntity : Entity { var <>velocity, <>collisionType;
 					 radius, 
 					 mass
 		  ).velocity_(velocity)
-		   .collisionType_(collisionType);
+		   .collisionType_(collisionType).init;
 	}
 
 	init{
@@ -115,7 +115,7 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
 		   .side_(side)
 		   .maxSpeed_(maxSpeed)
 		   .maxForce_(maxForce)
-		   .maxTurnRate_(maxTurnRate);
+		   .maxTurnRate_(maxTurnRate).init;
 	}
 	
 	init{
