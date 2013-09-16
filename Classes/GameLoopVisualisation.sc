@@ -68,15 +68,7 @@ GameLoopVisualisation{
 		 		if(obstacle.type == 'visual')
 		 		{
 		 			//get position using camera if active
-		 			if(Camera2D.active,
-		 				{
-		 				obstacPos = 
-		 				if(obstacle.class == Camera2DRepresentation,
-		 					{entManager.center;},
-		 					{Camera2D.instance.applyTransformation(obstacle)+entManager.center});
-		 				},
-		 				{obstacPos = obstacle.position}
-		 			);
+		 			obstacPos = obstacle.position;
 		 			Pen.width = obstacle.penWidth;
 		 			Pen.color = obstacle.color.alpha_(0.7);
 		 			Pen.beginPath;

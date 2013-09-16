@@ -39,7 +39,6 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 	}
 
 	remove {
-		/* "WARNING: To remove the camera you will need to call .removeCamera on GameLoop".postln; */
 		super.remove;
 		instance = nil;
 	}
@@ -106,7 +105,8 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 }
 
 Camera2DRepresentation : SimpleVisual{
-	draw{arg rect; 
-		Pen.strokeRect(rect)
+
+	position{
+		^entity.world.center;
 	}
 }

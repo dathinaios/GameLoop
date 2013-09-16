@@ -41,8 +41,5 @@ SimpleVisual : EntityRepresentation {
 		{shape == 0} {Pen.strokeOval(rect)}
 		{shape == 1} {Pen.strokeRect(rect)};
 	}
-
-	preUpdate{
-	}
 }   
 

@@ -52,7 +52,7 @@ EntityRepresentation { var repManager, <>collisionFunc;
 	}
 
 	preUpdate{ arg theChanged, transposition;
-		this.subclassResponsibility;
+		position = transposition + theChanged.world.center;
 	}
 
 	getData{
