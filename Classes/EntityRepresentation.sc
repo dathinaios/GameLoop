@@ -47,7 +47,7 @@ EntityRepresentation { var repManager, <>collisionFunc;
 	cameraTransform{arg theChanged; 
 		if (Camera2D.active,
 			{^(Camera2D.instance.applyTransformation(theChanged))},
-			{^position - theChanged.world.center}
+			{^position}
 		);
 	}
 
@@ -56,7 +56,7 @@ EntityRepresentation { var repManager, <>collisionFunc;
 	}
 
 	getData{
-		position = entity.position;
+		position = entity.position - entity.world.center;
 		radius = entity.radius;
 		speed = entity.velocity.norm;
 	}
