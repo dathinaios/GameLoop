@@ -12,7 +12,7 @@
 		~gameloop.world,
 		position: ~gameloop.world.center,
 		radius: 0.8
-	).init;
+	);
 
 	~cameraForcePath = {var path;
 	/* steering bahavior */
@@ -22,7 +22,7 @@
 			PathFollowing.calculate(entity,path, 0.5);
 		});
 	};
-	~camrep = Camera2DRepresentation(~gameloop.repManager);
+	~camrep =Camera2DRepresentation(~gameloop.repManager, Color.white).shape_(1);
 	~camera.attach(~camrep);
 );
 
@@ -32,7 +32,7 @@
 		position: RealVector2D[18, 22],
 		radius: 0.4,
 		maxSpeed: 10.6
-	).init;
+	);
 
 	~rep = SoundRepresentation(
 		~gameloop.repManager,
@@ -42,6 +42,9 @@
 	 ); 
 	//~entity.collisionType_(\mobile);
 	~entity.attach(~rep);
+	//and a visual representation
+	~visrep = SimpleVisual(~gameloop.repManager);
+	~entity.attach(~visrep);
 
 	~randForcePath = {var path;
 	/* steerinl bahavior */
@@ -51,17 +54,23 @@
 			PathFollowing.calculate(entity,path, 0.5);
 		});
 	};
-~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[19,20.2]);});
+  ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[19,20.2]);});
+	~randForcePath.value;
 );
 
-~entity.dependants
+~gameloop.clear;
+GameLoopDecoder.clear
+~gameloop.clearEntities;
+
+~camera.force_({arg ent; Arrive.calculate(ent, RealVector2D[24,20])}); 
+~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[19,20.2]);});
+~cameraForcePath.value;
+~randForcePath.value;
+
 ~entity.detachAll;
 ~entity.detach(~rep);
 ~entity.remove;
-~gameloop.clearEntities;
 ~gameloop.repManager.repList;
-~gameloop.clear;
-~camera.force_({arg ent; Arrive.calculate(ent, RealVector2D[24,20])}); 
 ~camera.moveFwd(2);
 ~camera.moveBack(2);
 ~camera.reset;
@@ -69,12 +78,7 @@
 ~camera.rotateLeft(0.4pi);
 ~camera.remove
 ~gameloop.guiClose; 
-~cameraForcePath.value;
-~randForcePath.value;
-~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[19,20.2]);});
 
-UnitTest.gui
-UnitTestScript.run;
 
 ~entity.velocity = RealVector2D[0, 0]
 ~entity.force = {arg entity; Arrive.calculate(entity, RealVector2D[22, 25])};
@@ -104,7 +108,6 @@ UnitTestScript.run;
 ~gameloop.removeCamera;
 
 ~gameloop.repManager.repList
-GameLoopDecoder.clear
 GameLoopDecoder.decoderBus.sources;
 GameLoopDecoder.decoderProxy.sources
 
