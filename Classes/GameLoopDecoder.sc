@@ -1,15 +1,21 @@
 
-GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <summingProxy, 
-									encoderChannels, decoderChannels, <active = false,
-									<>library, <>type, <>dp, order,
-									kernel;
+GameLoopDecoder { classvar <instance, <active = false; 
+                  var	<>library, <>type, <>dp, <encoderProxy, <decoderProxy, <summingProxy, 
+									encoderChannels, decoderChannels, order, kernel;
 
-	*new{ arg library = 'AmbIEM', type = 'binaural', dp = true; /*{{{*/
+	*new{ arg library = 'AmbIEM', type = 'binaural', dp = true;
+			if(instance.isNil, 
+				{
+				^super.newCopyArgs(library, type, dp).init;
+				},
+				{"There is already an active instance of GameLoopDecoder".error;}
+			);		
+	}
+
+	init{
 		
+		instance  = this;
 		active = true;
-		this.library_(library);
-		this.type_(type);
-		this.dp_(dp);
 
 		//First let's get some information that we need
 		case 
@@ -86,16 +92,16 @@ GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <summingProxy,
 
 	}/*}}}*/
 
-	*readyMsg{/*{{{*/
+	readyMsg{/*{{{*/
 		"A decoder was created through GameLoopDecoder".postln;
 	}/*}}}*/
 
-	*getEncoderProxy{/*{{{*/
+	getEncoderProxy{/*{{{*/
 		//return proxies with the channels needed for the given order
 		^NodeProxy(Server.default, 'audio', encoderChannels);
 	}/*}}}*/
 
-	*getEncoderClass{/*{{{*/
+	getEncoderClass{/*{{{*/
 		//return the right encoder class
 		case 
 		//binaural
@@ -120,7 +126,7 @@ GameLoopDecoder { classvar <encoderProxy, <decoderProxy, <summingProxy,
 		};
 	}/*}}}*/
 
-	*clear{
+	clear{
 		Routine{
 			decoderProxy.source = nil;
 			1.wait;
