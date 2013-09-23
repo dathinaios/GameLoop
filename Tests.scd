@@ -1,12 +1,12 @@
-
 (
-	//GameLoopDecoder('ATK', 'newStereo');
-	//GameLoopDecoder('ATK', 'newListen');
+	//~decoder = GameLoopDecoder('ATK', 'newStereo');
+	//~decoder = GameLoopDecoder('ATK', 'newListen');
 	~decoder = GameLoopDecoder('AmbIEM', 'binaural');
 	//Allow time for the decoder to be created....
 	~gameloop = GameLoop(40, 40, 1).play(0.05);
 	~gameloop.gui; 
 )
+
 (
 	~camera = Camera2D(
 		~gameloop.world,
@@ -40,6 +40,7 @@
 		//input: {SoundIn.ar(0)} 
 		//collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}}
 	 ); 
+
 	//~entity.collisionType_(\mobile);
 	~entity.attach(~rep);
 	//and a visual representation
@@ -59,7 +60,7 @@
 );
 
 ~gameloop.clear;
-GameLoopDecoder.clear
+GameLoopDecoder.instance.clear
 ~gameloop.clearEntities;
 
 ~camera.force_({arg ent; Arrive.calculate(ent, RealVector2D[24,20])}); 
@@ -108,8 +109,8 @@ GameLoopDecoder.clear
 ~gameloop.removeCamera;
 
 ~gameloop.repManager.repList
-GameLoopDecoder.decoderBus.sources;
-GameLoopDecoder.decoderProxy.sources
+GameLoopDecoder.instance.decoderBus.sources;
+GameLoopDecoder.instance.decoderProxy.sources
 
 Server.default.queryAllNodes;
 GroupManager.inGroup;
@@ -186,8 +187,8 @@ CmdPeriod.run
 ~gameloop.clearEntities;
 ~gameloop.entManager.freeList;
 ~gameloop.entManager.freeList.choose.remove;
-GameLoopDecoder.decoderBus.sources;
-//GameLoopDecoder.decoderBus.removeAll;
+GameLoopDecoder.instance.decoderBus.sources;
+//GameLoopDecoder.instance.decoderBus.removeAll;
 Server.default.latency = 3;
 Server.default.latency;
 TempoClock.default.latency;
