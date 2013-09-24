@@ -59,6 +59,7 @@ GameLoopDecoder { classvar <instance, <active = false;
 			1.wait;
 			kernel.free;
 			active = false;
+			instance = nil;
 		}.play;
 	}
 
