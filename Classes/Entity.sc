@@ -32,8 +32,9 @@ Entity {
 		this.removeDependant(rep);
 	}
 
-	detachAll{
-		this.dependants.do{arg i; this.detach(i)};
+	detachAll{ var list;
+		list = this.dependants.asList;
+		list.do{arg i; this.detach(i)};
 	}
 	
 	add{ 
