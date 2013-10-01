@@ -20,8 +20,6 @@ GameLoop{
 		repManager = RepresentationManager.new;
 		visualisation   = GameLoopVisualisation(entManager,repManager);
 		CmdPeriod.add({this.clear});
-		/* visuals */
-		/* visualisation.gui; */
 	}
 
 	gui{ 
