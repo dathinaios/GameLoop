@@ -77,8 +77,11 @@ EntityRepresentation { var repManager, <>collisionFunc;
 		^entity.dt;
 	}
 
+	add{
+		this.subclassResponsibility(thisMethod);
+	}
+
 	remove{
-		this.subclassResponsibility;
 		repManager.remove(this); 
 		attached = false;
 	}

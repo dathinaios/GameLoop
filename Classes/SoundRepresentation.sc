@@ -23,7 +23,7 @@ SoundRepresentation : EntityRepresentation {
 		this.initializeDecoder;
 
 		/* make some sound */
-		this.play;
+		this.add;
 
 	}
 
@@ -56,7 +56,7 @@ SoundRepresentation : EntityRepresentation {
 		summingProxy.put(encoderProxyIndex, encoderProxy);
 	}
 	
-	play {
+	add {
 		var latency;
 		latency = Server.default.latency;
 		Routine{

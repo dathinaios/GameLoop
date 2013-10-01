@@ -48,7 +48,7 @@
 	~entity.attach(~visrep);
 
 	~randForcePath = {var path;
-	/* steerinl bahavior */
+	/* steering bahavior */
 	path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
 	~entity.force_(
 		{ arg entity;
@@ -218,8 +218,64 @@ TGrains.ar(bufnum:0, numChannels)
 a = "test string"
 a.first()
 
-Server
 
+/* =================== */
+/* =================== */
+/*   COLLISION TESTS   */
+/* =================== */
+/* =================== */
 
+(
+~entity1 = Vehicle(
+  ~gameloop.world, 
+  position: RealVector2D[25, 20.5], 
+  radius: 0.4, 
+  maxSpeed: 10.0
+); 
+
+~entity2 = Vehicle(
+  ~gameloop.world, 
+  position: RealVector2D[15, 20.5], 
+  radius: 0.4, 
+  maxSpeed: 10.0 
+); 
+
+~entity1.collisionType_(\mobile);
+~entity2.collisionType_(\mobile);
+
+~visrep1 = SimpleVisual(~gameloop.repManager);
+~entity1.attach(~visrep1);
+~visrep2 = SimpleVisual(~gameloop.repManager);
+~entity2.attach(~visrep2);
+
+~soundRep1 = SoundRepresentation(
+	~gameloop.repManager,
+	//collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}}
+); 
+~entity1.attach(~soundRep1);
+
+~soundRep2 = SoundRepresentation(
+	~gameloop.repManager,
+	//collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}}
+); 
+~entity2.attach(~soundRep2);
+
+~entity1.force_({arg entity; Arrive.calculate(entity, RealVector2D[18, 20.5])});
+~entity2.force_({arg entity; Arrive.calculate(entity, RealVector2D[22, 20.5])});
+
+	~randForcePath = {arg entity; var path;
+	/* steering bahavior */
+	path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(5, 35.0), rrand(5.0, 35.0)]}), true);
+	entity.force_(
+		{ arg entity;
+			PathFollowing.calculate(entity,path, 0.5);
+		});
+	};
+
+~randForcePath.value(~entity1);
+~randForcePath.value(~entity2);
+)
+
+~entity1.remove; ~entity2.remove;
 
 

@@ -19,21 +19,16 @@ SimpleVisual : EntityRepresentation {
 
 		color = color ?? {Color.green};
 		collisionColor = collisionColor ?? {Color.red};
-		this.play;
+		this.add;
 
 	}
 
-	play {
+	add {
 			if (entity.active.not){entity.add};
 			repManager.add(this);
 	}
 
 	color { if(this.colliding, {^collisionColor },{^color})
-	}
-
-	remove{
-			repManager.remove(this);
-			attached = false;
 	}
 
 	draw{arg rect; 
