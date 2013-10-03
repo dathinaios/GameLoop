@@ -1,10 +1,12 @@
 
 Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
-										 var <>arrivePosition, <>rotation;
+										 var <>arrivePosition, <>rotation, <>friction = 0.6,
+										 >motionAmount = 30, >rotationAmount= 0.01pi;
 
-	*new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 1.0, 
+
+	*new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 0.05, 
 				velocity = RealVector2D[0, 0], collisionType = \free, heading, 
-				side, maxSpeed = 100000, maxForce = 400000, maxTurnRate = 2;
+				side, maxSpeed = 3.4, maxForce = 10, maxTurnRate = 2;
 
 			if(instance.isNil, 
 				{
@@ -63,32 +65,46 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 		^RealVector2D[x,y];
 	}
 
-	moveFwd{arg amount = 0.02; var theta, x, y;
-		theta = rotation;
-		//theta.debug("theta");
-		y = theta.cos;
-		x = theta.sin;
-		//y.debug("y"); x.debug("y");
-		//position = position + (amount *RealVector2D[x, y]);
-		arrivePosition = arrivePosition + (amount *RealVector2D[x, y]);
-		this.goto(arrivePosition);
-	}
-
-	moveBack{arg amount = 0.02; var theta, x, y;
+	moveFwd{var theta, x, y;
 		theta = rotation;
 		y = theta.cos;
 		x = theta.sin;
-		//position = position - (amount *RealVector2D[x, y]);
-		arrivePosition = arrivePosition - (amount *RealVector2D[x, y]);
+		arrivePosition = arrivePosition + (motionAmount *RealVector2D[x, y]);
 		this.goto(arrivePosition);
 	}
 
-	rotateLeft{arg amount = 0.001pi;
-		rotation = (rotation - amount).wrap(0, 2pi);
+	moveBack{var theta, x, y;
+		theta = rotation;
+		y = theta.cos;
+		x = theta.sin;
+		arrivePosition = arrivePosition - (motionAmount *RealVector2D[x, y]);
+		this.goto(arrivePosition);
 	}
 
-	rotateRight{arg amount = 0.001pi;
-		rotation = (rotation + amount).wrap(0, 2pi);
+	forceFwd{ var theta, x, y;
+		theta = rotation;
+		y = theta.cos;
+		x = theta.sin;
+		arrivePosition = (motionAmount *RealVector2D[x, y]);
+		this.velocity = arrivePosition;
+		this.force_({arg entity; entity.velocity = entity.velocity * friction; 0});
+	}
+
+	forceBack{var theta, x, y;
+		theta = rotation;
+		y = theta.cos;
+		x = theta.sin;
+		arrivePosition = -1 * (motionAmount * RealVector2D[x, y]);
+		this.velocity = arrivePosition;
+		this.force_({arg entity; entity.velocity = entity.velocity * friction; 0})
+	}
+
+	rotateLeft{
+		rotation = (rotation - rotationAmount).wrap(0, 2pi);
+	}
+
+	rotateRight{
+		rotation = (rotation + rotationAmount).wrap(0, 2pi);
 	}
 
 	goto{ arg target;

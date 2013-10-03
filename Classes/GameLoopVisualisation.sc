@@ -4,7 +4,7 @@ GameLoopVisualisation{
 			 var <entManager, <repManager;
 			 var dimensions, gridSize, cellSize, <mainView;
 			 /* shrtcuts for control of camera for focused window. These are going to be moved somewhere else */
-			 var leftRotationRoutine, rightRotationRoutine;
+			 var leftRotationRoutine, rightRotationRoutine, fwdRotationRoutine, backRotationRoutine;
 
 	*new{ arg entManager, repManager;
 			if(instance.isNil, 
@@ -19,6 +19,7 @@ GameLoopVisualisation{
 		instance = this;
 		CmdPeriod.add({this.clear});
 		dimensions = [0, entManager.center[0]*2];
+		this.initCameraRoutines;
 	}
 
 	render {
@@ -61,27 +62,27 @@ GameLoopVisualisation{
 		 	text.string = "Ents: " + entManager.activeEntities.asString + 
 		 							  "- Reps: " + repManager.activeReps.asString;
 		 	repList = repManager.repList;
-		 	repList.size.do { 
-		 		arg index; 
-		 		var spaceIn, currentObst, curRadPix, curWidth, obstacle, obstacPos; 
-		 		obstacle = repList[index]; //get the current object
-		 		if(obstacle.type == 'visual')
-		 		{
-		 			//get position using camera if active
-		 			obstacPos = obstacle.position;
-		 			Pen.width = obstacle.penWidth;
-		 			Pen.color = obstacle.color.alpha_(0.7);
-		 			Pen.beginPath;
-		 			//find the radius in meters and then in pixels
-		 			currentObst = obstacle.radius;
-		 			curRadPix = currentObst*meterInPixels;
-		 			curWidth = curRadPix + curRadPix;
-		 			//Pen.strokeOval(Rect((obstacle.position[0]*meterInPixels)-curRadPix, ((obstacle.position[1]*meterInPixels).linlin(0, 700, 700, 0))-curRadPix, curWidth, curWidth));
-		 			obstacle.draw((Rect((obstacPos[0]*meterInPixels)-curRadPix, ((obstacPos[1]*meterInPixels).linlin(0, h, v, 0))-curRadPix, curWidth, curWidth)))
-		 	  }
-		 	};
-
+				repList.size.do { 
+					arg index; 
+					var spaceIn, currentObst, curRadPix, curWidth, obstacle, obstacPos; 
+					obstacle = repList[index]; //get the current object
+					if(obstacle.type == 'visual')
+					{
+						//get position using camera if active
+						obstacPos = obstacle.position;
+						Pen.width = obstacle.penWidth;
+						Pen.color = obstacle.color.alpha_(0.7);
+						Pen.beginPath;
+						//find the radius in meters and then in pixels
+						currentObst = obstacle.radius;
+						curRadPix = currentObst*meterInPixels;
+						curWidth = curRadPix + curRadPix;
+						//Pen.strokeOval(Rect((obstacle.position[0]*meterInPixels)-curRadPix, ((obstacle.position[1]*meterInPixels).linlin(0, 700, 700, 0))-curRadPix, curWidth, curWidth));
+						obstacle.draw((Rect((obstacPos[0]*meterInPixels)-curRadPix, ((obstacPos[1]*meterInPixels).linlin(0, h, v, 0))-curRadPix, curWidth, curWidth)))
+					}
+				};
 		 };
+		 this.setWindowKeyActions;
     }
 	}
 
@@ -101,6 +102,20 @@ GameLoopVisualisation{
 			0.05.wait;
 			};
 		};
+
+		fwdRotationRoutine = Routine{
+			loop{
+			Camera2D.instance.forceFwd(4);
+			0.05.wait;
+			};
+		};
+
+		backRotationRoutine = Routine{
+			loop{
+			Camera2D.instance.forceBack(4);
+			0.05.wait;
+			};
+		};
 	}
 
 	setWindowKeyActions{
@@ -108,8 +123,16 @@ GameLoopVisualisation{
 			mainView.view.keyDownAction = 
 				{arg view, char, modifiers, unicode, keycode;
 					switch (keycode)
-					{126}{Camera2D.instance.moveFwd(4)}
-					{125}{Camera2D.instance.moveBack(4)}
+					{126}
+					{
+						if(fwdRotationRoutine.isPlaying.not)
+						  {fwdRotationRoutine.reset.play};
+					}
+					{125}
+					{
+						if(backRotationRoutine.isPlaying.not)
+						  {backRotationRoutine.reset.play};
+					}
 					{123}
 					{
 						if(leftRotationRoutine.isPlaying.not)
@@ -127,6 +150,8 @@ GameLoopVisualisation{
 					switch (keycode)
 					{123}{leftRotationRoutine.stop}
 					{124}{rightRotationRoutine.stop}
+					{125}{backRotationRoutine.stop}
+					{126}{fwdRotationRoutine.stop}
 				};
 
 	}

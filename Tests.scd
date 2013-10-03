@@ -29,7 +29,7 @@
 (
 	~entity = Vehicle(
 		~gameloop.world,
-		position: RealVector2D[18, 22],
+		position: RealVector2D[rrand(8.0, 32), rrand(8.0, 32)],
 		radius: 0.4,
 		maxSpeed: 10.6
 	);
@@ -55,13 +55,23 @@
 			PathFollowing.calculate(entity,path, 0.5);
 		});
 	};
-  ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[19,20.2]);});
-	~randForcePath.value;
+  /* ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[19,20.2]);}); */
+	/* ~randForcePath.value; */
 );
 
+s.plotTree;
+s.ping(numberOfTrials);
+~entity.detachAll;
 ~gameloop.clear;
 GameLoopDecoder.instance.clear
 ~gameloop.clearEntities;
+~camera.maxForce = 1000;
+~camera.mass= 0.05;
+~camera.maxSpeed = 10;
+~camera.motionAmount = 30;
+~camera.rotationAmount = 0.01pi;
+Camera2D.instance.friction = 0.9;
+
 
 ~camera.force_({arg ent; Arrive.calculate(ent, RealVector2D[24,20])}); 
 ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[19,20.2]);});
