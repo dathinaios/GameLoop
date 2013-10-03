@@ -2,7 +2,7 @@
 GameLoop{
 			 classvar <instance;
 			 var <sceneWidth, <sceneHeight, <cellSize;
-			 var <entManager, <repManager, gui, visualisation;
+			 var <entManager, <repManager, gui, visualiser;
 			 var <mainRoutine;
 
 	*new{ arg sceneWidth = 40, sceneHeight = 40, cellSize = 1;
@@ -18,17 +18,17 @@ GameLoop{
 		instance   = this;
 		entManager = EntityManager(SpatialHashing(sceneWidth, sceneHeight, cellSize));
 		repManager = RepresentationManager.new;
-		visualisation   = GameLoopVisualisation(entManager,repManager);
+		visualiser   = GameLoopVisualisation(entManager,repManager);
 		gui = GameLoopGUI(entManager,repManager);
 		CmdPeriod.add({this.clear});
 	}
 
-	visualisation{ 
-		visualisation.gui;
+	visualiser{ 
+		visualiser.gui;
 	}
 
-	visualisationClose{
-		visualisation.close;
+	visualiserClose{
+		visualiser.close;
 	}
 
 	gui{
@@ -50,7 +50,7 @@ GameLoop{
 				mainRoutine = Routine{
 					inf.do{
 						entManager.doAll;
-						{visualisation.render}.defer;
+						{visualiser.render}.defer;
 						entManager.dt.wait;
 						}
 				}.play(TempoClock.default)
@@ -76,7 +76,7 @@ GameLoop{
 	clear{
 		mainRoutine.stop;
 		entManager.clear;
-		visualisation.clear;
+		visualiser.clear;
 		instance = nil;
 	}
 

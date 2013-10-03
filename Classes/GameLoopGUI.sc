@@ -38,13 +38,23 @@ GameLoopGUI{
 
 		mainView ?? {
 
-		 var   h = 700, v = 400, seed, run = true,  spaceUnits, spaceUnits2, meterInPixels,  speakerRadInPixels;
-		 var text;
+		 var   h = 700, v = 400,run = true;
+		 var visButton;
 		 mainView = Window("GameLoop", Rect(-1350, 600, h, v), false);
 		 mainView.view.background = Color.black;
 		 mainView.onClose = { run = false; mainView = nil; }; // stop the thread on close
 		 mainView.front;
-		 //mainView.alwaysOnTop = true;
+		 mainView.alwaysOnTop = true;
+
+		 visButton = Button(mainView, Rect(10,10,100,30)).states_([
+			     ["Visualiser",Color.rand,Color.rand],
+			     ["Close Visualiser",Color.rand,Color.rand],
+		 ]);
+		 visButton.action_({arg butt;
+		 	 switch (butt.value)
+			 {1}{GameLoop.instance.visualiser}
+			 {0}{GameLoop.instance.visualiserClose};
+		 });
 		 /* display some useful info */
 		 //text = StaticText(mainView, Rect(3, 3, 200, 20)).stringColor_(Color.grey);
 		 
