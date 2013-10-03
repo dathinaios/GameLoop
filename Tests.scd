@@ -4,7 +4,7 @@
 	~decoder = GameLoopDecoder('AmbIEM', 'binaural');
 	//Allow time for the decoder to be created....
 	~gameloop = GameLoop(40, 40, 1).play(0.05);
-	~gameloop.visualisation; 
+	~gameloop.visualiser; 
 	~gameloop.gui; 
 )
 
@@ -90,6 +90,8 @@ GameLoopDecoder.instance.clear
 ~camera.rotateRight(0.4pi);
 ~camera.rotateLeft(0.4pi);
 ~camera.remove
+
+~gameloop.visualisation;
 ~gameloop.guiClose; 
 
 

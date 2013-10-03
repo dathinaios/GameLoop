@@ -41,7 +41,7 @@ GameLoopVisualisation{
 
 		 var   h = 400, v = 400, seed, run = true,  spaceUnits, spaceUnits2, meterInPixels,  speakerRadInPixels;
 		 var text;
-		 mainView = Window("Visuals", Rect(-450, 400, h, v), false);
+		 mainView = Window("Visualiser", Rect(-450, 400, h, v), false);
 		 mainView.view.background = Color.black;
 		 mainView.onClose = { run = false; mainView = nil; }; // stop the thread on close
 		 mainView.front;

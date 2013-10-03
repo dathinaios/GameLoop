@@ -11,7 +11,7 @@ GameLoopGUI{
 				{
 				^super.newCopyArgs(entManager, repManager).init;
 				},
-				{"There is already an active instance of GameLoopVisualisation".error;}
+				{"There is already an active instance of GameLoopGUI".error;}
 			);		
 	}
 
@@ -26,7 +26,7 @@ GameLoopGUI{
 	}
 
 	close {
-		if(mainView.notNil, {mainView.close}, {"There is no view open for GameLoopVisualisatino".error});
+		if(mainView.notNil, {mainView.close}, {"There is no view open for GameLoopGUI".error});
 	}
 
 	clear{
@@ -50,6 +50,9 @@ GameLoopGUI{
 			     ["Visualiser",Color.rand,Color.rand],
 			     ["Close Visualiser",Color.rand,Color.rand],
 		 ]);
+
+		 if (GameLoopVisualisation.instance.mainView != nil) {visButton.value = 1};
+
 		 visButton.action_({arg butt;
 		 	 switch (butt.value)
 			 {1}{GameLoop.instance.visualiser}
