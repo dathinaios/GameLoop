@@ -65,13 +65,14 @@ s.ping(numberOfTrials);
 ~gameloop.clear;
 GameLoopDecoder.instance.clear
 ~gameloop.clearEntities;
+
 ~camera.maxForce = 1000;
 ~camera.mass= 0.05;
 ~camera.maxSpeed = 10;
 ~camera.motionAmount = 30;
 ~camera.rotationAmount = 0.01pi;
-Camera2D.instance.friction = 0.9;
-
+~camera.friction = 0.9;
+~camera.remove(true);
 
 ~camera.force_({arg ent; Arrive.calculate(ent, RealVector2D[24,20])}); 
 ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[19,20.2]);});
