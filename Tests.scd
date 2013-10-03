@@ -4,6 +4,7 @@
 	~decoder = GameLoopDecoder('AmbIEM', 'binaural');
 	//Allow time for the decoder to be created....
 	~gameloop = GameLoop(40, 40, 1).play(0.05);
+	~gameloop.visualisation; 
 	~gameloop.gui; 
 )
 
@@ -288,5 +289,33 @@ a.first()
 )
 
 ~entity1.remove; ~entity2.remove;
+
+
+
+
+
+
+
+
+                                                                                                                                                   ppppp   ppppppppp   
+                                                                                                                                                   p.:::ppp.::::::::p  
+                GGGGGGGGGGGGG                                            							 	 LLLLLLLLLLL                                               p.::::::::::::::::p     
+             GGG.:::::::::::G                                                            L.::::::::L                                               pp.:::::ppppp.:::::p    
+           GG.:::::::::::::G                                                             L.::::::::L                                                p.::::p     p.::::p  
+          G.::::GGGGGGGG.:::G                                                            LL.::::::LL                                                p.::::p     p.::::p
+         G.::::G       GGGGGG  aaaaaaaaaaaaa      mmmmmmm    mmmmmmm       eeeeeeeeeeee    L.::::L                  ooooooooooo      ooooooooooo    p.::::p     p.::::p
+        G.::::G                a.:::::::::::a   mm.::::::m  m.::::::mm   ee.:::::::::::ee  L.::::L                oo.::::::::::oo  oo.::::::::::oo  p.::::p    p.:::::p
+        G.::::G                aaaaaaaaa.::::a m.:::::::::mm.:::::::::m e.:::::eeeee.::::eeL.::::L               o.::::::::::::::oo.::::::::::::::o p.::::ppppp.::::::p
+        G.::::G    GGGGGGGGGG           a.:::a m.:::::::::::::::::::::me.:::::e     e.::::eL.::::L               o.::::ooooo.::::oo.::::ooooo.::::o p.:::::::::::::::p 
+        G.::::G    G.:::::::G    aaaaaaa.::::a m.::::mmm.:::::mmm.::::me.::::::eeeee.:::::eL.::::L               o.:::o     o.:::oo.:::o     o.:::o p.:::::::::::::pp  
+        G.::::G    GGGGG.:::G  aa.:::::::::::a m.:::m   m.:::m   m.:::me.::::::::::::::::e L.::::L               o.:::o     o.:::oo.:::o     o.:::o p.:::::pppppppp    
+        G.::::G        G.:::G a.:::aaaa.:::::a m.:::m   m.:::m   m.:::me.:::::eeeeeeeeeee  L.::::L               o.:::o     o.:::oo.:::o     o.:::o p.::::p            
+         G.::::G       G.:::Ga.:::a    a.::::a m.:::m   m.:::m   m.:::me.::::::e           L.::::L         LLLLLLo.:::o     o.:::oo.:::o     o.:::o p.::::p            
+          G.::::GGGGGGGG.:::Ga.:::a    a.::::a m.:::m   m.:::m   m.:::me.:::::::e        LL.::::::LLLLLLLLL.::::Lo.::::ooooo.::::oo.::::ooooo.::::op.::::::p           
+           GG.::::::::::::::Ga.::::aaaa.:::::a m.:::m   m.:::m   m.:::m e.:::::::eeeeeeeeL.:::::::::::::::::::::Lo.::::::::::::::oo.::::::::::::::op.::::::p           
+             GGG.:::::GGG.::G a.:::::::::aa.::am.:::m   m.:::m   m.:::m  ee.::::::::::::eL.:::::::::::::::::::::L oo.::::::::::oo  oo.::::::::::oo p.::::::p           
+                GGGGGG   GGGG  aaaaaaaaaa  aaaammmmmm   mmmmmm   mmmmmm    eeeeeeeeeeeeeeLLLLLLLLLLLLLLLLLLLLLLLL   ooooooooooo      ooooooooooo   ppppppppp           
+
+																																	          	- "Press D for Help" -
 
 
