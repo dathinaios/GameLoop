@@ -91,28 +91,28 @@ GameLoopVisualisation{
 	initCameraRoutines{
 		leftRotationRoutine = Routine{ 
 			loop{
-			Camera2D.instance.rotateLeft(0.01pi);
+			Camera2D.instance.rotateLeft;
 			0.05.wait;
 			};
 		};
 
 		rightRotationRoutine = Routine{
 			loop{
-			Camera2D.instance.rotateRight(0.01pi);
+			Camera2D.instance.rotateRight;
 			0.05.wait;
 			};
 		};
 
 		fwdRotationRoutine = Routine{
 			loop{
-			Camera2D.instance.forceFwd(4);
+			Camera2D.instance.forceFwd;
 			0.05.wait;
 			};
 		};
 
 		backRotationRoutine = Routine{
 			loop{
-			Camera2D.instance.forceBack(4);
+			Camera2D.instance.forceBack;
 			0.05.wait;
 			};
 		};

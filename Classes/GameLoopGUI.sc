@@ -3,7 +3,6 @@ GameLoopGUI{
 			 classvar <instance;
 			 var <entManager, <repManager;
 			 var dimensions, gridSize, cellSize, <mainView;
-			 /* shrtcuts for control of camera for focused window. These are going to be moved somewhere else */
 			 var leftRotationRoutine, rightRotationRoutine, fwdRotationRoutine, backRotationRoutine;
 
 	*new{ arg entManager, repManager;
@@ -39,69 +38,64 @@ GameLoopGUI{
 		mainView ?? {
 
 		 var   h = 700, v = 400,run = true;
-		 var visButton;
 		 mainView = Window("GameLoop", Rect(-1350, 600, h, v), false);
 		 mainView.view.background = Color.black;
 		 mainView.onClose = { run = false; mainView = nil; }; // stop the thread on close
 		 mainView.front;
 		 mainView.alwaysOnTop = true;
+		 this.createVisualiserButton;
 
-		 visButton = Button(mainView, Rect(10,10,100,30)).states_([
-			     ["Visualiser",Color.rand,Color.rand],
-			     ["Close Visualiser",Color.rand,Color.rand],
-		 ]);
-
-		 if (GameLoopVisualisation.instance.mainView != nil) {visButton.value = 1};
-
-		 visButton.action_({arg butt;
-		 	 switch (butt.value)
-			 {1}{GameLoop.instance.visualiser}
-			 {0}{GameLoop.instance.visualiserClose};
-		 });
-		 /* display some useful info */
-		 //text = StaticText(mainView, Rect(3, 3, 200, 20)).stringColor_(Color.grey);
-		 
 		 //Pen.image("/Users/dathinaios/Develop/supercollider/gameloop/Classes/Logo.png");
-		 
 		 mainView.drawFunc = { };
 		 this.setWindowKeyActions;
     }
 	}
 
-	/* Shortcuts for control of camera from focused window */
+	createVisualiserButton{ var visButton;
+		 visButton = Button(mainView, Rect(10,10,150,30)).states_([
+			     ["Visualiser",Color.grey,Color.black],
+			     ["Close Visualiser",Color.green,Color.black],
+		 ]);
+		 if (GameLoopVisualisation.instance.mainView != nil) {visButton.value = 1};
+		 visButton.action_({arg butt;
+		 	 switch (butt.value)
+			 {1}{GameLoop.instance.visualiser}
+			 {0}{GameLoop.instance.visualiserClose};
+		 });
+		 ^visButton.canFocus = false;
+	}
 
 	initCameraRoutines{
 		leftRotationRoutine = Routine{ 
 			loop{
-			Camera2D.instance.rotateLeft(0.01pi);
+			Camera2D.instance.rotateLeft;
 			0.05.wait;
 			};
 		};
 
 		rightRotationRoutine = Routine{
 			loop{
-			Camera2D.instance.rotateRight(0.01pi);
+			Camera2D.instance.rotateRight;
 			0.05.wait;
 			};
 		};
 
 		fwdRotationRoutine = Routine{
 			loop{
-			Camera2D.instance.forceFwd(4);
+			Camera2D.instance.forceFwd;
 			0.05.wait;
 			};
 		};
 
 		backRotationRoutine = Routine{
 			loop{
-			Camera2D.instance.forceBack(4);
+			Camera2D.instance.forceBack;
 			0.05.wait;
 			};
 		};
 	}
 
 	setWindowKeyActions{
-			//Specific mainview setting and keyboard controls
 			mainView.view.keyDownAction = 
 				{arg view, char, modifiers, unicode, keycode;
 					switch (keycode)
