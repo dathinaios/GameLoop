@@ -1,23 +1,33 @@
 
 GameLoopGUI{
 			 classvar <instance;
-			 var <entManager, <repManager;
+			 var gameloop, <entManager, <repManager;
 			 var dimensions, gridSize, cellSize, <mainView;
 			 var leftRotationRoutine, rightRotationRoutine, fwdRotationRoutine, backRotationRoutine;
+			 var visualiser;
 
-	*new{ arg entManager, repManager;
+	*new{ arg gameloop;
 			if(instance.isNil, 
 				{
-				^super.newCopyArgs(entManager, repManager).init;
+				^super.newCopyArgs(gameloop).init;
 				},
 				{"There is already an active instance of GameLoopGUI".error;}
 			);		
 	}
 
 	init{
+		entManager = gameloop.entManager;
+		repManager = gameloop.repManager;
+		visualiser   = GameLoopVisualisation(entManager,repManager);
 		instance = this;
 		CmdPeriod.add({this.clear});
 		this.initCameraRoutines;
+		visualiser.gui;
+		this.gui;
+	}
+	
+	update{
+		{visualiser.render}.defer;
 	}
 
 	render {
@@ -31,6 +41,7 @@ GameLoopGUI{
 	clear{
 		if(mainView.notNil, {mainView.close});
 		instance = nil;
+		visualiser.clear;
 	}
 
 	gui{
@@ -56,11 +67,16 @@ GameLoopGUI{
 			     ["Visualiser",Color.grey,Color.black],
 			     ["Close Visualiser",Color.green,Color.black],
 		 ]);
-		 if (GameLoopVisualisation.instance.mainView != nil) {visButton.value = 1};
+
+		 if (visualiser.mainView != nil, 
+				{visButton.value = 1},
+				{visButton.value = 0}
+			);
+
 		 visButton.action_({arg butt;
 		 	 switch (butt.value)
-			 {1}{GameLoop.instance.visualiser}
-			 {0}{GameLoop.instance.visualiserClose};
+			 {1}{visualiser.gui}
+			 {0}{visualiser.close};
 		 });
 		 ^visButton.canFocus = false;
 	}

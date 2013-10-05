@@ -2,7 +2,7 @@
 GameLoop{
 			 classvar <instance;
 			 var <sceneWidth, <sceneHeight, <cellSize;
-			 var <entManager, <repManager, gui, visualiser;
+			 var <entManager, <repManager;
 			 var <mainRoutine;
 
 	*new{ arg sceneWidth = 40, sceneHeight = 40, cellSize = 1;
@@ -18,28 +18,19 @@ GameLoop{
 		instance   = this;
 		entManager = EntityManager(SpatialHashing(sceneWidth, sceneHeight, cellSize));
 		repManager = RepresentationManager.new;
-		visualiser   = GameLoopVisualisation(entManager,repManager);
-		gui = GameLoopGUI(entManager,repManager);
 		CmdPeriod.add({this.clear});
 	}
-
-	visualiser{ 
-		visualiser.gui;
+	
+	gui{var gui;
+			gui = GameLoopGUI(this);
+			this.addDependant(gui);
 	}
-
-	visualiserClose{
-		visualiser.close;
-	}
-
-	gui{
-		gui.gui;
-	}
-
+	
 	guiClose{
-		gui.close;
+			GameLoopGUI.instance.clear;
 	}
 
-	world{ //could be a collection of worlds...
+	world{
 		^entManager
 	}
 
@@ -50,7 +41,7 @@ GameLoop{
 				mainRoutine = Routine{
 					inf.do{
 						entManager.doAll;
-						{visualiser.render}.defer;
+						this.changed(\update);
 						entManager.dt.wait;
 						}
 				}.play(TempoClock.default)
@@ -76,7 +67,6 @@ GameLoop{
 	clear{
 		mainRoutine.stop;
 		entManager.clear;
-		visualiser.clear;
 		instance = nil;
 	}
 
