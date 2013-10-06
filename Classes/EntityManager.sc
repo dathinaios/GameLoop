@@ -7,7 +7,7 @@ EntityManager {
 			 var <currentCollisionList;
 
 	*new { arg spatialIndex = SpatialHashing(20, 20, 0.5); 
-	^super.newCopyArgs(spatialIndex).init
+		^super.newCopyArgs(spatialIndex).init
 	} 
 	
 	init{
@@ -16,7 +16,15 @@ EntityManager {
 		mobList = List.new;
 		staticList = List.new;
 		currentCollisionList = List.new;
-		//get the dimension of the space from the spatial index
+		this.getDimensionsFromIndex;
+	}
+
+	newIndex{ arg newIndex;
+		spatialIndex = newIndex;
+		this.getDimensionsFromIndex;
+	}
+
+	getDimensionsFromIndex{
 		sceneWidth = spatialIndex.sceneWidth;
 		sceneHeight = spatialIndex.sceneHeight;
 	}
@@ -30,11 +38,10 @@ EntityManager {
 	}
 
 	doAll{
-		//First let's resolve all the collisions
 		this.collisionResolution;
-		this.refreshIndex1; //unregisterAll
+		this.unregisterIndex; 
 		this.update; 
-		this.refreshIndex2; //reregisterAll
+		this.registerIndex;
 		this.collisionCheck; 
 	}
 
@@ -68,13 +75,13 @@ EntityManager {
 	/* refresh can not happen simply by clearing all buckets because
 	we need to keep the registered static elements */
 
-	refreshIndex1 {
+	unregisterIndex {
 				mobList.do{arg i;
 					spatialIndex.unregister(i);
 				};				 
 	}
 	
-	refreshIndex2 { 
+	registerIndex { 
 				mobList.do{arg i;
 					spatialIndex.register(i);
 				};				 

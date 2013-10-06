@@ -56,16 +56,19 @@
 			PathFollowing.calculate(entity,path, 0.5);
 		});
 	};
-  /* ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[19,20.2]);}); */
+  /* ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[10,11]);}); */
 	/* ~randForcePath.value; */
 );
 
 s.plotTree;
 s.ping(numberOfTrials);
+~gameloop.entManager.newIndex(SpatialHashing(20, 20, 0.5)); 
+
 ~entity.detachAll;
 ~gameloop.clear;
 GameLoopDecoder.instance.clear
 ~gameloop.clearEntities;
+~camera.remove(true)
 
 ~camera.maxForce = 1000;
 ~camera.mass= 0.05;
