@@ -36,23 +36,23 @@ GameLoopVisualiser{
 
 	gui{
 		this.createMainView;
-		this.setViewOptions(mainView);
+		this.setViewOptions;
 		this.setDrawFunction;
 		this.setWindowKeyActions;
 	}
 
 	createMainView{ 
 		mainView ?? { var text;
-			mainView = Window("Visualiser", Rect(-450, 400,400, 400), false);
+			mainView = Window("Visualiser", Rect(-450, 400,400, 400), scroll: false);
 			infoString= StaticText(mainView, Rect(3, 3, 200, 20)).stringColor_(Color.grey);
 		}
 	}
 
-	setViewOptions{ arg view;
-		view.view.background = Color.black;
-		view.onClose = {mainView = nil; }; 
-		view.front;
-		view.alwaysOnTop = true;
+	setViewOptions{ 
+		mainView.view.background = Color.black;
+		mainView.onClose = {mainView = nil; }; 
+		mainView.front;
+		mainView.alwaysOnTop = true;
 	}
 
 	setDrawFunction{
@@ -70,20 +70,26 @@ GameLoopVisualiser{
 		}
 	}
 
-	drawEntity{ arg obstacle; var spaceIn, currentObst, curRadPix, curWidth, obstacPos; 
-							var h = 400, v = 400;
+	drawEntity{arg obstacle; 
+						 var radiusInPixels, widthInPixels, obstacPos; 
+						 var left, top;
+						 var h = 400, w = 400;
 
 		obstacPos = obstacle.position;
-		Pen.width = obstacle.penWidth;
-		Pen.color = obstacle.color.alpha_(0.7);
-		Pen.beginPath;
+		radiusInPixels = obstacle.radius * meterInPixels;
+		widthInPixels = radiusInPixels + radiusInPixels;
 
-		//find the radius in meters and then in pixels
-		currentObst = obstacle.radius;
-		curRadPix = currentObst*meterInPixels;
-		curWidth = curRadPix + curRadPix;
+		left = (obstacPos[0]*meterInPixels)-radiusInPixels;
+		top  = ((obstacPos[1]*meterInPixels).linlin(0, h, w, 0)) - radiusInPixels;
 
-		obstacle.draw((Rect((obstacPos[0]*meterInPixels)-curRadPix, ((obstacPos[1]*meterInPixels).linlin(0, h, v, 0))-curRadPix, curWidth, curWidth)))
+		if (top > -4 and:{top < 396} and:{left > -4} and:{left<396})
+		{
+			Pen.width = obstacle.penWidth;
+			Pen.color = obstacle.color.alpha_(0.7);
+			Pen.beginPath;
+
+			obstacle.draw(Rect(left, top, widthInPixels, widthInPixels));
+		};
 	}
 
 
