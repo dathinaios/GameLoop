@@ -1,5 +1,5 @@
 
-GameLoopVisualisation{
+GameLoopVisualiser{
 			 classvar <instance;
 			 var <entManager, <repManager;
 			 var dimensions, gridSize, cellSize, <mainView;
@@ -11,7 +11,7 @@ GameLoopVisualisation{
 				{
 				^super.newCopyArgs(entManager, repManager).init;
 				},
-				{"There is already an active instance of GameLoopVisualisation".error;}
+				{"There is already an active instance of GameLoopVisualiser".error;}
 			);		
 	}
 
@@ -27,7 +27,7 @@ GameLoopVisualisation{
 	}
 
 	close {
-		if(mainView.notNil, {mainView.close}, {"There is no view open for GameLoopVisualisatino".error});
+		if(mainView.notNil, {mainView.close}, {"There is no view open for GameLoopVisualiser".error});
 	}
 
 	clear{

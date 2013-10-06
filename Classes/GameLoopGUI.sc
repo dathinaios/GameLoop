@@ -18,7 +18,7 @@ GameLoopGUI{
 	init{
 		entManager = gameloop.entManager;
 		repManager = gameloop.repManager;
-		visualiser   = GameLoopVisualisation(entManager,repManager);
+		visualiser   = GameLoopVisualiser(entManager,repManager);
 		instance = this;
 		CmdPeriod.add({this.clear});
 		this.initCameraRoutines;
@@ -26,13 +26,13 @@ GameLoopGUI{
 		this.gui;
 	}
 	
-	update{
-		{visualiser.render}.defer;
-	}
-
-	render {
-		if(mainView.notNil, {mainView.refresh});
-	}
+	update { arg theChanged, message;
+		switch (message[0])
+		{\update} 
+		{{visualiser.render}.defer;}
+		{\switchSpace}
+		{this.switchSpace};
+	} 
 
 	close {
 		if(mainView.notNil, {mainView.close}, {"There is no view open for GameLoopGUI".error});

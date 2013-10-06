@@ -25,6 +25,7 @@ GameLoop{
 		entManager.newIndex(SpatialHashing(width, height, cell));
 		this.clearEntities;
 		this.resetCamera;
+		this.changed([\switchSpace]);
 	}
 	
 	gui{var gui;
@@ -47,7 +48,7 @@ GameLoop{
 				mainRoutine = Routine{
 					inf.do{
 						entManager.doAll;
-						this.changed(\update);
+						this.changed([\update]);
 						entManager.dt.wait;
 						}
 				}.play(TempoClock.default)
