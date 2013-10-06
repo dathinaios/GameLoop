@@ -62,7 +62,7 @@
 
 s.plotTree;
 s.ping(numberOfTrials);
-~gameloop.entManager.newIndex(SpatialHashing(20, 20, 0.5)); 
+~gameloop.switchSpace(20, 20, 0.5);
 
 ~entity.detachAll;
 ~gameloop.clear;

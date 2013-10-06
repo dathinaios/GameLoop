@@ -21,6 +21,12 @@ GameLoop{
 		CmdPeriod.add({this.clear});
 	}
 	
+	switchSpace{ arg width = sceneWidth, height = sceneHeight, cell = cellSize;
+		entManager.newIndex(SpatialHashing(width, height, cell));
+		this.clearEntities;
+		this.resetCamera;
+	}
+	
 	gui{var gui;
 			gui = GameLoopGUI(this);
 			this.addDependant(gui);
@@ -67,11 +73,25 @@ GameLoop{
 	clear{
 		mainRoutine.stop;
 		entManager.clear;
+		this.removeCamera;
+		this.guiClose;
 		instance = nil;
 	}
 
 	clearEntities{
 		entManager.clear;
+	}
+
+	currentCamera{
+		^Camera2D.instance;
+	}
+
+	resetCamera{
+		this.currentCamera.reset;
+	}
+
+	removeCamera{
+		this.currentCamera.remove(true);
 	}
 
 }
