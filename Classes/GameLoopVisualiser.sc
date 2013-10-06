@@ -2,8 +2,8 @@
 GameLoopVisualiser{
 			 classvar <instance;
 			 var <entManager, <repManager;
-			 var dimensions, gridSize, cellSize, <mainView;
-			 /* shrtcuts for control of camera for focused window. These are going to be moved somewhere else */
+			 var <mainView, infoString;
+			 var <>meterInPixels = 10;
 			 var leftRotationRoutine, rightRotationRoutine, fwdRotationRoutine, backRotationRoutine;
 
 	*new{ arg entManager, repManager;
@@ -18,7 +18,6 @@ GameLoopVisualiser{
 	init{
 		instance = this;
 		CmdPeriod.add({this.clear});
-		dimensions = [0, entManager.center[0]*2];
 		this.initCameraRoutines;
 	}
 
@@ -36,56 +35,63 @@ GameLoopVisualiser{
 	}
 
 	gui{
-
-		mainView ?? {
-
-		 var   h = 400, v = 400, seed, run = true,  spaceUnits, spaceUnits2, meterInPixels,  speakerRadInPixels;
-		 var text;
-		 mainView = Window("Visualiser", Rect(-450, 400, h, v), false);
-		 mainView.view.background = Color.black;
-		 mainView.onClose = { run = false; mainView = nil; }; // stop the thread on close
-		 mainView.front;
-		 mainView.alwaysOnTop = true;
-		 //for  space of 700 pixels is 20 meters one meter is 35 pixels
-		 meterInPixels = h/(dimensions[1]-dimensions[0]); //assumes h = v
-		 speakerRadInPixels = 2 * meterInPixels;
-		 /* display some useful info */
-		 text = StaticText(mainView, Rect(3, 3, 200, 20)).stringColor_(Color.grey);
-		 
-		 mainView.drawFunc = {
-		 	/* Pen.use { */
-		 	var divisions, subOrAdd;
-		 	var repList;
-		 	
-		 	//to draw the obstacles 
-		 	Pen.width = 2;
-		 	text.string = "Ents: " + entManager.activeEntities.asString + 
-		 							  "- Reps: " + repManager.activeReps.asString;
-		 	repList = repManager.repList;
-				repList.size.do { 
-					arg index; 
-					var spaceIn, currentObst, curRadPix, curWidth, obstacle, obstacPos; 
-					obstacle = repList[index]; //get the current object
-					if(obstacle.type == 'visual')
-					{
-						//get position using camera if active
-						obstacPos = obstacle.position;
-						Pen.width = obstacle.penWidth;
-						Pen.color = obstacle.color.alpha_(0.7);
-						Pen.beginPath;
-						//find the radius in meters and then in pixels
-						currentObst = obstacle.radius;
-						curRadPix = currentObst*meterInPixels;
-						curWidth = curRadPix + curRadPix;
-						//Pen.strokeOval(Rect((obstacle.position[0]*meterInPixels)-curRadPix, ((obstacle.position[1]*meterInPixels).linlin(0, 700, 700, 0))-curRadPix, curWidth, curWidth));
-						obstacle.draw((Rect((obstacPos[0]*meterInPixels)-curRadPix, ((obstacPos[1]*meterInPixels).linlin(0, h, v, 0))-curRadPix, curWidth, curWidth)))
-					}
-				};
-		 };
-		 this.setWindowKeyActions;
-    }
+		this.createMainView;
+		this.setViewOptions(mainView);
+		this.setDrawFunction;
+		this.setWindowKeyActions;
 	}
 
+	createMainView{ 
+		mainView ?? { var text;
+			mainView = Window("Visualiser", Rect(-450, 400,400, 400), false);
+			infoString= StaticText(mainView, Rect(3, 3, 200, 20)).stringColor_(Color.grey);
+		}
+	}
+
+	setViewOptions{ arg view;
+		view.view.background = Color.black;
+		view.onClose = {mainView = nil; }; 
+		view.front;
+		view.alwaysOnTop = true;
+	}
+
+	setDrawFunction{
+		mainView.drawFunc = {
+			infoString.string =	this.getInfoString;
+			this.drawEntities(repManager.repList)
+		};
+	}
+
+	drawEntities{ arg repList; var obstacle;
+		repList.size.do { arg index; 
+			obstacle = repList[index]; 
+			if(obstacle.type == 'visual')
+			  {this.drawEntity(obstacle)}
+		}
+	}
+
+	drawEntity{ arg obstacle; var spaceIn, currentObst, curRadPix, curWidth, obstacPos; 
+							var h = 400, v = 400;
+
+		obstacPos = obstacle.position;
+		Pen.width = obstacle.penWidth;
+		Pen.color = obstacle.color.alpha_(0.7);
+		Pen.beginPath;
+
+		//find the radius in meters and then in pixels
+		currentObst = obstacle.radius;
+		curRadPix = currentObst*meterInPixels;
+		curWidth = curRadPix + curRadPix;
+
+		obstacle.draw((Rect((obstacPos[0]*meterInPixels)-curRadPix, ((obstacPos[1]*meterInPixels).linlin(0, h, v, 0))-curRadPix, curWidth, curWidth)))
+	}
+
+
+	getInfoString{ var string;
+		string =   "Ents: " + entManager.activeEntities.asString +
+						 "- Reps: " + repManager.activeReps.asString;
+		^string;
+	}
 	/* Shortcuts for control of camera from focused window */
 
 	initCameraRoutines{
