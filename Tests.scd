@@ -301,9 +301,6 @@ a.first()
 
 
 
-
-
-
                                                                                                                                                    
                                                                                                                                                    
                 GGGGGGGGGGGGG                                            							 	 LLLLLLLLLLL                                                   

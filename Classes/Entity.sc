@@ -104,18 +104,18 @@ MobileEntity : Entity { var <>velocity, <>collisionType;
 Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTurnRate; 
 	
 	*new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 1.0, 
-						velocity = RealVector2D[0, 0], collisionType = \free, heading, 
-						side, maxSpeed = 100, maxForce = 40, maxTurnRate = 2;
+						velocity = RealVector2D[0, 0], collisionType = \free, maxSpeed = 100, 
+						maxForce = 40, heading, side, maxTurnRate = 2;
 		  ^super.new(world, 
 					 position, 
 					 radius, 
 					 mass
 		  ).velocity_(velocity)
 		   .collisionType_(collisionType)
-		   .heading_(heading)
-		   .side_(side)
 		   .maxSpeed_(maxSpeed)
 		   .maxForce_(maxForce)
+		   .heading_(heading)
+		   .side_(side)
 		   .maxTurnRate_(maxTurnRate).init;
 	}
 	
