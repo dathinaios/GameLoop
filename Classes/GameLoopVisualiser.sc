@@ -23,7 +23,7 @@ GameLoopVisualiser{
 	}
 
 	render {
-		if(mainView.notNil, {mainView.refresh});
+		if(mainView.notNil, {{ mainView.refresh }.defer});
 	}
 
 	close {
