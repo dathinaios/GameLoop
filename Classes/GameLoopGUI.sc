@@ -29,9 +29,7 @@ GameLoopGUI{
 	update { arg theChanged, message;
 		switch (message[0])
 		{\update} 
-		{{visualiser.render}.defer;}
-		{\switchSpace}
-		{this.switchSpace};
+		{{visualiser.render}.defer;};
 	} 
 
 	close {

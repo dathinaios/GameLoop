@@ -2,7 +2,8 @@
 GameLoopVisualiser{
 			 classvar <instance;
 			 var <entManager, <repManager;
-			 var <mainView, infoString;
+			 var <mainView, infoString; 
+			 var width = 400, height = 400;
 			 var <>meterInPixels = 10;
 			 var leftRotationRoutine, rightRotationRoutine, fwdRotationRoutine, backRotationRoutine;
 
@@ -43,7 +44,7 @@ GameLoopVisualiser{
 
 	createMainView{ 
 		mainView ?? { var text;
-			mainView = Window("Visualiser", Rect(-450, 400,400, 400), scroll: false);
+			mainView = Window("Visualiser", Rect(-450, 400, width, height), scroll: false);
 			infoString= StaticText(mainView, Rect(3, 3, 200, 20)).stringColor_(Color.grey);
 		}
 	}
@@ -73,16 +74,18 @@ GameLoopVisualiser{
 	drawEntity{arg obstacle; 
 						 var radiusInPixels, widthInPixels, obstacPos; 
 						 var left, top;
-						 var h = 400, w = 400;
 
 		obstacPos = obstacle.position;
 		radiusInPixels = obstacle.radius * meterInPixels;
 		widthInPixels = radiusInPixels + radiusInPixels;
 
 		left = (obstacPos[0]*meterInPixels)-radiusInPixels;
-		top  = ((obstacPos[1]*meterInPixels).linlin(0, h, w, 0)) - radiusInPixels;
+		top  = (obstacPos[1]*meterInPixels) - radiusInPixels;
+		left = left + (width - ( entManager.sceneWidth * meterInPixels ) * 0.5);
+		top = top + (height - ( entManager.sceneHeight * meterInPixels ) * 0.5);
+		top = top.linlin(0, height, height, 0);
 
-		if (top > -4 and:{top < 396} and:{left > -4} and:{left<396})
+		if (top > 0 and:{top < 400} and:{left > -4} and:{left<396})
 		{
 			Pen.width = obstacle.penWidth;
 			Pen.color = obstacle.color.alpha_(0.7);
