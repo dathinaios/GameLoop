@@ -1,8 +1,7 @@
 
 Entity {
 		var <>world, <>position, <>radius, <>mass;
-		var <>colliding, <active;
-
+		var <>colliding, <active, >collisionFunc; 
 	*new{ arg world, position = RealVector2D[15,15], radius = 1.0, mass = 1.0;
 		  ^super.newCopyArgs(world, 
 												position, 
@@ -20,6 +19,7 @@ Entity {
 			mass = mass ?? {1.0};
 			colliding = false;
 			active = false;
+			collisionFunc = {};
 	}
 
 	attach{arg rep;
@@ -52,6 +52,7 @@ Entity {
 	
 	collision { arg entitiesArray; 
 					colliding = true;
+					collisionFunc.value(this, entitiesArray);
 					this.changed([\collision, entitiesArray]);
 	}
 
