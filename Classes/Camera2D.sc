@@ -26,6 +26,10 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 			);		
 	}
 
+	collisionType_{
+		"Collision type for Camera2D has to be \free".error;
+	}
+
 	*active{
 		if(instance.isNil,
 			{^false},
@@ -51,14 +55,19 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 	applyTransformation{ arg entity; 
 						var entPos, newPos, theta, thetaSin, thetaCos, rad, x,y;
 						var xMinusx, yMinusy;
-		entPos = entity.position;
-		thetaSin = rotation.sin;
-		thetaCos = rotation.cos;
-		xMinusx = entPos[0] - position[0];
-		yMinusy = entPos[1] - position[1];
-		x = (xMinusx * thetaCos) - (yMinusy * thetaSin);
-		y = (xMinusx * thetaSin) + (yMinusy * thetaCos);
-		^RealVector2D[x,y];
+			if (entity.class != Camera2D,
+				{
+					entPos = entity.position;
+					thetaSin = rotation.sin;
+					thetaCos = rotation.cos;
+					xMinusx = entPos[0] - position[0];
+					yMinusy = entPos[1] - position[1];
+					x = (xMinusx * thetaCos) - (yMinusy * thetaSin);
+					y = (xMinusx * thetaSin) + (yMinusy * thetaCos);
+					^RealVector2D[x,y];
+				},
+				{^entity.position}
+			)
 	}
 
 	moveFwd{var theta, x, y;

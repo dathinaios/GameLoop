@@ -309,6 +309,10 @@ c = b - a;
 c.norm;
 
 
+RealVector2D[-2, 0.9].clip(0.1,inf)
+RealVector2D[-2, 0.9].cling(0.1, 200)
+
+/* vim marker teleportation line */
 
                                                                                                                                                    
                                                                                                                                                    
@@ -318,7 +322,7 @@ c.norm;
           G.::::GGGGGGGG.:::G                                                            LL.::::::LL                                               
          G.::::G       GGGGGG  aaaaaaaaaaaaa      mmmmmmm    mmmmmmm       eeeeeeeeeeee    L.::::L                  ooooooooooo      ooooooooooo   ppppp   ppppppppp   
         G.::::G                a.:::::::::::a   mm.::::::m  m.::::::mm   ee.:::::::::::ee  L.::::L                oo.::::::::::oo  oo.::::::::::oo p.:::ppp.::::::::p  
-        G.::::G                aaaaaaaaa.::::a m.:::::::::mm.:::::::::m e.:::::eeeee.::::eeL.::::L               o.::::::::::::::oo.::::::::::::::op.::::::::::::::::p 
+        G.::::G                aaaaaaaaa.::::a m.:::::::::mm.:::::::::m e.:::::eeeee.::::eeL.::::L               o.::::::::::::::oo.::::::::::::::oP.::::::::::::::::p 
         G.::::G    GGGGGGGGGG           a.:::a m.:::::::::::::::::::::me.:::::e     e.::::eL.::::L               o.::::ooooo.::::oo.::::ooooo.::::opp.:::::ppppp.:::::p
         G.::::G    G.:::::::G    aaaaaaa.::::a m.::::mmm.:::::mmm.::::me.::::::eeeee.:::::eL.::::L               o.:::o     o.:::oo.:::o     o.:::o p.::::p     p.::::p
         G.::::G    GGGGG.:::G  aa.:::::::::::a m.:::m   m.:::m   m.:::me.::::::::::::::::e L.::::L               o.:::o     o.:::oo.:::o     o.:::o p.::::p     p.::::p
@@ -334,3 +338,4 @@ c.norm;
                                                                                                                                                    p.::::::p           
                                                                                                                                                    p.::::::p           
                                                                                                                                                    ppppppppp           
+
