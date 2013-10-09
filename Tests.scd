@@ -14,6 +14,7 @@
 		position: ~gameloop.world.center,
 		radius: 0.8
 	);
+	/* ~camera.collisionType_(\free); */
 
 	~cameraForcePath = {var path;
 	/* steering bahavior */
@@ -23,9 +24,11 @@
 			PathFollowing.calculate(entity,path, 0.5);
 		});
 	};
-	~camrep =Camera2DRepresentation(~gameloop.repManager, Color.white
-		collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}}
+	~camrep =Camera2DRepresentation(
+		~gameloop.repManager, 
+		Color.white
 	).shape_(1);
+
 	~camera.attach(~camrep);
 );
 
@@ -34,17 +37,16 @@
 		~gameloop.world,
 		position: RealVector2D[rrand(8.0, 32), rrand(8.0, 32)],
 		radius: 0.4,
-		maxSpeed: 10.6
+		maxSpeed: 4.6
 	);
 
 	~rep = SoundRepresentation(
 		~gameloop.repManager,
-		input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)} 
-		//input: {SoundIn.ar(0)} 
-		//collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}}
+		input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
+		/* collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}} */
 	 ); 
 
-	//~entity.collisionType_(\mobile);
+	~entity.collisionType_(\mobile);
 	~entity.attach(~rep);
 	//and a visual representation
 	~visrep = SimpleVisual(~gameloop.repManager);
@@ -300,6 +302,11 @@ a.first()
 ~entity1.remove; ~entity2.remove;
 
 Quarks.gui
+
+a = RealVector2D[0,0];
+b = RealVector2D[0,3];
+c = b - a;
+c.norm;
 
 
 

@@ -2,7 +2,7 @@
 /* = Steering Behaviours = */
 /* ======================= */
 
-// For implementation details refer to the book Game AI by example by Mat Buckland
+/* For implementation details refer to the book Game AI by example by Mat Buckland */
 
 Seek {
 
@@ -12,7 +12,6 @@ Seek {
 	*calculate{ arg entity, targetPos = RealVector2D[10,13]; 
 		   var desiredVelocity; 
 		
-		//seek steering behaviour
 		desiredVelocity = targetPos - entity.position;
 		desiredVelocity = desiredVelocity.normalize;
 		desiredVelocity = desiredVelocity * entity.maxSpeed;
@@ -100,6 +99,7 @@ Path{ var <wayPoints, <>loop, curWayPoint = 0;
 	
 }
 
+/* the manager is not currently used */
 PathsManager{ classvar <paths;
 
 	*initClass{
