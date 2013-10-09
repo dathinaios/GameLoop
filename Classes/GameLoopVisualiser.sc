@@ -74,18 +74,16 @@ GameLoopVisualiser{
 	drawEntity{arg obstacle; 
 						 var radiusInPixels, widthInPixels, obstacPos; 
 						 var left, top;
+						 var h = 400, w = 400;
 
 		obstacPos = obstacle.position;
 		radiusInPixels = obstacle.radius * meterInPixels;
 		widthInPixels = radiusInPixels + radiusInPixels;
 
 		left = (obstacPos[0]*meterInPixels)-radiusInPixels;
-		top  = (obstacPos[1]*meterInPixels) - radiusInPixels;
-		left = left + (width - ( entManager.sceneWidth * meterInPixels ) * 0.5);
-		top = top + (height - ( entManager.sceneHeight * meterInPixels ) * 0.5);
-		top = top.linlin(0, height, height, 0);
+		top  = ((obstacPos[1]*meterInPixels).linlin(0, h, w, 0)) - radiusInPixels;
 
-		if (top > 0 and:{top < 400} and:{left > -4} and:{left<396})
+		if (top > -4 and:{top < 396} and:{left > -4} and:{left<396})
 		{
 			Pen.width = obstacle.penWidth;
 			Pen.color = obstacle.color.alpha_(0.7);
