@@ -48,16 +48,10 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 		};
 	}
 
-	/*There were issues with the transformation. I was using the heading of the camera entity in a weird manner.
-	what I did here instead is define a new var for rotation. It takes a value from 0 to 2pi and works as expected.
-	The only issue is that although the motion left righ is smooth the rotation is not.*/
-
 	applyTransformation{ arg entity; 
 						var entPos, newPos, theta, thetaSin, thetaCos, rad, x,y;
 						var xMinusx, yMinusy;
-		//translate position according to rotation and camera position	
 		entPos = entity.position;
-		//theta = rotation; //.norm; //.debug("theta");
 		thetaSin = rotation.sin;
 		thetaCos = rotation.cos;
 		xMinusx = entPos[0] - position[0];
