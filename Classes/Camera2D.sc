@@ -5,7 +5,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 
 
 	*new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 0.05, 
-				velocity = RealVector2D[0, 0], collisionType = \free, heading, 
+				velocity = RealVector2D[0, 0], collisionType = \mobile, heading, 
 				side, maxSpeed = 3.4, maxForce = 10, maxTurnRate = 2;
 
 			if(instance.isNil, 
@@ -26,12 +26,12 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 			);		
 	}
 
-	collisionType_{arg type;
-		if(type != \free)
-		{
-			"Collision type for Camera2D has to be \\free".error;
-		};
-	}
+	/* collisionType_{arg type; */
+	/* 	if(type != \free) */
+	/* 	{ */
+	/* 		"Collision type for Camera2D has to be \\free".error; */
+	/* 	}; */
+	/* } */
 
 	*active{
 		if(instance.isNil,
@@ -42,9 +42,17 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 
 	init{
 		super.init;
+		this.setCollisionResolution;
 		instance = this;
 		arrivePosition = position;
 		rotation = 0;
+	}
+
+	setCollisionResolution{
+		collisionFunc = {};
+		/* { arg entity, entList; */ 
+		/* 	CollisionResolution.nonPenetrationConstrain(entity, entList, 1.6); */
+		/* }; */
 	}
 
 	remove { arg confirm = false;

@@ -3,7 +3,7 @@
 	//~decoder = GameLoopDecoder('ATK', 'newListen');
 	~decoder = GameLoopDecoder('AmbIEM', 'binaural');
 	//Allow time for the decoder to be created....
-	~gameloop = GameLoop(40, 40, 1).play(0.05);
+	~gameloop = GameLoop(40, 40, 10).play(0.05);
 	//~gameloop.visualiser; 
 	~gameloop.gui; 
 )
@@ -29,6 +29,7 @@
 		Color.white
 	).shape_(1);
 
+
 	~camera.attach(~camrep);
 );
 
@@ -36,14 +37,13 @@
 	~entity = Vehicle(
 		~gameloop.world,
 		position: RealVector2D[rrand(8.0, 32), rrand(8.0, 32)],
-		radius: 0.4,
-		maxSpeed: 4.6
+		radius: 1.4,
+		maxSpeed: 2.6
 	);
 
 	~rep = SoundRepresentation(
 		~gameloop.repManager,
 		input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
-		/* collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}} */
 	 ); 
 
 	~entity.collisionType_(\mobile);
@@ -57,12 +57,24 @@
 	path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
 	~entity.force_(
 		{ arg entity;
-			PathFollowing.calculate(entity,path, 0.5);
+				PathFollowing.calculate(entity,path, 0.5);
 		});
 	};
   /* ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[10,11]);}); */
 	/* ~randForcePath.value; */
 );
+
+
+~camera.collisionFunc_({});
+
+(
+	~camera.collisionFunc_(
+		{ arg entity, entList; 
+			CollisionResolution.nonPenetrationConstrain(entity, entList, 1.6);
+			/* entity.velocity*RealVector2D[rrand(-500.0, -500),rrand(-500.0, -500)]; */
+		};
+	);
+)
 
 s.plotTree;
 s.ping(numberOfTrials);
@@ -338,4 +350,31 @@ RealVector2D[-2, 0.9].cling(0.1, 200)
                                                                                                                                                    p.::::::p           
                                                                                                                                                    p.::::::p           
                                                                                                                                                    ppppppppp           
+
+(
+	~entity = Vehicle(
+		~gameloop.world,
+		position: RealVector2D[20,20],
+		radius: 2.4,
+		maxSpeed: 2.6
+	);
+	~entity.collisionType_(\mobile);
+	//and a visual representation
+	~visrep = SimpleVisual(~gameloop.repManager);
+	/* ~visrep.collisionFunc_({arg ent; "houla".postln;}); */
+	~entity.attach(~visrep);
+);
+
+~entity.position = RealVector2D[20,25]
+~entity.remove
+~visrep.colliding
+
+~gameloop.clearEntities
+~gameloop.entManager.mobList
+~gameloop.repManager.repList
+
+
+
+
+
 
