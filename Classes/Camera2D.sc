@@ -26,8 +26,11 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 			);		
 	}
 
-	collisionType_{
-		"Collision type for Camera2D has to be \free".error;
+	collisionType_{arg type;
+		if(type != \free)
+		{
+			"Collision type for Camera2D has to be \\free".error;
+		};
 	}
 
 	*active{
