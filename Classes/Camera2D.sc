@@ -5,7 +5,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 
 
 	*new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 0.05, 
-				velocity = RealVector2D[0, 0], collisionType = \mobile, heading, 
+				velocity = RealVector2D[0, 0], collisionType = \free, heading, 
 				side, maxSpeed = 3.4, maxForce = 10, maxTurnRate = 2;
 
 			if(instance.isNil, 
