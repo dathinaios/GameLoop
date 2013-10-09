@@ -151,13 +151,9 @@ EntityManager {
 	}
 
 	collisionResolution{
-		//At the moment I am simply calling the collide function for every object
-		//but here we could have much more elaborate collision resolutions.
 		currentCollisionList.do{arg i;
-			//Calling: entityColliding.collision(collidingWith)
-			i[0].collision(i[1]);
+			i[0].collision(i[1]); //entityColliding.collision(collidingWith)
 		};
-		//and clear the list to prepare for next time
 		currentCollisionList.clear;
 	}
 	

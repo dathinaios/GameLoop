@@ -23,7 +23,9 @@
 			PathFollowing.calculate(entity,path, 0.5);
 		});
 	};
-	~camrep =Camera2DRepresentation(~gameloop.repManager, Color.white).shape_(1);
+	~camrep =Camera2DRepresentation(~gameloop.repManager, Color.white
+		collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}}
+	).shape_(1);
 	~camera.attach(~camrep);
 );
 
@@ -297,7 +299,7 @@ a.first()
 
 ~entity1.remove; ~entity2.remove;
 
-
+Quarks.gui
 
 
 

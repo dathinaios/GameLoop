@@ -3,7 +3,7 @@
 SpacePolarAmbIEM : UGen{
 
 	*ar {
-		arg in, azimuth, radius,  elev = 0, ampCenter = 1, speakerRho = 2;
+		arg in, azimuth, radius,  elev = 0, ampCenter = 1;
 		var amp;
 		// ** VSpace ** style
 		amp = (1/radius.squared).clip(0, 1);
@@ -16,7 +16,7 @@ SpacePolarAmbIEM : UGen{
 
 SpacePolarAmbIEMDp : UGen {
 	*ar {
-		arg in, azimuth, radius, elev = 0, ampCenter = 1, speakerRho = 2;
+		arg in, azimuth, radius, elev = 0, ampCenter = 1;
 		var amp;
 		// ** VSpace ** style
 		amp = (1/radius.squared).clip(0, 1);
