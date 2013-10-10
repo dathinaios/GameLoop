@@ -87,8 +87,8 @@ EntityRepresentation { var repManager, <>collisionFunc;
 	}
 
 	collision{ arg message;
-		/* message should have a list at [1] with the colliding with entities*/
-		collisionFunc.value(entity, message[1]);
+		/* message should have a list at [2] with the colliding with entities*/
+		collisionFunc.value(this, entity, message[1]);
 	}
 
 }   
