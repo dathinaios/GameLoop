@@ -3,7 +3,7 @@
 	//~decoder = GameLoopDecoder('ATK', 'newListen');
 	~decoder = GameLoopDecoder('AmbIEM', 'binaural');
 	//Allow time for the decoder to be created....
-	~gameloop = GameLoop(40, 40, 10).play(0.05);
+	~gameloop = GameLoop(40, 40, 1).play(0.05);
 	//~gameloop.visualiser; 
 	~gameloop.gui; 
 )
@@ -355,7 +355,7 @@ RealVector2D[-2, 0.9].cling(0.1, 200)
 	~entity = Vehicle(
 		~gameloop.world,
 		position: RealVector2D[20,20],
-		radius: 2.4,
+		radius: 5.4,
 		maxSpeed: 2.6
 	);
 	~entity.collisionType_(\mobile);
@@ -365,13 +365,13 @@ RealVector2D[-2, 0.9].cling(0.1, 200)
 	~entity.attach(~visrep);
 );
 
-~entity.position = RealVector2D[20,25]
+~entity.position = RealVector2D[23,30]
 ~entity.remove
 ~visrep.colliding
 
 ~gameloop.clearEntities
 ~gameloop.entManager.mobList
-~gameloop.repManager.repList
+~gameloop.repManager.repList[0].colliding
 
 
 
