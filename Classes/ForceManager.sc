@@ -1,9 +1,9 @@
 
-ForceManager { var entity, <>forces;
+ForceManager { var <>forces;
 
-	*new{ arg entity, forces = [];
+	*new{ arg forces = [];
 		forces = Dictionary.newFrom(forces);
-		^super.newCopyArgs(entity, forces);
+		^super.newCopyArgs(forces);
 	}
 
 	add{ arg key, forceFunction;
@@ -12,7 +12,7 @@ ForceManager { var entity, <>forces;
 	}
 
 	addTemp{ arg force;
-		forces.add('tempForce', force);
+		forces.add('tempForce' -> force);
 	}
 
 	clearTemp{
@@ -38,7 +38,7 @@ ForceManager { var entity, <>forces;
 		"============================================\n".postln;
 	}
 
-	sum{ arg addedForce = 0; var sum;
+	sum{ arg entity,  addedForce = 0; var sum;
 		sum = addedForce;
 		forces.do{arg value;
 			sum = sum + value.value(entity);
