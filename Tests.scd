@@ -392,6 +392,10 @@ b = Wall(RealVector2D[10, 10], RealVector2D[20, 10]);
 b = Wall(RealVector2D[20, 0], RealVector2D[20, 20]);
 b = Wall(RealVector2D[0, 20], RealVector2D[0, 0]);
 b.normal;
+a = List.new;
+a.add(b)
+a
+a.remove(b)
 
 
 

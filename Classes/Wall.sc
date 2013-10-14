@@ -7,6 +7,11 @@ Wall { var <>from, <> to, <>normal;
 
 	init{
 		normal = this.calculateNormal;
+		WallManager.add(this);
+	}
+
+	remove{
+		WallManager.remove(this)
 	}
 
 	calculateNormal{ var dx, dy;
@@ -19,3 +24,25 @@ Wall { var <>from, <> to, <>normal;
 
 }
 
+/* the manager is not currently used */
+WallManager{ classvar <walls;
+
+	*new{ "You can not have an instance of this".error;
+	}
+
+	*initClass{
+		walls = List.new;
+	}
+	
+	*add{ arg wall; 
+		walls = walls.add(wall);
+	}
+
+	*remove{ arg wall;
+		this.remove(wall);
+	}
+	
+	*clear{ walls.clear;
+	}
+
+}
