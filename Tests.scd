@@ -14,7 +14,7 @@
 		position: ~gameloop.world.center,
 		radius: 0.8
 	);
-	/* ~camera.collisionType_(\free); */
+	~camera.collisionType_(\free);
 
 	~cameraForcePath = {var path;
 	/* steering bahavior */
@@ -34,34 +34,40 @@
 );
 
 (
-	~entity = Vehicle(
-		~gameloop.world,
-		position: RealVector2D[rrand(8.0, 32), rrand(8.0, 32)],
-		radius: 1.4,
-		maxSpeed: 2.6
-	);
+	{ var forceManager;
+		~entity = Vehicle(
+			~gameloop.world,
+			position: RealVector2D[rrand(8.0, 32), rrand(8.0, 32)],
+			radius: 0.4,
+			maxSpeed: 5.6
+		);
 
-	~rep = SoundRepresentation(
-		~gameloop.repManager,
-		input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
-	 ); 
+		~rep = SoundRepresentation(
+			~gameloop.repManager,
+			input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
+		); 
 
-	~entity.collisionType_(\mobile);
-	~entity.attach(~rep);
-	//and a visual representation
-	~visrep = SimpleVisual(~gameloop.repManager);
-	~entity.attach(~visrep);
+		~entity.collisionType_(\mobile);
+		~entity.attach(~rep);
+		//and a visual representation
+		~visrep = SimpleVisual(~gameloop.repManager);
+		~entity.attach(~visrep);
 
-	~randForcePath = {var path;
-	/* steering bahavior */
-	path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
-	~entity.force_(
-		{ arg entity;
-				PathFollowing.calculate(entity,path, 0.5);
+		~randForcePath = {var path;
+			path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
+			{ arg entity; PathFollowing.calculate(entity,path, 0.5); };
+		};
+		forceManager = ForceManager([\pathSteer, ~randForcePath.value]);
+		~entity.force_({ arg entity; forceManager.sum(entity); });
+
+		~entity.collisionFunc_({arg entity, entList; 
+			NonPenetrationConstrain.calculate(entity, entList);
+			forceManager.addTemp({arg ent; ent.velocity*RealVector2D[rrand(-200.0, -500),rrand(-200.0, -500)]};)
 		});
-	};
-  /* ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[10,11]);}); */
-	/* ~randForcePath.value; */
+
+		/* ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[10,11]);}); */
+		/* ~randForcePath.value; */
+	}.value;
 );
 
 
@@ -371,9 +377,21 @@ RealVector2D[-2, 0.9].cling(0.1, 200)
 
 ~gameloop.clearEntities
 ~gameloop.entManager.mobList
-~gameloop.repManager.repList[0].colliding
+~gameloop.repManager.repList
 
+(
+	a = ForceManager();
+	a.add(\test, { RealVector2D[0, 10]});
+	a.add(\test1, { RealVector2D[10, 0]});
+	a.sum(RealVector2D[2,0]).postln;
+	a.sum;
+	a.list;
+)
 
+b = Wall(RealVector2D[10, 10], RealVector2D[20, 10]);
+b = Wall(RealVector2D[20, 0], RealVector2D[20, 20]);
+b = Wall(RealVector2D[0, 20], RealVector2D[0, 0]);
+b.normal;
 
 
 
