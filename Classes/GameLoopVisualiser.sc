@@ -59,7 +59,8 @@ GameLoopVisualiser{
 	setDrawFunction{
 		mainView.drawFunc = {
 			infoString.string =	this.getInfoString;
-			this.drawEntities(repManager.repList)
+			this.drawEntities(repManager.repList);
+		  //this.drawWalls;
 		};
 	}
 
@@ -67,7 +68,7 @@ GameLoopVisualiser{
 		repList.size.do { arg index; 
 			obstacle = repList[index]; 
 			if(obstacle.type == 'visual')
-			  {this.drawEntity(obstacle)}
+			  {this.drawEntity(obstacle)};
 		}
 	}
 
@@ -91,6 +92,15 @@ GameLoopVisualiser{
 
 			obstacle.draw(Rect(left, top, widthInPixels, widthInPixels));
 		};
+	}
+
+	drawWalls{
+		WallManager.walls.do{arg i; var pointFrom, pointTo;
+			pointFrom = i.from * meterInPixels;
+			pointTo = i.to * meterInPixels;
+			Pen.color = Color.white;
+			Pen.line(pointFrom.asPoint, pointTo.asPoint);
+		}
 	}
 
 
