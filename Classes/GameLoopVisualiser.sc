@@ -60,7 +60,8 @@ GameLoopVisualiser{
 		mainView.drawFunc = {
 			infoString.string =	this.getInfoString;
 			this.drawEntities(repManager.repList);
-		  //this.drawWalls;
+		  this.drawWalls;
+		  Pen.stroke;
 		};
 	}
 
