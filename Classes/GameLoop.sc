@@ -99,4 +99,11 @@ GameLoop{
 		this.currentCamera.remove(true);
 	}
 
+	makeWalls{
+		Wall(RealVector2D[0, sceneHeight], RealVector2D[0, 0]);
+		Wall(RealVector2D[0, 0], RealVector2D[0, sceneWidth]);
+		Wall(RealVector2D[0, sceneWidth], RealVector2D[sceneWidth, sceneHeight]);
+		Wall(RealVector2D[sceneWidth, sceneHeight], RealVector2D[0, sceneHeight]);
+	}
+
 }
