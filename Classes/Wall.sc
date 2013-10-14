@@ -22,6 +22,53 @@ Wall { var <>from, <> to, <>normal;
 		^RealVector2D[-1 * dy, dx].normalize;
 	}
 
+	/* impementation from http://doswa.com/2009/07/13/circle-segment-intersectioncollision.html */
+	closestPointOnWall{ 
+		arg entityPosition; 
+		var segv, ptv, segvunit, proj, projv, closest;
+
+		segv = to - from;
+		ptv = entityPosition - from;
+
+		if(segv.norm <= 0,
+			{ "Invalid segment length".error;  },
+			{ segvunit = segv / segv.norm }
+		);
+
+		//can I use here the proj method instead of doing it manually?
+		proj = ptv <|> segvunit; //dot product
+
+		if ( proj <= 0 ) { ^from}; 
+
+		if ( proj >= segv.norm) { ^to};
+
+		projv = segvunit * proj;
+		closest = projv + from;
+		^closest;
+	}
+
+	checkCircleWallCollision{ 
+		arg entity;
+		var closest, distv, circpos, circrad, offset;
+
+		circpos = entity.position;
+		circrad = entity.radius;
+
+		closest = this.closestPointOnWall(circpos);
+		distv = circpos - closest;
+
+		if ( distv.norm > circrad) {
+			^RealVector2D[0, 0]
+		};
+
+		if ( distv.norm <= 0) {
+			"Circle's center is exactly on segment".error;
+		};
+
+		offset = distv / distv.norm * (circrad - distv.norm)
+		^offset;
+	}
+
 }
 
 /* the manager is not currently used */
