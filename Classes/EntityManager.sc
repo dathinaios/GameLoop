@@ -88,7 +88,11 @@ EntityManager {
 	}
 
 	collisionCheck{ 
-	
+		this.collisionCheckForMobile;
+		this.collisionCheckForStatic;
+	}
+
+	collisionCheckForMobile{
 		mobList.do{ arg i; var nearest, collidingWith;
 			// a list to store the objects that are found to collide with the entity
 			collidingWith = List.new; 
@@ -107,8 +111,9 @@ EntityManager {
 					}
 			);
 		};
-		
-		//and now for the static entities
+	}
+
+	collisionCheckForStatic{
 		staticList.do{ arg i; var nearest, collidingWith;
 			if(i.colliding)
 				{
@@ -132,7 +137,6 @@ EntityManager {
 				);
 				};
 		};
-		
 	}
 
 	circlesCollide{ arg cA, cB; //circleA circleB

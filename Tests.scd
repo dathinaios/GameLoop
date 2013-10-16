@@ -394,7 +394,8 @@ RealVector2D[-2, 0.9].cling(0.1, 200)
 ~spatialIndex = SpatialHashing(40, 40, 1);
 b = Wall(RealVector2D[20,20], RealVector2D[40, 20]);
 b = Wall(RealVector2D[20,20], RealVector2D[40, 25]);
-c = ~spatialIndex.getCellsForLine(b);
+c = ~gameloop.entManager.spatialIndex.getCellsForLine(b);
+c.do{ arg item; ~gameloop.entManager.spatialIndex.getCell(item).postln }
 
 
 
