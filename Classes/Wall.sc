@@ -42,27 +42,6 @@ Wall { var <>from, <> to, <>normal;
 		^closest;
 	}
 
-	checkCircleWallCollision{ 
-		arg entity;
-		var closest, distv, circpos, circrad, offset;
-
-		circpos = entity.position;
-		circrad = entity.radius;
-
-		closest = this.closestPointOnWall(circpos);
-		distv = circpos - closest;
-
-		if ( distv.norm > circrad) {
-			^RealVector2D[0, 0]
-		};
-
-		if ( distv.norm <= 0) {
-			"Circle's center is exactly on segment".error;
-		};
-
-		offset = distv / distv.norm * (circrad - distv.norm)
-		^offset;
-	}
 
 }
 
