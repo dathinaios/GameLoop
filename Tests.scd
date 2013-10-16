@@ -6,6 +6,7 @@
 	~gameloop = GameLoop(40, 40, 1).play(0.05);
 	//~gameloop.visualiser; 
 	~gameloop.gui; 
+	~gameloop.makeWalls; 
 )
 
 (
@@ -360,8 +361,8 @@ RealVector2D[-2, 0.9].cling(0.1, 200)
 (
 	~entity = Vehicle(
 		~gameloop.world,
-		position: RealVector2D[20,20],
-		radius: 5.4,
+		position: RealVector2D[21,25],
+		radius: 0.4,
 		maxSpeed: 2.6
 	);
 	~entity.collisionType_(\mobile);
@@ -388,14 +389,32 @@ RealVector2D[-2, 0.9].cling(0.1, 200)
 	a.list;
 )
 
-b = Wall(RealVector2D[10, 10], RealVector2D[20, 10]);
-b = Wall(RealVector2D[20, 0], RealVector2D[20, 20]);
-b = Wall(RealVector2D[0, 20], RealVector2D[0, 0]);
-b.normal;
-a = List.new;
-a.add(b)
-a
-a.remove(b)
+
+
+~spatialIndex = SpatialHashing(40, 40, 1);
+b = Wall(RealVector2D[20,20], RealVector2D[40, 20]);
+b = Wall(RealVector2D[20,20], RealVector2D[40, 25]);
+c = ~spatialIndex.getCellsForLine(b);
+
+
+
+
+(
+	Routine{
+		inf.do{
+			b.checkCircleWallCollision(~entity).postln;
+			0.05.wait;
+	  };
+	}.play;
+)
+(
+	a = c.collect{
+		arg item, index; 
+		var col = 40, rows = 40, translation;
+		translation = (item[0]*col)+item[1];
+		translation.postln;
+	};
+)
 
 
 
