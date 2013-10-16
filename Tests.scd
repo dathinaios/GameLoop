@@ -418,4 +418,15 @@ c = ~spatialIndex.getCellsForLine(b);
 
 
 
+( [1,2,3,4,4,5,6, [3,4,5, [6,7,6]]]).flatten(2)
+a = [5,4,3,2,1]
+a.add(6789)
+a
+
+
+a = IdentitySet[IdentitySet[2,3,4]]
+
+
+a = IdentitySet[IdentitySet[2,3,4], IdentitySet[2,3,4], IdentitySet[2,3,4]]
+a.merge
 

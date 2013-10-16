@@ -43,38 +43,32 @@ SpatialHashing{ var <sceneWidth, <sceneHeight, <cellSize;
 
 	//**\\
 
-	findCells{ arg object; //calculates the cell for each objects four corners
-		var set, pos, rad, cellIDs;
-		set = IdentitySet.new;
+	findCells{ arg object;
+		var pos, rad, boundingBoxCorners;
 		pos = object.position;
 		rad = object.radius;
-		cellIDs = this.findCellIDs(pos,rad);
-		//do addBacket for each corner of the rectangle
-		set.add(this.addBacket(cellIDs[0]));
-		set.add(this.addBacket(cellIDs[1]));
-		set.add(this.addBacket(cellIDs[2]));
-		set.add(this.addBacket(cellIDs[3]));
+		boundingBoxCorners = this.findBoundingBoxCorners(pos,rad);
+		^this.getSetFromCorners(boundingBoxCorners);
+	}
+
+	getSetFromCorners{ arg boundingBoxCorners; var set;
+		set = IdentitySet.new;
+		boundingBoxCorners.do{ arg item, index;
+			set.add(this.findBacket(boundingBoxCorners[index]));
+		};
 		^set;
 	}
 
-	findCellIDs{ 
-		arg position, radius;
+	findBoundingBoxCorners{ arg position, radius;
 		var minPoint, maxPoint;
-		//find the points for the corners of the bounding box
-		//in this case the object is a point and has a radius
-		//(is that the best way?)
 		minPoint = [position[0] - radius, position[1] - radius];
 		maxPoint = [position[0] + radius, position[1] + radius];
-		/* [id1,id2,id3,id4] */
-		^[ minPoint, [maxPoint[0], minPoint[1]], maxPoint, [minPoint[0], maxPoint[1]] ]
+		^[minPoint, [maxPoint[0], minPoint[1]], maxPoint, [minPoint[0], maxPoint[1]]];
 	}
 
-	addBacket{ arg pos; var backet;	//find the backet to add to
-		//can  be optimised to remove the divisions! See hash optimisation paper
-		^(
-			(pos[0]/cellSize).floor +
-			((pos[1]/cellSize).floor*cols)
-		).asInteger;
+	findBacket{ arg pos; 
+		/* can  be optimised to remove the divisions! See hash optimisation paper */
+		^((pos[0]/cellSize).floor + ((pos[1]/cellSize).floor*cols)).asInteger;
 	}
 
 	getNearest{ arg object;
@@ -102,7 +96,7 @@ SpatialHashing{ var <sceneWidth, <sceneHeight, <cellSize;
 	/* Hopefully not too costly since it is going to be called only once. */
 
 	getCellsForLine{ arg line;
-		var halfCellSize, objectDistance, unitsInLine;
+		var halfCellSize, objectDistance, unitsInLine, allCorners = List.new;
 
 		halfCellSize = cellSize * 0.5;
 		objectDistance = line.to - line.from;
@@ -113,7 +107,7 @@ SpatialHashing{ var <sceneWidth, <sceneHeight, <cellSize;
 		unitsInLine.do{ 
 			arg i; 
 			var currentPlace, xStep, yStep, x, y, pointToObject;
-			var destinationX, destinationY;
+			var destinationX, destinationY, boundingBoxCorners;
 
 			destinationX = line.to[0];
 			destinationY = line.to[1];
@@ -124,17 +118,10 @@ SpatialHashing{ var <sceneWidth, <sceneHeight, <cellSize;
 
 			x = destinationX - (  (destinationX - line.from[0] ) - ( xStep * i ) );
 			y = destinationY - (  (destinationY - line.from[1] ) - ( yStep * i ) );
-			PointToObjectHelper(RealVector2D[x, y], CellSize).position.postln;
+			boundingBoxCorners = this.findBoundingBoxCorners(RealVector2D[x,y], cellSize);
+			allCorners.add(boundingBoxCorners);
 		};
-
+		^this.getSetFromCorners(allCorners.flatten);
 	}
 
  }                                                                                                                                                                                                                               
-
- PointToObjectHelper{ var <>position, <>radius;
-
- 	*new{ arg position = RealVector2D[0, 0], radius = 0.5;
- 	  ^super.newCopyArgs(position, radius);
- 	}
-
- }
