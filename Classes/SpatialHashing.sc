@@ -24,8 +24,6 @@ SpatialHashing{ var <sceneWidth, <sceneHeight, <cellSize;
 		)
 	}
 
-	//**\\
-
 	register{arg object; //registers the object in the relevant cells
 		var set; //use a set to discard duplicates
 		set = this.findCells(object); //returns a set of cell id's
@@ -41,7 +39,15 @@ SpatialHashing{ var <sceneWidth, <sceneHeight, <cellSize;
 
 	}
 
-	//**\\
+	getObjectsFromCellSet{ arg set, objectSet;
+		objectSet = IdentitySet.new;
+	  set.do{arg cellID; 
+	  	this.getCell(cellID).do{arg i; 
+	  		objectSet.add(i)
+	  	}
+	  };
+	  ^objectSet;
+	}
 
 	findCells{ arg object;
 		var pos, rad, boundingBoxCorners;
