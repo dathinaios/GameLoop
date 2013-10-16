@@ -98,8 +98,10 @@ GameLoopVisualiser{
 	drawWalls{
 		entManager.wallList.do{arg i; var pointFrom, pointTo;
 			i = i[0];
-			pointFrom = i.from * meterInPixels;
-			pointTo = i.to * meterInPixels;
+			pointFrom = RealVector2D[i.from[0], entManager.sceneHeight - i.from[1]];
+			pointTo = RealVector2D[i.to[0], entManager.sceneHeight - i.to[1]];
+			pointFrom = pointFrom * meterInPixels;
+			pointTo = pointTo * meterInPixels;
 			Pen.color = Color.white;
 			Pen.line(pointFrom.asPoint, pointTo.asPoint);
 		}
