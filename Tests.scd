@@ -389,8 +389,9 @@ RealVector2D[-2, 0.9].cling(0.1, 200)
 	a.list;
 )
 
-b = Wall(RealVector2D[20,20], RealVector2D[40, 20]);
+a = Wall(RealVector2D[10,20], RealVector2D[13, 30]);
 b = Wall(RealVector2D[20,20], RealVector2D[40, 35]);
+~gameloop.entManager.addWall(a);
 ~gameloop.entManager.addWall(b);
 ~gameloop.entManager.removeWall(b);
 ~gameloop.entManager.clearWalls;
