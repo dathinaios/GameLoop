@@ -96,7 +96,7 @@ GameLoopVisualiser{
 	}
 
 	drawWalls{
-		WallManager.walls.do{arg i; var pointFrom, pointTo;
+		entManager.wallList.do{arg i; var pointFrom, pointTo;
 			pointFrom = i.from * meterInPixels;
 			pointTo = i.to * meterInPixels;
 			Pen.color = Color.white;
