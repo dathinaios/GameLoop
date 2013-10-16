@@ -62,7 +62,7 @@
 		~entity.force_({ arg entity; forceManager.sum(entity); });
 
 		~entity.collisionFunc_({arg entity, entList; 
-			NonPenetrationConstrain.calculate(entity, entList);
+			//NonPenetrationConstrain.calculate(entity, entList);
 			forceManager.addTemp({arg ent; ent.velocity*RealVector2D[rrand(-200.0, -500),rrand(-200.0, -500)]};)
 		});
 
@@ -389,16 +389,15 @@ RealVector2D[-2, 0.9].cling(0.1, 200)
 	a.list;
 )
 
-
-
-~spatialIndex = SpatialHashing(40, 40, 1);
 b = Wall(RealVector2D[20,20], RealVector2D[40, 20]);
-b = Wall(RealVector2D[20,20], RealVector2D[40, 25]);
+b = Wall(RealVector2D[20,20], RealVector2D[40, 35]);
+~gameloop.entManager.addWall(b);
+~gameloop.entManager.removeWall(b);
+~gameloop.entManager.clearWalls;
+
 c = ~gameloop.entManager.spatialIndex.getCellsForLine(b);
+
 c.do{ arg item; ~gameloop.entManager.spatialIndex.getCell(item).postln }
-
-
-
 
 (
 	Routine{
@@ -408,6 +407,7 @@ c.do{ arg item; ~gameloop.entManager.spatialIndex.getCell(item).postln }
 	  };
 	}.play;
 )
+
 (
 	a = c.collect{
 		arg item, index; 
@@ -417,17 +417,6 @@ c.do{ arg item; ~gameloop.entManager.spatialIndex.getCell(item).postln }
 	};
 )
 
-
-
-( [1,2,3,4,4,5,6, [3,4,5, [6,7,6]]]).flatten(2)
-a = [5,4,3,2,1]
-a.add(6789)
+a = List[1,2,3]
+a.remove(2)
 a
-
-
-a = IdentitySet[IdentitySet[2,3,4]]
-
-
-a = IdentitySet[IdentitySet[2,3,4], IdentitySet[2,3,4], IdentitySet[2,3,4]]
-a.merge
-
