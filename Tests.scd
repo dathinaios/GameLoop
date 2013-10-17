@@ -1,86 +1,86 @@
 (
-	//~decoder = GameLoopDecoder('ATK', 'newStereo');
-	//~decoder = GameLoopDecoder('ATK', 'newListen');
-	~decoder = GameLoopDecoder('AmbIEM', 'binaural');
-	//Allow time for the decoder to be created....
-	~gameloop = GameLoop(40, 40, 1).play(0.05);
-	//~gameloop.visualiser;
-	~gameloop.gui;
-	~gameloop.makeWalls;
+  //~decoder = GameLoopDecoder('ATK', 'newStereo');
+  //~decoder = GameLoopDecoder('ATK', 'newListen');
+  ~decoder = GameLoopDecoder('AmbIEM', 'binaural');
+  //Allow time for the decoder to be created....
+  ~gameloop = GameLoop(40, 40, 1).play(0.05);
+  //~gameloop.visualiser;
+  ~gameloop.gui;
+  ~gameloop.makeWalls;
 )
 
 (
-	~camera = Camera2D(
-		~gameloop.world,
-		position: ~gameloop.world.center,
-		radius: 0.8
-	);
-	~camera.collisionType_(\free);
+  ~camera = Camera2D(
+    ~gameloop.world,
+    position: ~gameloop.world.center,
+    radius: 0.8
+  );
+  ~camera.collisionType_(\free);
 
-	~cameraForcePath = {var path;
-	/* steering bahavior */
-	path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
-	~camera.force_(
-		{ arg entity;
-			PathFollowing.calculate(entity,path, 0.5);
-		});
-	};
-	~camrep =Camera2DRepresentation(
-		~gameloop.repManager,
-		Color.white
-	).shape_(1);
+  ~cameraForcePath = {var path;
+  /* steering bahavior */
+  path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
+  ~camera.force_(
+    { arg entity;
+      PathFollowing.calculate(entity,path, 0.5);
+    });
+  };
+  ~camrep =Camera2DRepresentation(
+    ~gameloop.repManager,
+    Color.white
+  ).shape_(1);
 
 
-	~camera.attach(~camrep);
+  ~camera.attach(~camrep);
 );
 
 (
-	{ var forceManager;
-		~entity = Vehicle(
-			~gameloop.world,
-			position: RealVector2D[rrand(8.0, 32), rrand(8.0, 32)],
-			radius: 0.4,
-			maxSpeed: 5.6
-		);
+  { var forceManager;
+    ~entity = Vehicle(
+      ~gameloop.world,
+      position: RealVector2D[rrand(8.0, 32), rrand(8.0, 32)],
+      radius: 0.4,
+      maxSpeed: 5.6
+    );
 
-		~rep = SoundRepresentation(
-			~gameloop.repManager,
-			input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
-		);
+    ~rep = SoundRepresentation(
+      ~gameloop.repManager,
+      input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
+    );
 
-		~entity.collisionType_(\mobile);
-		~entity.attach(~rep);
-		//and a visual representation
-		~visrep = SimpleVisual(~gameloop.repManager);
-		~entity.attach(~visrep);
+    ~entity.collisionType_(\mobile);
+    ~entity.attach(~rep);
+    //and a visual representation
+    ~visrep = SimpleVisual(~gameloop.repManager);
+    ~entity.attach(~visrep);
 
-		~randForcePath = {var path;
-			path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
-			{ arg entity; PathFollowing.calculate(entity,path, 0.5); };
-		};
-		forceManager = ForceManager([\pathSteer, ~randForcePath.value]);
-		~entity.force_({ arg entity; forceManager.sum(entity); });
+    ~randForcePath = {var path;
+      path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
+      { arg entity; PathFollowing.calculate(entity,path, 0.5); };
+    };
+    forceManager = ForceManager([\pathSteer, ~randForcePath.value]);
+    ~entity.force_({ arg entity; forceManager.sum(entity); });
 
-		~entity.collisionFunc_({arg entity, entList;
-			//NonPenetrationConstrain.calculate(entity, entList);
-			forceManager.addTemp({arg ent; ent.velocity*RealVector2D[rrand(-200.0, -500),rrand(-200.0, -500)]};)
-		});
+    ~entity.collisionFunc_({arg entity, entList;
+      //NonPenetrationConstrain.calculate(entity, entList);
+      forceManager.addTemp({arg ent; ent.velocity*RealVector2D[rrand(-200.0, -500),rrand(-200.0, -500)]};)
+    });
 
-		/* ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[10,11]);}); */
-		/* ~randForcePath.value; */
-	}.value;
+    /* ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[10,11]);}); */
+    /* ~randForcePath.value; */
+  }.value;
 );
 
 
 ~camera.collisionFunc_({});
 
 (
-	~camera.collisionFunc_(
-		{ arg entity, entList;
-			CollisionResolution.nonPenetrationConstrain(entity, entList, 1.6);
-			/* entity.velocity*RealVector2D[rrand(-500.0, -500),rrand(-500.0, -500)]; */
-		};
-	);
+  ~camera.collisionFunc_(
+    { arg entity, entList;
+      CollisionResolution.nonPenetrationConstrain(entity, entList, 1.6);
+      /* entity.velocity*RealVector2D[rrand(-500.0, -500),rrand(-500.0, -500)]; */
+    };
+  );
 )
 
 s.plotTree;
@@ -130,17 +130,17 @@ GameLoopDecoder.instance.clear
 ~entity.force = {arg entity; Arrive.calculate(entity, RealVector2D[19, 20.5])};
 
 (
-	var width, position, radius;
-	width = ~gameloop.world.center[0]*2;
-	position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
-	radius = 0.4;
-	~entity.force_(
-		{ arg entity; var position, path;
-			position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
-			path = Path(Array.fill(rrand(2.0, 38.0),
-			{RealVector2D[position[0] + rrand(-33, 33.0), position[1] + rrand(-33.0, 33.0)]}),true);
-			PathFollowing.calculate(entity,path, 0.5);
-		});
+  var width, position, radius;
+  width = ~gameloop.world.center[0]*2;
+  position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
+  radius = 0.4;
+  ~entity.force_(
+    { arg entity; var position, path;
+      position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
+      path = Path(Array.fill(rrand(2.0, 38.0),
+      {RealVector2D[position[0] + rrand(-33, 33.0), position[1] + rrand(-33.0, 33.0)]}),true);
+      PathFollowing.calculate(entity,path, 0.5);
+    });
 )
 
 ~gameloop.resetCamera;
@@ -172,10 +172,10 @@ GameLoop.instance.dt
 
 (
 r = Routine{ //test
-	loop{
-	~gameloop.repManager.cameraEntity.rotateRight(0.05pi);
-	0.05.wait;
-	};
+  loop{
+  ~gameloop.repManager.cameraEntity.rotateRight(0.05pi);
+  0.05.wait;
+  };
 }.play;
 )
 
@@ -197,31 +197,31 @@ CmdPeriod.run
 
 //An input and steering behavior to play around with
 (
-	var width, position, radius;
-	width = ~gameloop.center[0]*2;
-	position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
-	radius = 0.4;
-	~entity = SoundEntity(
-		~gameloop.world,
-		position,
-		radius,
-		maxSpeed: 40.0,
-		/*
-		input:
-		{ arg vel;  var in;
-			in =0.3*Saw.ar(rrand(500, 20000.0))*
-				 LFPulse.ar(linlin(0,10, 5, rrand(10, 20.0)), mul: 0.5, add: 0.5);
-			in = BPF.ar(in, rrand(200, 18000.0)*MouseX.kr(0.3, 2, lag: rrand(2.0, 6.0)), 0.4);
-		},*/
-		//collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}},
-		//collisionType: \mobile
-	).force_(
-		{ arg entity; var position, path;
-			position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
-			path = Path(Array.fill(rrand(2.0, 38.0),
-			{RealVector2D[position[0] + rrand(-33, 33.0), position[1] + rrand(-33.0, 33.0)]}),true);
-			PathFollowing.calculate(entity,path, 0.5);
-		});
+  var width, position, radius;
+  width = ~gameloop.center[0]*2;
+  position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
+  radius = 0.4;
+  ~entity = SoundEntity(
+    ~gameloop.world,
+    position,
+    radius,
+    maxSpeed: 40.0,
+    /*
+    input:
+    { arg vel;  var in;
+      in =0.3*Saw.ar(rrand(500, 20000.0))*
+         LFPulse.ar(linlin(0,10, 5, rrand(10, 20.0)), mul: 0.5, add: 0.5);
+      in = BPF.ar(in, rrand(200, 18000.0)*MouseX.kr(0.3, 2, lag: rrand(2.0, 6.0)), 0.4);
+    },*/
+    //collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}},
+    //collisionType: \mobile
+  ).force_(
+    { arg entity; var position, path;
+      position = RealVector2D[rrand(2.0, width), rrand(2.0, width)];
+      path = Path(Array.fill(rrand(2.0, 38.0),
+      {RealVector2D[position[0] + rrand(-33, 33.0), position[1] + rrand(-33.0, 33.0)]}),true);
+      PathFollowing.calculate(entity,path, 0.5);
+    });
 );
 
 //some test (delete)
@@ -292,28 +292,28 @@ a.first()
 ~entity2.attach(~visrep2);
 
 ~soundRep1 = SoundRepresentation(
-	~gameloop.repManager,
-	//collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}}
+  ~gameloop.repManager,
+  //collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}}
 );
 ~entity1.attach(~soundRep1);
 
 ~soundRep2 = SoundRepresentation(
-	~gameloop.repManager,
-	//collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}}
+  ~gameloop.repManager,
+  //collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}}
 );
 ~entity2.attach(~soundRep2);
 
 ~entity1.force_({arg entity; Arrive.calculate(entity, RealVector2D[18, 20.5])});
 ~entity2.force_({arg entity; Arrive.calculate(entity, RealVector2D[22, 20.5])});
 
-	~randForcePath = {arg entity; var path;
-	/* steering bahavior */
-	path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(5, 35.0), rrand(5.0, 35.0)]}), true);
-	entity.force_(
-		{ arg entity;
-			PathFollowing.calculate(entity,path, 0.5);
-		});
-	};
+  ~randForcePath = {arg entity; var path;
+  /* steering bahavior */
+  path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(5, 35.0), rrand(5.0, 35.0)]}), true);
+  entity.force_(
+    { arg entity;
+      PathFollowing.calculate(entity,path, 0.5);
+    });
+  };
 
 ~randForcePath.value(~entity1);
 ~randForcePath.value(~entity2);
@@ -336,7 +336,7 @@ RealVector2D[-2, 0.9].cling(0.1, 200)
 
 
 
-                GGGGGGGGGGGGG                                            							 	 LLLLLLLLLLL
+                GGGGGGGGGGGGG                                                            LLLLLLLLLLL
              GGG.:::::::::::G                                                            L.::::::::L
            GG.:::::::::::::G                                                             L.::::::::L
           G.::::GGGGGGGG.:::G                                                            LL.::::::LL
@@ -353,24 +353,24 @@ RealVector2D[-2, 0.9].cling(0.1, 200)
              GGG.:::::GGG.::G a.:::::::::aa.::am.:::m   m.:::m   m.:::m  ee.::::::::::::eL.:::::::::::::::::::::L oo.::::::::::oo  oo.::::::::::oo  p.:::::::::::::pp
                 GGGGGG   GGGG  aaaaaaaaaa  aaaammmmmm   mmmmmm   mmmmmm    eeeeeeeeeeeeeeLLLLLLLLLLLLLLLLLLLLLLLL   ooooooooooo      ooooooooooo    p.:::::pppppppp
                                                                                                                                                     p.::::p
-																																	          	- "Press D for Help" -                                                p.::::p
+                                                                              - "Press D for Help" -                                                p.::::p
                                                                                                                                                    p.::::::p
                                                                                                                                                    p.::::::p
                                                                                                                                                    p.::::::p
                                                                                                                                                    ppppppppp
 
 (
-	~entity = Vehicle(
-		~gameloop.world,
-		position: RealVector2D[21,25],
-		radius: 0.4,
-		maxSpeed: 2.6
-	);
-	~entity.collisionType_(\mobile);
-	//and a visual representation
-	~visrep = SimpleVisual(~gameloop.repManager);
-	/* ~visrep.collisionFunc_({arg ent; "houla".postln;}); */
-	~entity.attach(~visrep);
+  ~entity = Vehicle(
+    ~gameloop.world,
+    position: RealVector2D[21,25],
+    radius: 0.4,
+    maxSpeed: 2.6
+  );
+  ~entity.collisionType_(\mobile);
+  //and a visual representation
+  ~visrep = SimpleVisual(~gameloop.repManager);
+  /* ~visrep.collisionFunc_({arg ent; "houla".postln;}); */
+  ~entity.attach(~visrep);
 );
 
 ~entity.position = RealVector2D[23,30]
@@ -382,12 +382,12 @@ RealVector2D[-2, 0.9].cling(0.1, 200)
 ~gameloop.repManager.repList
 
 (
-	a = ForceManager();
-	a.add(\test, { RealVector2D[0, 10]});
-	a.add(\test1, { RealVector2D[10, 0]});
-	a.sum(RealVector2D[2,0]).postln;
-	a.sum;
-	a.list;
+  a = ForceManager();
+  a.add(\test, { RealVector2D[0, 10]});
+  a.add(\test1, { RealVector2D[10, 0]});
+  a.sum(RealVector2D[2,0]).postln;
+  a.sum;
+  a.list;
 )
 
 a = Wall(RealVector2D[10,20], RealVector2D[13, 30]);
@@ -402,21 +402,21 @@ c = ~gameloop.entManager.spatialIndex.getCellsForLine(b);
 c.do{ arg item; ~gameloop.entManager.spatialIndex.getCell(item).postln }
 
 (
-	Routine{
-		inf.do{
-			b.checkCircleWallCollision(~entity).postln;
-			0.05.wait;
-	  };
-	}.play;
+  Routine{
+    inf.do{
+      b.checkCircleWallCollision(~entity).postln;
+      0.05.wait;
+    };
+  }.play;
 )
 
 (
-	a = c.collect{
-		arg item, index;
-		var col = 40, rows = 40, translation;
-		translation = (item[0]*col)+item[1];
-		translation.postln;
-	};
+  a = c.collect{
+    arg item, index;
+    var col = 40, rows = 40, translation;
+    translation = (item[0]*col)+item[1];
+    translation.postln;
+  };
 )
 
 a = List[1,2,3]

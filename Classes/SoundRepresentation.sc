@@ -1,120 +1,120 @@
 
 /*
-	This is a basic Mobile Unit with varying sound input
+  This is a basic Mobile Unit with varying sound input
 */
 
 SoundRepresentation : EntityRepresentation {
 
-	var >input, >release = 0.2;
-	var encoderClass, <encoderProxy, summingProxy, <encoderProxyIndex;
+  var >input, >release = 0.2;
+  var encoderClass, <encoderProxy, summingProxy, <encoderProxyIndex;
 
-	*new { arg  repManager, collisionFunc, input,
-							release;
-		^super.new(repManager, collisionFunc)
-					.input_(input)
-					.release_(release);
-	}
+  *new { arg  repManager, collisionFunc, input,
+              release;
+    ^super.new(repManager, collisionFunc)
+          .input_(input)
+          .release_(release);
+  }
 
-	init {
-		super.init;
-		release = release ?? {0.2};
+  init {
+    super.init;
+    release = release ?? {0.2};
 
-		/* decoder init */
-		this.initializeDecoder;
+    /* decoder init */
+    this.initializeDecoder;
 
-		/* make some sound */
-		this.add;
+    /* make some sound */
+    this.add;
 
-	}
+  }
 
-	/* public */
+  /* public */
 
-	remove{
-		 Routine{
-			//clear everything with given realease time
-			encoderProxy.clear(release);
-			//wait for the release to finish
-			release.wait;
-			//remove the node from the summing bus
-			summingProxy.removeAt(encoderProxyIndex);
-			repManager.remove(this);
-			attached = false;
-	 	}.play(TempoClock.default);
-	}
+  remove{
+     Routine{
+      //clear everything with given realease time
+      encoderProxy.clear(release);
+      //wait for the release to finish
+      release.wait;
+      //remove the node from the summing bus
+      summingProxy.removeAt(encoderProxyIndex);
+      repManager.remove(this);
+      attached = false;
+    }.play(TempoClock.default);
+  }
 
-	/* private */
+  /* private */
 
-	initializeDecoder{
-		encoderClass = GameLoopDecoder.instance.getEncoderClass;
-		/* get the right proxy from the GameLoopDecoder class */
-		encoderProxy = GameLoopDecoder.instance.getEncoderProxy;
-		encoderProxy.clock = TempoClock.default;
-		/* plug the proxy to the proxy acting as summing bus */
-		summingProxy = GameLoopDecoder.instance.summingProxy;
-		/* Always put the new Node in an extra slot of the Summing nodeRpoxy */
-		encoderProxyIndex = summingProxy.sources.size - 1;
-		summingProxy.put(encoderProxyIndex, encoderProxy);
-	}
+  initializeDecoder{
+    encoderClass = GameLoopDecoder.instance.getEncoderClass;
+    /* get the right proxy from the GameLoopDecoder class */
+    encoderProxy = GameLoopDecoder.instance.getEncoderProxy;
+    encoderProxy.clock = TempoClock.default;
+    /* plug the proxy to the proxy acting as summing bus */
+    summingProxy = GameLoopDecoder.instance.summingProxy;
+    /* Always put the new Node in an extra slot of the Summing nodeRpoxy */
+    encoderProxyIndex = summingProxy.sources.size - 1;
+    summingProxy.put(encoderProxyIndex, encoderProxy);
+  }
 
-	add {
-		var latency;
-		latency = Server.default.latency;
-		Routine{
-			this.addSource;
-			/* wait for 'latency' before adding to managers so that everything is in sync. */
-			if(latency.notNil) {latency.wait};
-			/* Add everything at exactly the same time as the bundle */
-			this.addEntity;
-			repManager.add(this);
-		}.play;
-	}
+  add {
+    var latency;
+    latency = Server.default.latency;
+    Routine{
+      this.addSource;
+      /* wait for 'latency' before adding to managers so that everything is in sync. */
+      if(latency.notNil) {latency.wait};
+      /* Add everything at exactly the same time as the bundle */
+      this.addEntity;
+      repManager.add(this);
+    }.play;
+  }
 
-	addSource{
-			encoderProxy.source = { arg dt;
-				var x , y;
-				var rad, azim, elev, in, speedValue;
+  addSource{
+      encoderProxy.source = { arg dt;
+        var x , y;
+        var rad, azim, elev, in, speedValue;
 
-				dt = this.dt;
+        dt = this.dt;
 
-				/* Ramp is used to interpolate between updates */
-				#x, y = Control.names(#[x, y]).kr([position[0], position[1]]);
-				x = Ramp.kr(x, dt);
-				y = Ramp.kr(y, dt);
+        /* Ramp is used to interpolate between updates */
+        #x, y = Control.names(#[x, y]).kr([position[0], position[1]]);
+        x = Ramp.kr(x, dt);
+        y = Ramp.kr(y, dt);
 
-				speedValue = Control.names(\speed).kr(speed);
-				speedValue = Ramp.kr(speedValue, dt);
+        speedValue = Control.names(\speed).kr(speed);
+        speedValue = Ramp.kr(speedValue, dt);
 
-				/* play default if input is not supplied */
-				if(input == nil,
-					{
-						in = Impulse.ar(speedValue.linlin(0,10, 5, rrand(50, 200.0)));
-						in = BPF.ar(in, rrand(2000, 18000.0)*rrand(0.3, 2.0), 0.4);
-					},
-					{in = input.value(speedValue)}
-				);
+        /* play default if input is not supplied */
+        if(input == nil,
+          {
+            in = Impulse.ar(speedValue.linlin(0,10, 5, rrand(50, 200.0)));
+            in = BPF.ar(in, rrand(2000, 18000.0)*rrand(0.3, 2.0), 0.4);
+          },
+          {in = input.value(speedValue)}
+        );
 
-				/* calculate azimuth and radius */
-				azim = atan2(y,x);
-				rad = hypot(x,y);
-				elev = 0;
+        /* calculate azimuth and radius */
+        azim = atan2(y,x);
+        rad = hypot(x,y);
+        elev = 0;
 
-				/* get and use the relevant encoder */
-				encoderClass.ar(
-					in,
-					azim,
-					rad,
-					elev: elev,
-					ampCenter: 0.9
-				);
-			};
-	}
+        /* get and use the relevant encoder */
+        encoderClass.ar(
+          in,
+          azim,
+          rad,
+          elev: elev,
+          ampCenter: 0.9
+        );
+      };
+  }
 
-	preUpdate{ arg theChanged, transPosition;
-		/* set the syth with the new position values */
-		encoderProxy.set('speed', speed);
-		encoderProxy.set('x', transPosition[0]);
-		encoderProxy.set('y', transPosition[1]);
-	}
+  preUpdate{ arg theChanged, transPosition;
+    /* set the syth with the new position values */
+    encoderProxy.set('speed', speed);
+    encoderProxy.set('x', transPosition[0]);
+    encoderProxy.set('y', transPosition[1]);
+  }
 
 
 

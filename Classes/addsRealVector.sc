@@ -2,17 +2,17 @@
 
 + RealVector2D {
 
-	//mag {^this[0].sumsqr(this[1]).sqrt} //is called norm in RealVector2D
+  //mag {^this[0].sumsqr(this[1]).sqrt} //is called norm in RealVector2D
 
-	magSq {^this[0].sumsqr(this[1])} //thus skipping the sqrt
+  magSq {^this[0].sumsqr(this[1])} //thus skipping the sqrt
 
-	perp { ^RealVector2D[(-1)*this[1], this[0]]}
+  perp { ^RealVector2D[(-1)*this[1], this[0]]}
 
-	distanceSq{ |vec| var ySeparation, xSeparation;
-		ySeparation = vec[1] - this[1];
-		xSeparation = vec[0] - this[0];
-		^((ySeparation*ySeparation) + (xSeparation*xSeparation));
-	}
+  distanceSq{ |vec| var ySeparation, xSeparation;
+    ySeparation = vec[1] - this[1];
+    xSeparation = vec[0] - this[0];
+    ^((ySeparation*ySeparation) + (xSeparation*xSeparation));
+  }
 
 }
 
