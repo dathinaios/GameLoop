@@ -3,19 +3,19 @@
 	This is a basic Mobile Unit with varying sound input
 */
 
-SoundRepresentation : EntityRepresentation { 
+SoundRepresentation : EntityRepresentation {
 
 	var >input, >release = 0.2;
 	var encoderClass, <encoderProxy, summingProxy, <encoderProxyIndex;
-							
-	*new { arg  repManager, collisionFunc, input, 
-							release;  
+
+	*new { arg  repManager, collisionFunc, input,
+							release;
 		^super.new(repManager, collisionFunc)
-					.input_(input) 
+					.input_(input)
 					.release_(release);
 	}
 
-	init { 
+	init {
 		super.init;
 		release = release ?? {0.2};
 
@@ -55,7 +55,7 @@ SoundRepresentation : EntityRepresentation {
 		encoderProxyIndex = summingProxy.sources.size - 1;
 		summingProxy.put(encoderProxyIndex, encoderProxy);
 	}
-	
+
 	add {
 		var latency;
 		latency = Server.default.latency;
@@ -82,7 +82,7 @@ SoundRepresentation : EntityRepresentation {
 				y = Ramp.kr(y, dt);
 
 				speedValue = Control.names(\speed).kr(speed);
-				speedValue = Ramp.kr(speedValue, dt); 
+				speedValue = Ramp.kr(speedValue, dt);
 
 				/* play default if input is not supplied */
 				if(input == nil,
@@ -100,10 +100,10 @@ SoundRepresentation : EntityRepresentation {
 
 				/* get and use the relevant encoder */
 				encoderClass.ar(
-					in, 
-					azim, 
-					rad, 
-					elev: elev, 
+					in,
+					azim,
+					rad,
+					elev: elev,
 					ampCenter: 0.9
 				);
 			};
@@ -117,5 +117,5 @@ SoundRepresentation : EntityRepresentation {
 	}
 
 
-	
-}   
+
+}

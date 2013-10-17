@@ -2,18 +2,18 @@
 GameLoopVisualiser{
 			 classvar <instance;
 			 var <entManager, <repManager;
-			 var <mainView, infoString; 
+			 var <mainView, infoString;
 			 var width = 400, height = 400;
 			 var <>meterInPixels = 10;
 			 var leftRotationRoutine, rightRotationRoutine, fwdRotationRoutine, backRotationRoutine;
 
 	*new{ arg entManager, repManager;
-			if(instance.isNil, 
+			if(instance.isNil,
 				{
 				^super.newCopyArgs(entManager, repManager).init;
 				},
 				{"There is already an active instance of GameLoopVisualiser".error;}
-			);		
+			);
 	}
 
 	init{
@@ -42,16 +42,16 @@ GameLoopVisualiser{
 		this.setWindowKeyActions;
 	}
 
-	createMainView{ 
+	createMainView{
 		mainView ?? { var text;
 			mainView = Window("Visualiser", Rect(-450, 400, width, height), scroll: false);
 			infoString= StaticText(mainView, Rect(3, 3, 200, 20)).stringColor_(Color.grey);
 		}
 	}
 
-	setViewOptions{ 
+	setViewOptions{
 		mainView.view.background = Color.black;
-		mainView.onClose = {mainView = nil; }; 
+		mainView.onClose = {mainView = nil; };
 		mainView.front;
 		mainView.alwaysOnTop = true;
 	}
@@ -66,15 +66,15 @@ GameLoopVisualiser{
 	}
 
 	drawEntities{ arg repList; var obstacle;
-		repList.size.do { arg index; 
-			obstacle = repList[index]; 
+		repList.size.do { arg index;
+			obstacle = repList[index];
 			if(obstacle.type == 'visual')
 			  {this.drawEntity(obstacle)};
 		}
 	}
 
-	drawEntity{arg obstacle; 
-						 var radiusInPixels, widthInPixels, obstacPos; 
+	drawEntity{arg obstacle;
+						 var radiusInPixels, widthInPixels, obstacPos;
 						 var left, top;
 						 var h = 400, w = 400;
 
@@ -116,7 +116,7 @@ GameLoopVisualiser{
 	/* Shortcuts for control of camera from focused window */
 
 	initCameraRoutines{
-		leftRotationRoutine = Routine{ 
+		leftRotationRoutine = Routine{
 			loop{
 			Camera2D.instance.rotateLeft;
 			0.05.wait;
@@ -147,7 +147,7 @@ GameLoopVisualiser{
 
 	setWindowKeyActions{
 			//Specific mainview setting and keyboard controls
-			mainView.view.keyDownAction = 
+			mainView.view.keyDownAction =
 				{arg view, char, modifiers, unicode, keycode;
 					switch (keycode)
 					{126}
@@ -172,7 +172,7 @@ GameLoopVisualiser{
 					}
 				};
 
-			mainView.view.keyUpAction = 
+			mainView.view.keyUpAction =
 				{arg view, char, modifiers, unicode, keycode;
 					switch (keycode)
 					{123}{leftRotationRoutine.stop}

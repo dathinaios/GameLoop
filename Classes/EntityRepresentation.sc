@@ -2,9 +2,9 @@ EntityRepresentation { var repManager, <>collisionFunc;
 	var <position, <radius, <speed, entity, attached = false;
 	var <>type = 'sound';
 
-	*new { arg repManager, collisionFunc;  
+	*new { arg repManager, collisionFunc;
 		^super.newCopyArgs(repManager, collisionFunc)
-	} 
+	}
 
 	init{ var latency;
 		/* initialize data */
@@ -17,24 +17,24 @@ EntityRepresentation { var repManager, <>collisionFunc;
 		switch (message[0])
 		{\preUpdate}
 		{ var transPosition;
-			transPosition = this.cameraTransform(theChanged); 
+			transPosition = this.cameraTransform(theChanged);
 		  this.preUpdate(theChanged, transPosition);
 		}
-		{\update} 
+		{\update}
 		{this.getData}
-		{\attach} 
+		{\attach}
 		{this.attach(theChanged) }
-		{\remove} 
+		{\remove}
 		{this.remove;}
 		{\detach}
 		{this.detach(message)}
 		{\collision}
 		{this.collision(message)};
-	} 
+	}
 
 	attach{ arg theChanged;
 		if (attached.isNil or:{attached.not},
-		{ attached = true; 
+		{ attached = true;
 			this.storeEntity(theChanged);
 			this.init; }
 		);
@@ -44,7 +44,7 @@ EntityRepresentation { var repManager, <>collisionFunc;
 			if (attached and:{message[1] == this}, {attached = false; this.remove;});
 	}
 
-	cameraTransform{arg theChanged; 
+	cameraTransform{arg theChanged;
 		if (Camera2D.active,
 			{^(Camera2D.instance.applyTransformation(theChanged))},
 			{^position}
@@ -82,7 +82,7 @@ EntityRepresentation { var repManager, <>collisionFunc;
 	}
 
 	remove{
-		repManager.remove(this); 
+		repManager.remove(this);
 		attached = false;
 	}
 
@@ -91,4 +91,4 @@ EntityRepresentation { var repManager, <>collisionFunc;
 		collisionFunc.value(this, entity, message[1]);
 	}
 
-}   
+}

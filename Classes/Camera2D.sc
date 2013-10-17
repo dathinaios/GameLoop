@@ -4,15 +4,15 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 										 >motionAmount = 30, >rotationAmount= 0.01pi;
 
 
-	*new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 0.05, 
-				velocity = RealVector2D[0, 0], collisionType = \mobile, heading, 
+	*new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 0.05,
+				velocity = RealVector2D[0, 0], collisionType = \mobile, heading,
 				side, maxSpeed = 3.4, maxForce = 10, maxTurnRate = 2;
 
-			if(instance.isNil, 
+			if(instance.isNil,
 				{
-					^super.new(world, 
-						position, 
-						radius, 
+					^super.new(world,
+						position,
+						radius,
 						mass
 					).velocity_(velocity)
 					.collisionType_(collisionType)
@@ -23,7 +23,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 					.maxTurnRate_(maxTurnRate);
 				},
 				{"There is already an active instance of Camera2D".error;}
-			);		
+			);
 	}
 
 	/* collisionType_{arg type; */
@@ -50,7 +50,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 
 	setCollisionResolution{
 		collisionFunc = {};
-		/* { arg entity, entList; */ 
+		/* { arg entity, entList; */
 		/* 	CollisionResolution.nonPenetrationConstrain(entity, entList, 1.6); */
 		/* }; */
 	}
@@ -63,7 +63,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 		};
 	}
 
-	applyTransformation{ arg entity; 
+	applyTransformation{ arg entity;
 						var entPos, newPos, theta, thetaSin, thetaCos, rad, x,y;
 						var xMinusx, yMinusy;
 			if (entity.class != Camera2D,
@@ -125,7 +125,7 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
 
 	goto{ arg target;
 		arrivePosition = target;
-		this.force_({arg ent; Arrive.calculate(ent, arrivePosition)}); 
+		this.force_({arg ent; Arrive.calculate(ent, arrivePosition)});
 	}
 
 	reset{

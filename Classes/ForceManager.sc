@@ -25,7 +25,7 @@ ForceManager { var <>forces;
 
 	get{ arg key;
 		^forces.atFail(key, {0});
-	}	
+	}
 
 	list{
 		"\n=============================================".postln;

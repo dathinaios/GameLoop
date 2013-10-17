@@ -6,10 +6,10 @@ EntityManager {
 			 var <sceneWidth, <sceneHeight, <repManager;
 			 var <currentCollisionList;
 
-	*new { arg spatialIndex = SpatialHashing(20, 20, 0.5); 
+	*new { arg spatialIndex = SpatialHashing(20, 20, 0.5);
 		^super.newCopyArgs(spatialIndex).init
-	} 
-	
+	}
+
 	init{
 		dt = 0.05; //20 FPS
 		freeList = List.new;
@@ -40,14 +40,14 @@ EntityManager {
 
 	doAll{
 		this.collisionResolution;
-		this.unregisterIndex; 
-		this.update; 
+		this.unregisterIndex;
+		this.update;
 		this.registerIndex;
-		this.collisionCheck; 
+		this.collisionCheck;
 	}
 
 	/* EntityManager has three types of objects. Ones that dont collide,
-	ones that collide with everything and ones that collide but not 
+	ones that collide with everything and ones that collide but not
 	between each other.*/
 	add{ arg entity;
 		switch (entity.collisionType)
@@ -56,7 +56,7 @@ EntityManager {
 		{\static} {staticList.add(entity); spatialIndex.register(entity)};
 	}
 
-	remove{ arg entity; 
+	remove{ arg entity;
 		switch (entity.collisionType)
 		{\free} {freeList.remove(entity)}
 		{\mobile} {mobList.remove(entity); spatialIndex.unregister(entity)}
@@ -72,16 +72,16 @@ EntityManager {
 		index = wallList.detectIndex({arg i; i[0] == wall});
 		wallList.removeAt(index);
 	}
-	
+
 	clearWalls{ wallList.clear;
 	}
-		
+
 	update{
 			freeList.do{arg i; i.update};
 			mobList.do{arg i; i.update};
 			staticList.do{arg i; i.update};
 	}
-	
+
 	clear { var listCopy;
  		[freeList.copy, mobList.copy, staticList.copy].flat.do{arg i; i.remove};
 	}
@@ -92,16 +92,16 @@ EntityManager {
 	unregisterIndex {
 				mobList.do{arg i;
 					spatialIndex.unregister(i);
-				};				 
-	}
-	
-	registerIndex { 
-				mobList.do{arg i;
-					spatialIndex.register(i);
-				};				 
+				};
 	}
 
-	collisionCheck{ 
+	registerIndex {
+				mobList.do{arg i;
+					spatialIndex.register(i);
+				};
+	}
+
+	collisionCheck{
 		this.collisionCheckForMobile;
 		this.collisionCheckForStatic;
 		this.collisionCheckForWalls;
@@ -110,10 +110,10 @@ EntityManager {
 	collisionCheckForMobile{
 		mobList.do{ arg i; var nearest, collidingWith;
 			// a list to store the objects that are found to collide with the entity
-			collidingWith = List.new; 
+			collidingWith = List.new;
 			nearest = spatialIndex.getNearest(i);
 			if(nearest.size>0, {
-					nearest.do{arg i2; 
+					nearest.do{arg i2;
 						if(this.circlesCollide(i, i2)) {collidingWith = collidingWith.add(i2)};
 					};
 					if(collidingWith.size != 0,
@@ -161,7 +161,7 @@ EntityManager {
 			potentialCollidingEntities = spatialIndex.getObjectsFromCellSet(cells);
 			potentialCollidingEntities.do{arg i; var offset;
 				offset = this.checkEntityWallCollision(i, wall);
-				if(offset != 0, 
+				if(offset != 0,
 				  {currentCollisionList.add([i, wall, offset])}
 				);
 			}
@@ -180,7 +180,7 @@ EntityManager {
 			if (a > ((dx*dx) + (dy*dy)),
 				{^true} ,
 				{^false}
-			);			
+			);
 
 	}
 
@@ -212,6 +212,6 @@ EntityManager {
 		};
 		currentCollisionList.clear;
 	}
-	
+
 }
 

@@ -10,7 +10,7 @@ SpacePolarAmbIEM : UGen{
 		//here we scale and filter like in ** VSpace **
 		in = amp*MoogVCF.ar(in*ampCenter, (100000/radius.clip(0.01, inf)).clip(20, (SampleRate.ir*0.5) - 100), 0);
 		//encode the signal
-		^PanAmbi3O.ar(in, 0.5pi - azimuth, DC.kr(elev)); 
+		^PanAmbi3O.ar(in, 0.5pi - azimuth, DC.kr(elev));
 	}
 }
 

@@ -1,19 +1,19 @@
 
-GameLoopDecoder { classvar <instance, <active = false; 
-                  var	<>library, <>type, <>dp, <encoderProxy, <decoderProxy, <summingProxy, 
+GameLoopDecoder { classvar <instance, <active = false;
+                  var	<>library, <>type, <>dp, <encoderProxy, <decoderProxy, <summingProxy,
 									encoderChannels, decoderChannels, order, kernel;
 
 	*new{ arg library = 'AmbIEM', type = 'binaural', dp = true;
-			if(instance.isNil, 
+			if(instance.isNil,
 				{
 				^super.newCopyArgs(library, type, dp).init;
 				},
 				{"There is already an active instance of GameLoopDecoder".error;}
-			);		
+			);
 	}
 
 	init{
-		
+
 		instance  = this;
 		active = true;
 
@@ -32,7 +32,7 @@ GameLoopDecoder { classvar <instance, <active = false;
 	}
 
 	getEncoderClass{
-		case 
+		case
 		{library =='AmbIEM' && (type == 'binaural')} {
 			if (dp == true,
 				{^SpacePolarAmbIEMDp},
@@ -66,7 +66,7 @@ GameLoopDecoder { classvar <instance, <active = false;
 	/* Private Methods */
 
 	calculateOrderAndNumOfChannels{
-		case 
+		case
 		//binaural
 		{library =='AmbIEM' && (type == 'binaural')} {decoderChannels = 2; order = 3}
 		{library =='ATK' && (type == 'newListen')} {decoderChannels = 2; order = 1}
@@ -103,7 +103,7 @@ GameLoopDecoder { classvar <instance, <active = false;
 	}
 
 	chooseDecoderSources{
-		case 
+		case
 		{library =='AmbIEM' && (type == 'binaural')} {
 			BinAmbi3O.init('1_4_7_4');
 			this.addDecoderSource(BinAmbi3O);

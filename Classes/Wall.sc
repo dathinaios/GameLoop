@@ -18,8 +18,8 @@ Wall { var <>from, <> to, <>normal;
 	}
 
 	/* impementation from http://doswa.com/2009/07/13/circle-segment-intersectioncollision.html */
-	closestPointOnWall{ 
-		arg entityPosition; 
+	closestPointOnWall{
+		arg entityPosition;
 		var segv, ptv, segvunit, proj, projv, closest;
 
 		segv = to - from;
@@ -33,7 +33,7 @@ Wall { var <>from, <> to, <>normal;
 		//can I use here the proj method instead of doing it manually?
 		proj = ptv <|> segvunit; //dot product
 
-		if ( proj <= 0 ) { ^from}; 
+		if ( proj <= 0 ) { ^from};
 
 		if ( proj >= segv.norm) { ^to};
 

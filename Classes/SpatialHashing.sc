@@ -5,7 +5,7 @@ TODO: a method that finds entities at a given distance
 SpatialHashing{ var <sceneWidth, <sceneHeight, <cellSize;
 	var <buckets, cols, rows;
 
-	*new { arg sceneWidth = 10, sceneHeight = 10, cellSize = 0.5;  
+	*new { arg sceneWidth = 10, sceneHeight = 10, cellSize = 0.5;
 		^super.newCopyArgs(sceneWidth, sceneHeight, cellSize).init
 	}
 
@@ -33,7 +33,7 @@ SpatialHashing{ var <sceneWidth, <sceneHeight, <cellSize;
 	unregister{ arg object;
 		var bucketIDs;
 		bucketIDs = this.findCells(object);
-		bucketIDs.do{arg i; 
+		bucketIDs.do{arg i;
 			buckets[i].remove(object)
 		};
 
@@ -41,8 +41,8 @@ SpatialHashing{ var <sceneWidth, <sceneHeight, <cellSize;
 
 	getObjectsFromCellSet{ arg set, objectSet;
 		objectSet = IdentitySet.new;
-	  set.do{arg cellID; 
-	  	this.getCell(cellID).do{arg i; 
+	  set.do{arg cellID;
+	  	this.getCell(cellID).do{arg i;
 	  		objectSet.add(i)
 	  	}
 	  };
@@ -72,7 +72,7 @@ SpatialHashing{ var <sceneWidth, <sceneHeight, <cellSize;
 		^[minPoint, [maxPoint[0], minPoint[1]], maxPoint, [minPoint[0], maxPoint[1]]];
 	}
 
-	findBacket{ arg pos; 
+	findBacket{ arg pos;
 		/* can  be optimised to remove the divisions! See hash optimisation paper */
 		^((pos[0]/cellSize).floor + ((pos[1]/cellSize).floor*cols)).asInteger;
 	}
@@ -80,7 +80,7 @@ SpatialHashing{ var <sceneWidth, <sceneHeight, <cellSize;
 	getNearest{ arg object;
 		var set = IdentitySet.new, bucketIDs;
 		bucketIDs = this.findCells(object);
-		bucketIDs.do{arg i; 
+		bucketIDs.do{arg i;
 			buckets[i].do{
 				arg i; set.add(i)
 			}
@@ -97,7 +97,7 @@ SpatialHashing{ var <sceneWidth, <sceneHeight, <cellSize;
 		buckets.do{arg i; i.clear}
 	}
 
-	/* my surely inefficient algorithm for assigning cells to a line. */ 
+	/* my surely inefficient algorithm for assigning cells to a line. */
 	/* It involves creating and projecting spherical objects along its length. */
 	/* Hopefully not too costly since it is going to be called only once. */
 
@@ -110,8 +110,8 @@ SpatialHashing{ var <sceneWidth, <sceneHeight, <cellSize;
 		unitsInLine = objectDistance.norm/halfCellSize;
 
 		/* gather helper objects every half a cell along the line */
-		unitsInLine.do{ 
-			arg i; 
+		unitsInLine.do{
+			arg i;
 			var currentPlace, xStep, yStep, x, y, pointToObject;
 			var destinationX, destinationY, boundingBoxCorners;
 
@@ -130,4 +130,4 @@ SpatialHashing{ var <sceneWidth, <sceneHeight, <cellSize;
 		^this.getSetFromCorners(allCorners.flatten);
 	}
 
- }                                                                                                                                                                                                                               
+ }

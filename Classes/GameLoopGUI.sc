@@ -7,12 +7,12 @@ GameLoopGUI{
 			 var visualiser;
 
 	*new{ arg gameloop;
-			if(instance.isNil, 
+			if(instance.isNil,
 				{
 				^super.newCopyArgs(gameloop).init;
 				},
 				{"There is already an active instance of GameLoopGUI".error;}
-			);		
+			);
 	}
 
 	init{
@@ -25,12 +25,12 @@ GameLoopGUI{
 		visualiser.gui;
 		this.gui;
 	}
-	
+
 	update { arg theChanged, message;
 		switch (message[0])
-		{\update} 
+		{\update}
 		{visualiser.render};
-	} 
+	}
 
 	close {
 		if(mainView.notNil, {mainView.close}, {"There is no view open for GameLoopGUI".error});
@@ -66,7 +66,7 @@ GameLoopGUI{
 			     ["Close Visualiser",Color.green,Color.black],
 		 ]);
 
-		 if (visualiser.mainView != nil, 
+		 if (visualiser.mainView != nil,
 				{visButton.value = 1},
 				{visButton.value = 0}
 			);
@@ -80,7 +80,7 @@ GameLoopGUI{
 	}
 
 	initCameraRoutines{
-		leftRotationRoutine = Routine{ 
+		leftRotationRoutine = Routine{
 			loop{
 			Camera2D.instance.rotateLeft;
 			0.05.wait;
@@ -110,7 +110,7 @@ GameLoopGUI{
 	}
 
 	setWindowKeyActions{
-			mainView.view.keyDownAction = 
+			mainView.view.keyDownAction =
 				{arg view, char, modifiers, unicode, keycode;
 					switch (keycode)
 					{126}
@@ -135,7 +135,7 @@ GameLoopGUI{
 					}
 				};
 
-			mainView.view.keyUpAction = 
+			mainView.view.keyUpAction =
 				{arg view, char, modifiers, unicode, keycode;
 					switch (keycode)
 					{123}{leftRotationRoutine.stop}

@@ -5,8 +5,8 @@ NonPenetrationConstrain{
 	}
 
 	/* From AI by Example book p. 125 */
-	*calculate{ 
-		arg entity, collidingWith = List[], amountOfSeperation = 1; 
+	*calculate{
+		arg entity, collidingWith = List[], amountOfSeperation = 1;
 
 		collidingWith.do{ arg curEntity; var toEntity, distFromEachOther, amountOfOverlap;
 
@@ -20,6 +20,6 @@ NonPenetrationConstrain{
 			{
 				entity.position = entity.position + ( (toEntity/distFromEachOther) * amountOfOverlap );
 			}
-		};	
+		};
 	}
 }

@@ -6,12 +6,12 @@ GameLoop{
 			 var <mainRoutine;
 
 	*new{ arg sceneWidth = 40, sceneHeight = 40, cellSize = 1;
-			if(instance.isNil, 
+			if(instance.isNil,
 				{
 				^super.newCopyArgs(sceneWidth, sceneHeight, cellSize).init;
 				},
 				{"There is already an active instance of GameLoop".error;}
-			);		
+			);
 	}
 
 	init{
@@ -20,7 +20,7 @@ GameLoop{
 		repManager = RepresentationManager.new;
 		CmdPeriod.add({this.clear});
 	}
-	
+
 	switchSpace{ arg width = sceneWidth, height = sceneHeight, cell = cellSize;
 		entManager.newIndex(SpatialHashing(width, height, cell));
 
@@ -31,12 +31,12 @@ GameLoop{
 		this.clearEntities;
 		this.resetCamera;
 	}
-	
+
 	gui{var gui;
 			gui = GameLoopGUI(this);
 			this.addDependant(gui);
 	}
-	
+
 	guiClose{
 			GameLoopGUI.instance.clear;
 	}
@@ -47,7 +47,7 @@ GameLoop{
 
 	play{ arg rate;
 		if (mainRoutine.isNil,
-			{ 
+			{
 			  if(rate != nil, {entManager.dt = rate});
 				mainRoutine = Routine{
 					inf.do{
@@ -56,7 +56,7 @@ GameLoop{
 						entManager.dt.wait;
 						}
 				}.play(TempoClock.default)
-			}, 
+			},
 			{
 			  mainRoutine.reset.play;
 			}

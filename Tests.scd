@@ -4,9 +4,9 @@
 	~decoder = GameLoopDecoder('AmbIEM', 'binaural');
 	//Allow time for the decoder to be created....
 	~gameloop = GameLoop(40, 40, 1).play(0.05);
-	//~gameloop.visualiser; 
-	~gameloop.gui; 
-	~gameloop.makeWalls; 
+	//~gameloop.visualiser;
+	~gameloop.gui;
+	~gameloop.makeWalls;
 )
 
 (
@@ -26,7 +26,7 @@
 		});
 	};
 	~camrep =Camera2DRepresentation(
-		~gameloop.repManager, 
+		~gameloop.repManager,
 		Color.white
 	).shape_(1);
 
@@ -46,7 +46,7 @@
 		~rep = SoundRepresentation(
 			~gameloop.repManager,
 			input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
-		); 
+		);
 
 		~entity.collisionType_(\mobile);
 		~entity.attach(~rep);
@@ -61,7 +61,7 @@
 		forceManager = ForceManager([\pathSteer, ~randForcePath.value]);
 		~entity.force_({ arg entity; forceManager.sum(entity); });
 
-		~entity.collisionFunc_({arg entity, entList; 
+		~entity.collisionFunc_({arg entity, entList;
 			//NonPenetrationConstrain.calculate(entity, entList);
 			forceManager.addTemp({arg ent; ent.velocity*RealVector2D[rrand(-200.0, -500),rrand(-200.0, -500)]};)
 		});
@@ -76,7 +76,7 @@
 
 (
 	~camera.collisionFunc_(
-		{ arg entity, entList; 
+		{ arg entity, entList;
 			CollisionResolution.nonPenetrationConstrain(entity, entList, 1.6);
 			/* entity.velocity*RealVector2D[rrand(-500.0, -500),rrand(-500.0, -500)]; */
 		};
@@ -103,7 +103,7 @@ GameLoopDecoder.instance.clear
 ~camera.friction = 0.9;
 ~camera.remove(true);
 
-~camera.force_({arg ent; Arrive.calculate(ent, RealVector2D[24,20])}); 
+~camera.force_({arg ent; Arrive.calculate(ent, RealVector2D[24,20])});
 ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[19,20.2]);});
 ~cameraForcePath.value;
 ~randForcePath.value;
@@ -120,7 +120,7 @@ GameLoopDecoder.instance.clear
 ~camera.remove
 
 ~gameloop.visualisation;
-~gameloop.guiClose; 
+~gameloop.guiClose;
 
 
 ~entity.velocity = RealVector2D[0, 0]
@@ -192,6 +192,7 @@ r.stop
 ~gameloop.mainRoutine.play
 ~gameloop.mainRoutine.stop
 CmdPeriod.run
+
 
 
 //An input and steering behavior to play around with
@@ -269,18 +270,18 @@ a.first()
 
 (
 ~entity1 = Vehicle(
-  ~gameloop.world, 
-  position: RealVector2D[25, 20.5], 
-  radius: 0.4, 
+  ~gameloop.world,
+  position: RealVector2D[25, 20.5],
+  radius: 0.4,
   maxSpeed: 10.0
-); 
+);
 
 ~entity2 = Vehicle(
-  ~gameloop.world, 
-  position: RealVector2D[15, 20.5], 
-  radius: 0.4, 
-  maxSpeed: 10.0 
-); 
+  ~gameloop.world,
+  position: RealVector2D[15, 20.5],
+  radius: 0.4,
+  maxSpeed: 10.0
+);
 
 ~entity1.collisionType_(\mobile);
 ~entity2.collisionType_(\mobile);
@@ -293,13 +294,13 @@ a.first()
 ~soundRep1 = SoundRepresentation(
 	~gameloop.repManager,
 	//collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}}
-); 
+);
 ~entity1.attach(~soundRep1);
 
 ~soundRep2 = SoundRepresentation(
 	~gameloop.repManager,
 	//collisionFunc: {arg entity, entList; entity.remove; entList.do{arg i; i.remove}}
-); 
+);
 ~entity2.attach(~soundRep2);
 
 ~entity1.force_({arg entity; Arrive.calculate(entity, RealVector2D[18, 20.5])});
@@ -333,30 +334,30 @@ RealVector2D[-2, 0.9].cling(0.1, 200)
 
 /* vim marker teleportation line */
 
-                                                                                                                                                   
-                                                                                                                                                   
-                GGGGGGGGGGGGG                                            							 	 LLLLLLLLLLL                                                   
-             GGG.:::::::::::G                                                            L.::::::::L                                                   
-           GG.:::::::::::::G                                                             L.::::::::L                                                 
-          G.::::GGGGGGGG.:::G                                                            LL.::::::LL                                               
-         G.::::G       GGGGGG  aaaaaaaaaaaaa      mmmmmmm    mmmmmmm       eeeeeeeeeeee    L.::::L                  ooooooooooo      ooooooooooo   ppppp   ppppppppp   
-        G.::::G                a.:::::::::::a   mm.::::::m  m.::::::mm   ee.:::::::::::ee  L.::::L                oo.::::::::::oo  oo.::::::::::oo p.:::ppp.::::::::p  
-        G.::::G                aaaaaaaaa.::::a m.:::::::::mm.:::::::::m e.:::::eeeee.::::eeL.::::L               o.::::::::::::::oo.::::::::::::::oP.::::::::::::::::p 
+
+
+                GGGGGGGGGGGGG                                            							 	 LLLLLLLLLLL
+             GGG.:::::::::::G                                                            L.::::::::L
+           GG.:::::::::::::G                                                             L.::::::::L
+          G.::::GGGGGGGG.:::G                                                            LL.::::::LL
+         G.::::G       GGGGGG  aaaaaaaaaaaaa      mmmmmmm    mmmmmmm       eeeeeeeeeeee    L.::::L                  ooooooooooo      ooooooooooo   ppppp   ppppppppp
+        G.::::G                a.:::::::::::a   mm.::::::m  m.::::::mm   ee.:::::::::::ee  L.::::L                oo.::::::::::oo  oo.::::::::::oo p.:::ppp.::::::::p
+        G.::::G                aaaaaaaaa.::::a m.:::::::::mm.:::::::::m e.:::::eeeee.::::eeL.::::L               o.::::::::::::::oo.::::::::::::::oP.::::::::::::::::p
         G.::::G    GGGGGGGGGG           a.:::a m.:::::::::::::::::::::me.:::::e     e.::::eL.::::L               o.::::ooooo.::::oo.::::ooooo.::::opp.:::::ppppp.:::::p
         G.::::G    G.:::::::G    aaaaaaa.::::a m.::::mmm.:::::mmm.::::me.::::::eeeee.:::::eL.::::L               o.:::o     o.:::oo.:::o     o.:::o p.::::p     p.::::p
         G.::::G    GGGGG.:::G  aa.:::::::::::a m.:::m   m.:::m   m.:::me.::::::::::::::::e L.::::L               o.:::o     o.:::oo.:::o     o.:::o p.::::p     p.::::p
         G.::::G        G.:::G a.:::aaaa.:::::a m.:::m   m.:::m   m.:::me.:::::eeeeeeeeeee  L.::::L               o.:::o     o.:::oo.:::o     o.:::o p.::::p     p.::::p
          G.::::G       G.:::Ga.:::a    a.::::a m.:::m   m.:::m   m.:::me.::::::e           L.::::L         LLLLLLo.:::o     o.:::oo.:::o     o.:::o p.::::p    p.:::::p
           G.::::GGGGGGGG.:::Ga.:::a    a.::::a m.:::m   m.:::m   m.:::me.:::::::e        LL.::::::LLLLLLLLL.::::Lo.::::ooooo.::::oo.::::ooooo.::::o p.::::ppppp.::::::p
-           GG.::::::::::::::Ga.::::aaaa.:::::a m.:::m   m.:::m   m.:::m e.:::::::eeeeeeeeL.:::::::::::::::::::::Lo.::::::::::::::oo.::::::::::::::o p.:::::::::::::::p 
-             GGG.:::::GGG.::G a.:::::::::aa.::am.:::m   m.:::m   m.:::m  ee.::::::::::::eL.:::::::::::::::::::::L oo.::::::::::oo  oo.::::::::::oo  p.:::::::::::::pp  
-                GGGGGG   GGGG  aaaaaaaaaa  aaaammmmmm   mmmmmm   mmmmmm    eeeeeeeeeeeeeeLLLLLLLLLLLLLLLLLLLLLLLL   ooooooooooo      ooooooooooo    p.:::::pppppppp    
-                                                                                                                                                    p.::::p            
-																																	          	- "Press D for Help" -                                                p.::::p            
-                                                                                                                                                   p.::::::p           
-                                                                                                                                                   p.::::::p           
-                                                                                                                                                   p.::::::p           
-                                                                                                                                                   ppppppppp           
+           GG.::::::::::::::Ga.::::aaaa.:::::a m.:::m   m.:::m   m.:::m e.:::::::eeeeeeeeL.:::::::::::::::::::::Lo.::::::::::::::oo.::::::::::::::o p.:::::::::::::::p
+             GGG.:::::GGG.::G a.:::::::::aa.::am.:::m   m.:::m   m.:::m  ee.::::::::::::eL.:::::::::::::::::::::L oo.::::::::::oo  oo.::::::::::oo  p.:::::::::::::pp
+                GGGGGG   GGGG  aaaaaaaaaa  aaaammmmmm   mmmmmm   mmmmmm    eeeeeeeeeeeeeeLLLLLLLLLLLLLLLLLLLLLLLL   ooooooooooo      ooooooooooo    p.:::::pppppppp
+                                                                                                                                                    p.::::p
+																																	          	- "Press D for Help" -                                                p.::::p
+                                                                                                                                                   p.::::::p
+                                                                                                                                                   p.::::::p
+                                                                                                                                                   p.::::::p
+                                                                                                                                                   ppppppppp
 
 (
 	~entity = Vehicle(
@@ -411,7 +412,7 @@ c.do{ arg item; ~gameloop.entManager.spatialIndex.getCell(item).postln }
 
 (
 	a = c.collect{
-		arg item, index; 
+		arg item, index;
 		var col = 40, rows = 40, translation;
 		translation = (item[0]*col)+item[1];
 		translation.postln;
