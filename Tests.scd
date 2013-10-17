@@ -6,7 +6,7 @@
   ~gameloop = GameLoop(40, 40, 1).play(0.05);
   //~gameloop.visualiser;
   ~gameloop.gui;
-  ~gameloop.makeWalls;
+  /* ~gameloop.makeWalls; */
 )
 
 (
@@ -93,6 +93,7 @@ s.ping(numberOfTrials);
 ~gameloop.clear;
 GameLoopDecoder.instance.clear
 ~gameloop.clearEntities;
+
 ~camera.remove(true)
 
 ~camera.maxForce = 1000;

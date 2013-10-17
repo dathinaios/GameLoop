@@ -22,6 +22,10 @@ GameLoopVisualiser{
     this.initCameraRoutines;
   }
 
+  camera{
+    ^Camera2D.instance;
+  }
+
   render {
     if(mainView.notNil, {{ mainView.refresh }.defer});
   }
@@ -96,10 +100,23 @@ GameLoopVisualiser{
   }
 
   drawWalls{
-    entManager.wallList.do{arg i; var pointFrom, pointTo;
+    entManager.wallList.do{arg i; var pointFrom, pointTo, from, to, sceneWidth, sceneHeight, halfSceneDimensions;
+      sceneWidth = entManager.sceneWidth;
+      sceneHeight = entManager.sceneHeight;
+      halfSceneDimensions = [sceneWidth, sceneHeight] * 0.5;
       i = i[0];
-      pointFrom = RealVector2D[i.from[0], entManager.sceneHeight - i.from[1]];
-      pointTo = RealVector2D[i.to[0], entManager.sceneHeight - i.to[1]];
+      from = i.from;
+      to = i.to;
+      if (Camera2D.active,
+        {
+        from = this.camera.translatePosition(from);
+        to = this.camera.translatePosition(to);
+        from = from + halfSceneDimensions;
+        to = to + halfSceneDimensions;
+        }
+      );
+      pointFrom = RealVector2D[from[0], sceneHeight - from[1]];
+      pointTo = RealVector2D[to[0], sceneHeight - to[1]];
       pointFrom = pointFrom * meterInPixels;
       pointTo = pointTo * meterInPixels;
       Pen.color = Color.white;
@@ -113,33 +130,34 @@ GameLoopVisualiser{
              "- Reps: " + repManager.activeReps.asString;
     ^string;
   }
+
   /* Shortcuts for control of camera from focused window */
 
   initCameraRoutines{
     leftRotationRoutine = Routine{
       loop{
-      Camera2D.instance.rotateLeft;
+      this.camera.rotateLeft;
       0.05.wait;
       };
     };
 
     rightRotationRoutine = Routine{
       loop{
-      Camera2D.instance.rotateRight;
+      this.camera.rotateRight;
       0.05.wait;
       };
     };
 
     fwdRotationRoutine = Routine{
       loop{
-      Camera2D.instance.forceFwd;
+      this.camera.forceFwd;
       0.05.wait;
       };
     };
 
     backRotationRoutine = Routine{
       loop{
-      Camera2D.instance.forceBack;
+      this.camera.forceBack;
       0.05.wait;
       };
     };
