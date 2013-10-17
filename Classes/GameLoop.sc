@@ -100,10 +100,10 @@ GameLoop{
   }
 
   makeWalls{
-    Wall(RealVector2D[0, sceneHeight], RealVector2D[0, 0]);
-    Wall(RealVector2D[0, 0], RealVector2D[0, sceneWidth]);
-    Wall(RealVector2D[0, sceneWidth], RealVector2D[sceneWidth, sceneHeight]);
-    Wall(RealVector2D[sceneWidth, sceneHeight], RealVector2D[0, sceneHeight]);
+    entManager.addWall(Wall(RealVector2D[0, sceneHeight], RealVector2D[0, 0]));
+    entManager.addWall(Wall(RealVector2D[0, 0], RealVector2D[sceneWidth, 0]));
+    entManager.addWall(Wall(RealVector2D[sceneWidth, 0], RealVector2D[sceneWidth, sceneHeight]));
+    entManager.addWall(Wall(RealVector2D[sceneWidth, sceneHeight], RealVector2D[0, sceneHeight]));
   }
 
 }
