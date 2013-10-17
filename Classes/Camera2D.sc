@@ -64,21 +64,26 @@ Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
   }
 
   applyTransformation{ arg entity;
-            var entPos, newPos, theta, thetaSin, thetaCos, rad, x,y;
-            var xMinusx, yMinusy;
+            var entPos;
       if (entity.class != Camera2D,
         {
           entPos = entity.position;
-          thetaSin = rotation.sin;
-          thetaCos = rotation.cos;
-          xMinusx = entPos[0] - position[0];
-          yMinusy = entPos[1] - position[1];
-          x = (xMinusx * thetaCos) - (yMinusy * thetaSin);
-          y = (xMinusx * thetaSin) + (yMinusy * thetaCos);
-          ^RealVector2D[x,y];
+          ^this.translatePosition(entPos);
         },
         {^entity.position}
       )
+  }
+
+  translatePosition{ arg entPos;
+    var thetaSin, thetaCos, rad, x,y;
+    var xMinusx, yMinusy;
+    thetaSin = rotation.sin;
+    thetaCos = rotation.cos;
+    xMinusx = entPos[0] - position[0];
+    yMinusy = entPos[1] - position[1];
+    x = (xMinusx * thetaCos) - (yMinusy * thetaSin);
+    y = (xMinusx * thetaSin) + (yMinusy * thetaCos);
+    ^RealVector2D[x,y];
   }
 
   moveFwd{var theta, x, y;
