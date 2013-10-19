@@ -1,7 +1,9 @@
 
-Camera2D : Vehicle { classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
-                     var <>arrivePosition, <>rotation, <>friction = 0.6,
-                     >motionAmount = 30, >rotationAmount= 0.01pi;
+Camera2D : Vehicle {
+
+  classvar <>fwd, <>back, <>rotLeft, <>rotRight, <>instance;
+  var <>arrivePosition, <>rotation, <>friction = 0.6,
+  >motionAmount = 30, >rotationAmount= 0.01pi;
 
 
   *new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 0.05,

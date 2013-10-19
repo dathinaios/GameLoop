@@ -6,7 +6,7 @@
   ~gameloop = GameLoop(40, 40, 1).play(0.05);
   //~gameloop.visualiser;
   ~gameloop.gui;
-  /* ~gameloop.makeWalls; */
+  ~gameloop.makeWalls;
 )
 
 (
@@ -15,7 +15,7 @@
     position: ~gameloop.world.center,
     radius: 0.8
   );
-  ~camera.collisionType_(\free);
+  ~camera.collisionType_(\mobile);
 
   ~cameraForcePath = {var path;
   /* steering bahavior */
@@ -25,13 +25,22 @@
       PathFollowing.calculate(entity,path, 0.5);
     });
   };
+
   ~camrep =Camera2DRepresentation(
     ~gameloop.repManager,
     Color.white
   ).shape_(1);
 
-
   ~camera.attach(~camrep);
+
+  ~camera.collisionFunc_({arg entity, entList, additionalInfo;
+    entList.do{ arg obstacle;
+      if(obstacle.class == Wall)
+      {
+        entity.velocity = entity.velocity*RealVector2D[-25,-25];
+      };
+    };
+  });
 );
 
 (
@@ -93,7 +102,6 @@ s.ping(numberOfTrials);
 ~gameloop.clear;
 GameLoopDecoder.instance.clear
 ~gameloop.clearEntities;
-
 ~camera.remove(true)
 
 ~camera.maxForce = 1000;

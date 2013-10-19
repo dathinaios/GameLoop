@@ -1,8 +1,8 @@
 
 SimpleVisual : EntityRepresentation {
 
-  var  >color, >collisionColor, >collisionFunc;
-  var <penWidth = 1.5, <>shape = 0;
+    var  >color, >collisionColor, >collisionFunc;
+    var <penWidth = 1.5, <>shape = 0;
 
   *new { arg  repManager, color, collisionColor, collisionFunc;
     ^super.new(repManager)

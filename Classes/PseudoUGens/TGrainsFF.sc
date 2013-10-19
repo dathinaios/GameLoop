@@ -1,10 +1,11 @@
-//****************\\
+//*******************************\\
 //------Fill Factor TGrains------\\
-//****************\\
+//*******************************\\
 
 TGrainsFF1 : UGen{
 
   //goes through the file
+
   *ar { arg numChannels = 2, tstretch = 1, density=1, ff = 0.5, bufnum=0, rate=1,
        pan=0, amp=1.0, loop = 1, interp=4;
      var bufDur, bufFrames, trig;
@@ -28,6 +29,7 @@ TGrainsFF1 : UGen{
 TGrainsFF2 : UGen{
 
   //goes through the file
+
   *ar { arg numChannels = 2, tstretch = 1, density=1, ff = 0.5, bufnum=0, rate=1,
        pan=0, amp=1.0, att = 0.5, dec = 0.5, loop = 1, interp=4;
      var bufDur, bufFrames, trig;
@@ -47,6 +49,7 @@ TGrainsFF2 : UGen{
           att,
           dec,
           interp);
-    }
+   }
+
 }
 

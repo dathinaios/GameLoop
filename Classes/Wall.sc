@@ -18,6 +18,7 @@ Wall { var <>from, <> to, <>normal;
   }
 
   /* impementation from http://doswa.com/2009/07/13/circle-segment-intersectioncollision.html */
+
   closestPointOnWall{
     arg entityPosition;
     var segv, ptv, segvunit, proj, projv, closest;
@@ -41,7 +42,6 @@ Wall { var <>from, <> to, <>normal;
     closest = projv + from;
     ^closest;
   }
-
 
 }
 

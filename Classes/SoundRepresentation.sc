@@ -1,8 +1,4 @@
 
-/*
-  This is a basic Mobile Unit with varying sound input
-*/
-
 SoundRepresentation : EntityRepresentation {
 
   var >input, >release = 0.2;
@@ -115,7 +111,5 @@ SoundRepresentation : EntityRepresentation {
     encoderProxy.set('x', transPosition[0]);
     encoderProxy.set('y', transPosition[1]);
   }
-
-
 
 }

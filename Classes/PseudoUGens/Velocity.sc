@@ -1,8 +1,7 @@
-//****************\\
-//----Velocity---\\
-//****************\\
 
-VelocityXY : UGen{ //controls the sound using direction and speed aka. velocity
+VelocityXY : UGen{
+
+  //controls the sound using direction and speed aka. velocity
 
   *ar {arg velocityX = 0, velocityY = 0, xStart =0, yStart = 0, xSize = [-10, 10], ySize = [-10, 10];
     var azim, rad, speed;
@@ -54,14 +53,6 @@ VelocityXY : UGen{ //controls the sound using direction and speed aka. velocity
 
   }
 
-    //velocityX = MouseX.kr((-1)*maxSpeed, maxSpeed);
-    //velocityX = LagUD.ar(velocityX, 4, 1);
-    ////moving y
-    //velocityY = MouseY.kr(maxSpeed, (-1)*maxSpeed);
-    //velocityY = LagUD.ar(velocityY, 4, 1);
-    //relativeVelocity = x/rad.squared;
-    //relativeVelocity = RedPhasor2.kr(1, relativeVelocity/sr, xStart, xSize[1], 0);
-
 }
 
 Velocity : UGen{
@@ -107,7 +98,6 @@ Velocity : UGen{
   }
 
 }
-
 
 Velocity1D : UGen{ //controls the sound using direction and speed aka. velocity
 

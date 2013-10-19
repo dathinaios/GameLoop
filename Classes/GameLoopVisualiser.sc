@@ -1,5 +1,6 @@
 
 GameLoopVisualiser{
+
        classvar <instance;
        var <entManager, <repManager;
        var <mainView, infoString;
@@ -123,7 +124,6 @@ GameLoopVisualiser{
       Pen.line(pointFrom.asPoint, pointTo.asPoint);
     }
   }
-
 
   getInfoString{ var string;
     string =   "Ents: " + entManager.activeEntities.asString +

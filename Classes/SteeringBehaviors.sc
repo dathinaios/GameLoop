@@ -1,6 +1,3 @@
-/* ======================= */
-/* = Steering Behaviours = */
-/* ======================= */
 
 /* For implementation details refer to the book Game AI by example by Mat Buckland */
 
@@ -17,9 +14,12 @@ Seek {
     desiredVelocity = desiredVelocity * entity.maxSpeed;
     ^(desiredVelocity - entity.velocity);
   }
+
 }
 
-Arrive { //Deceleration{slow = 3, normal = 2, fast = 1};
+Arrive {
+
+  //Deceleration{slow = 3, normal = 2, fast = 1};
 
   *new{ "You can not have an instance of this".error;
   }
@@ -70,7 +70,9 @@ PathFollowing{
 
 /* related classes */
 
-Path{ var <wayPoints, <>loop, curWayPoint = 0;
+Path{
+
+  var <wayPoints, <>loop, curWayPoint = 0;
 
   *new { arg  wayPoints, loop = false;
   ^super.newCopyArgs(wayPoints, loop).init
@@ -99,8 +101,12 @@ Path{ var <wayPoints, <>loop, curWayPoint = 0;
 
 }
 
-/* the manager is not currently used */
-PathsManager{ classvar <paths;
+
+PathsManager{
+
+  /* the manager is not currently used */
+
+  classvar <paths;
 
   *initClass{
     paths = List.new;
@@ -115,7 +121,7 @@ PathsManager{ classvar <paths;
 }
 
 
-//Red Universe extensions
+//Red Universe extension
 
 RedSeek {
 

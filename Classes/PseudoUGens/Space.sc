@@ -12,9 +12,11 @@ SpacePolarAmbIEM : UGen{
     //encode the signal
     ^PanAmbi3O.ar(in, 0.5pi - azimuth, DC.kr(elev));
   }
+
 }
 
 SpacePolarAmbIEMDp : UGen {
+
   *ar {
     arg in, azimuth, radius, elev = 0, ampCenter = 1;
     var amp;
@@ -45,9 +47,11 @@ SpacePolarATK : UGen{
     //foa = FoaRotate.ar(foa, azimuth);
     ^FoaProximity.ar(foa, radius.clip(0.0001, 30.0));
   }
+
 }
 
 SpacePolarATKDp : UGen {
+
   *ar {
     arg in, azimuth, radius, elev = 0, ampCenter = 1;
     var amp, foa;
@@ -81,6 +85,7 @@ SpacePolarB2 : UGen{
 }
 
 SpacePolarB2Dp : UGen {
+
   *ar {
     arg in, azimuth, radius,  ampCenter, speakerRho = 2;
     var amp;

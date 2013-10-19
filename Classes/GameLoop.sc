@@ -1,9 +1,10 @@
 
 GameLoop{
-       classvar <instance;
-       var <sceneWidth, <sceneHeight, <cellSize;
-       var <entManager, <repManager;
-       var <mainRoutine;
+
+    classvar <instance;
+    var <sceneWidth, <sceneHeight, <cellSize;
+    var <entManager, <repManager;
+    var <mainRoutine;
 
   *new{ arg sceneWidth = 40, sceneHeight = 40, cellSize = 1;
       if(instance.isNil,

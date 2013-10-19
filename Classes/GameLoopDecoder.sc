@@ -1,7 +1,9 @@
 
-GameLoopDecoder { classvar <instance, <active = false;
-                  var <>library, <>type, <>dp, <encoderProxy, <decoderProxy, <summingProxy,
-                  encoderChannels, decoderChannels, order, kernel;
+GameLoopDecoder {
+
+    classvar <instance, <active = false;
+    var <>library, <>type, <>dp, <encoderProxy, <decoderProxy, <summingProxy,
+    encoderChannels, decoderChannels, order, kernel;
 
   *new{ arg library = 'AmbIEM', type = 'binaural', dp = true;
       if(instance.isNil,
@@ -130,6 +132,5 @@ GameLoopDecoder { classvar <instance, <active = false;
   readyMsg{
     "A decoder was created through GameLoopDecoder".postln;
   }
-
 
 }

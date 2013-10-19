@@ -1,11 +1,12 @@
 
-//****************\\
+//************************\\
 //------CDP inspired------\\
-//****************\\
+//************************\\
 
 Stack : UGen{ //stack back to back ebband flow generator
 
   //goes through the file
+
   *ar { arg buf, transp, count, attTime, rate = 1, mul = 0.5, numChans = 1; //count: number of copies. attTime: time of attack
     var bufDur, bufRateScale, in;
       bufRateScale = BufRateScale.ir(buf);
@@ -26,12 +27,13 @@ Stack : UGen{ //stack back to back ebband flow generator
     };
     ^in;
   }
+
 }
 
 Stack2 : UGen{ //stack back to back ebband flow generator
 
-  //efficient version
-  //goes through the file
+  //more efficient version
+
   *ar { arg buf, transp, count, attTime, rate = 1, mul = 0.5, numChans = 1; //count: number of copies. attTime: time of attack
     var bufDur, bufRateScale, in, delayBuf, timesArray = [], inArray = [], server, rateRecip;
     server = Server.default;
@@ -59,5 +61,6 @@ Stack2 : UGen{ //stack back to back ebband flow generator
     in = in + MultiInputDelay.ar(`timesArray, `inArray, bufnum: delayBuf.value);
     ^in;
   }
+
 }
 

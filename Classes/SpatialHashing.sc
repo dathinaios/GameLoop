@@ -1,8 +1,7 @@
-/*
-TODO: a method that finds entities at a given distance
-*/
 
-SpatialHashing{ var <sceneWidth, <sceneHeight, <cellSize;
+SpatialHashing{
+
+  var <sceneWidth, <sceneHeight, <cellSize;
   var <buckets, cols, rows;
 
   *new { arg sceneWidth = 10, sceneHeight = 10, cellSize = 0.5;

@@ -1,10 +1,11 @@
 
 NonPenetrationConstrain{
 
+  /* From AI by Example book p. 125 */
+
   *new{ "You can not have an instance of this".error;
   }
 
-  /* From AI by Example book p. 125 */
   *calculate{
     arg entity, collidingWith = List[], amountOfSeperation = 1;
 
@@ -22,4 +23,5 @@ NonPenetrationConstrain{
       }
     };
   }
+
 }
