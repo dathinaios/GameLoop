@@ -2,8 +2,9 @@
 Entity {
     var <>world, <>position, <>radius, <>mass;
     var <>colliding, <active, >collisionFunc;
+
   *new{ arg world, position = RealVector2D[15,15], radius = 1.0, mass = 1.0;
-      ^super.newCopyArgs(world,
+     ^super.newCopyArgs(world,
                         position,
                         radius,
                         mass
@@ -13,6 +14,7 @@ Entity {
   /* The init method is called in the subclass by using super.init. Using super.init
   in all the init methods assures that everything will be called. Of course remember
   to call init in the subclass new method to start the domino effect */
+
   init{
       position = position ?? {world.center};
       radius = radius ?? {1.0};
@@ -50,10 +52,10 @@ Entity {
     this.releaseDependants;
   }
 
-  collision { arg entitiesArray;
+  collision { arg entitiesArray, msg;
           colliding = true;
-          collisionFunc.value(this, entitiesArray);
-          this.changed([\collision, entitiesArray]);
+          collisionFunc.value(this, entitiesArray, msg);
+          this.changed([\collision, entitiesArray, msg]);
   }
 
   dt{
@@ -62,8 +64,9 @@ Entity {
 
 }
 
-MobileEntity : Entity { var <>velocity, <>collisionType;
-                        var <>force = 0;
+MobileEntity : Entity {
+     var <>velocity, <>collisionType;
+     var <>force = 0;
 
   *new{ arg world, position = RealVector2D[15,15],
             radius = 1.0, mass = 1.0, velocity = RealVector2D[0,0],
@@ -87,8 +90,8 @@ MobileEntity : Entity { var <>velocity, <>collisionType;
     position = position + (velocity *this.dt);
   }
 
-  //implement update in subclass if needed
-  //Typical:
+  //implement update in subclass if needed. Typical:
+
   update {
     /* calling update on the dependants ensure that we always get set
     by the integration of the last cycle */
@@ -102,7 +105,8 @@ MobileEntity : Entity { var <>velocity, <>collisionType;
 
 }
 
-Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTurnRate;
+Vehicle : MobileEntity {
+     var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTurnRate;
 
   *new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 1.0,
             velocity = RealVector2D[0, 0], collisionType = \free, maxSpeed = 100,
@@ -140,3 +144,4 @@ Vehicle : MobileEntity { var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTur
   }
 
 }
+
