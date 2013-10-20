@@ -17,15 +17,6 @@
   );
   ~camera.collisionType_(\mobile);
 
-  ~cameraForcePath = {var path;
-  /* steering bahavior */
-  path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
-  ~camera.force_(
-    { arg entity;
-      PathFollowing.calculate(entity,path, 0.5);
-    });
-  };
-
   ~camrep =Camera2DRepresentation(
     ~gameloop.repManager,
     Color.white
@@ -34,13 +25,10 @@
   ~camera.attach(~camrep);
 
   ~camera.collisionFunc_({arg entity, entList, additionalInfo;
-    entList.do{ arg obstacle;
-      if(obstacle.class == Wall)
-      {
-        entity.velocity = entity.velocity*RealVector2D[-25,-25];
-      };
-    };
+    NonPenetrationConstrainWall(entity, entList, 0.05);
   });
+
+  /* ~camera.friction_(0.9); */
 );
 
 (
@@ -71,7 +59,7 @@
     ~entity.force_({ arg entity; forceManager.sum(entity); });
 
     ~entity.collisionFunc_({arg entity, entList;
-      //NonPenetrationConstrain.calculate(entity, entList);
+      NonPenetrationConstrain(entity, entList);
       forceManager.addTemp({arg ent; ent.velocity*RealVector2D[rrand(-200.0, -500),rrand(-200.0, -500)]};)
     });
 
@@ -181,10 +169,10 @@ GameLoop.instance.dt
 
 (
 r = Routine{ //test
-  loop{
-  ~gameloop.repManager.cameraEntity.rotateRight(0.05pi);
-  0.05.wait;
-  };
+      loop{
+      ~gameloop.repManager.cameraEntity.rotateRight(0.05pi);
+      0.05.wait;
+      };
 }.play;
 )
 
@@ -430,4 +418,4 @@ c.do{ arg item; ~gameloop.entManager.spatialIndex.getCell(item).postln }
 
 a = List[1,2,3]
 a.remove(2)
-a
+Pattern
