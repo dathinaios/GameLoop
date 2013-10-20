@@ -1,14 +1,13 @@
 
+/* From AI by Example book p. 125 */
+
 NonPenetrationConstrain{
 
-  /* From AI by Example book p. 125 */
-
-  *new{
-
-    arg entity, collidingWith = List[], amountOfSeperation = 1;
-
-    collidingWith.do{ arg curEntity;
-      entity.position = this.calculate(entity.position, curEntity.position, entity.radius, curEntity.radius, amountOfSeperation)
+  *new{ arg entity,entList;
+    entList.do{ arg obstacle;
+      case
+      {obstacle.isKindOf(Wall)} {NonPenetrationConstrainWall(entity, obstacle, 0.05)}
+      {obstacle.isKindOf(Entity)} {NonPenetrationConstrainEntity(entity, obstacle, 1)};
     };
   }
 
@@ -35,22 +34,30 @@ NonPenetrationConstrain{
 
 }
 
-NonPenetrationConstrainWall{
+NonPenetrationConstrainEntity : NonPenetrationConstrain{
 
-  *new{ arg entity, entList, separationRadius = 1;
-    entList.do{ arg obstacle;
-      if(obstacle.class == Wall)
-      {
-        entity.position =
-        NonPenetrationConstrain.calculate(
-          entity.position,
-          obstacle.closestPointOnWall(entity.position),
-          entity.radius,
-          separationRadius
-        );
-        /* entity.velocity = entity.velocity*RealVector2D[-25, -25]; */
-      };
-    };
+  *new{ arg entity, collidingWith, amountOfSeperation = 1;
+    entity.position = this.calculate(
+      entity.position,
+      collidingWith.position,
+      entity.radius,
+      collidingWith.radius,
+      amountOfSeperation
+    );
+  }
+
+}
+
+NonPenetrationConstrainWall : NonPenetrationConstrain{
+
+  *new{ arg entity, collidingWith, separationRadius = 1, amountOfSeperation = 1;
+    entity.position = this.calculate(
+      entity.position,
+      collidingWith.closestPointOnWall(entity.position),
+      entity.radius,
+      separationRadius,
+      amountOfSeperation
+    );
   }
 
 }
