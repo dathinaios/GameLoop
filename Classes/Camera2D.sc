@@ -48,6 +48,12 @@ Camera2D : Vehicle {
     instance = this;
     arrivePosition = position;
     rotation = 0;
+    this.collisionFunc_({arg entity, entList, additionalInfo;
+      entList.do{ arg obstacle;
+        case
+        {obstacle.isKindOf(Wall)} {NonPenetrationConstrainWall(entity, obstacle, 0.05)};
+      }
+    });
   }
 
   setCollisionResolution{
