@@ -56,7 +56,10 @@
       { arg entity; PathFollowing.calculate(entity,path, 0.5); };
     };
     forceManager = ForceManager([\pathSteer, ~randForcePath.value]);
-    ~entity.force_({ arg entity; forceManager.sum(entity); });
+    ~entity.force_({ arg entity;
+      Wander.calculate(entity, 40,20,3);
+      /* forceManager.sum(entity); */ 
+    });
 
     ~entity.collisionFunc_({arg entity, entList;
       NonPenetrationConstrain(entity,entList);

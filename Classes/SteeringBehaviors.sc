@@ -46,10 +46,36 @@ Arrive {
   }
 }
 
-PathFollowing{
+Wander {
+
+  //Deceleration{slow = 3, normal = 2, fast = 1};
 
   *new{ "You can not have an instance of this".error;
   }
+
+  *calculate{
+
+    arg entity, wanderRadius = 20, wanderDistance = 5, wanderJitter = 10;
+    var wanderTarget = RealVector2D[0, 0], targetLocal, targetWorld;
+
+    //first, add a small random vector to the target’s position
+    wanderTarget = wanderTarget +  RealVector2D[rrand(-1.0, 1.0), rrand(-1.0, 1.0)];
+    wanderTarget = wanderTarget.normalize;
+    wanderTarget = wanderTarget * wanderRadius;
+
+    //move the target into a position wanderDist in front of the agent
+    targetLocal = wanderTarget + RealVector2D[wanderDistance, 0];
+    //project the target into world space
+    /* targetWorld = PointToWorldSpace(targetLocal,￼entity.heading, entity.side, entity.position); */
+    //and steer toward it
+    ^targetLocal - entity.position;
+    }
+}
+
+  PathFollowing{
+
+    *new{ "You can not have an instance of this".error;
+    }
 
   *calculate{ arg entity, path, seekDistance = 0.5;
        var wayPoint;
