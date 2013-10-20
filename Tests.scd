@@ -7,6 +7,10 @@
   //~gameloop.visualiser;
   ~gameloop.gui;
   ~gameloop.makeWalls;
+  a = Wall(RealVector2D[10,20], RealVector2D[13, 30]);
+  b = Wall(RealVector2D[23,20], RealVector2D[40, 35]);
+  ~gameloop.entManager.addWall(a);
+  ~gameloop.entManager.addWall(b);
 )
 
 (
@@ -23,10 +27,6 @@
   ).shape_(1);
 
   ~camera.attach(~camrep);
-
-  ~camera.collisionFunc_({arg entity, entList, additionalInfo;
-    NonPenetrationConstrainWall(entity, entList, 0.05);
-  });
 
   /* ~camera.friction_(0.9); */
 );
@@ -59,8 +59,8 @@
     ~entity.force_({ arg entity; forceManager.sum(entity); });
 
     ~entity.collisionFunc_({arg entity, entList;
-      NonPenetrationConstrain(entity, entList);
-      forceManager.addTemp({arg ent; ent.velocity*RealVector2D[rrand(-200.0, -500),rrand(-200.0, -500)]};)
+      NonPenetrationConstrain(entity,entList);
+      /* forceManager.addTemp({arg ent; ent.velocity*RealVector2D[rrand(-200.0, -500),rrand(-200.0, -500)]};) */
     });
 
     /* ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[10,11]);}); */
@@ -418,4 +418,6 @@ c.do{ arg item; ~gameloop.entManager.spatialIndex.getCell(item).postln }
 
 a = List[1,2,3]
 a.remove(2)
-Pattern
+
+~entity.isKindOf(Entity)
+5.isKindOf(Magnitude);
