@@ -186,24 +186,25 @@ EntityManager {
   }
 
   checkEntityWallCollision{ arg entity, wall;
-    var closest, distv, circpos, circrad, offset;
+    var closest, distv, distvNorm, circpos, circrad, offset;
 
     circpos = entity.position;
     circrad = entity.radius;
 
     closest = wall.closestPointOnWall(circpos);
     distv = circpos - closest;
+    distvNorm = distv.norm;
 
-    if ( distv.norm > circrad) {
+    if ( distvNorm > circrad) {
       /* ^RealVector2D[0, 0] */
       ^0
     };
 
-    if ( distv.norm <= 0) {
+    if ( distvNorm <= 0) {
       "Circle's center is exactly on segment".error;
     };
 
-    offset = distv / distv.norm * (circrad - distv.norm)
+    offset = distv / distvNorm * (circrad - distvNorm);
     ^offset;
   }
 
