@@ -64,7 +64,13 @@ Wander {
     wanderTarget = wanderTarget * wanderRadius;
 
     //move the target into a position wanderDist in front of the agent
-    targetLocal = wanderTarget + RealVector2D[wanderDistance, 0];
+    //This does not work as explained in the book as I am currently not
+    // using local space.
+    //targetLocal = wanderTarget + RealVector2D[wanderDistance, 0];
+
+    //instead I will try to use the current velocity
+    targetLocal = wanderTarget + (wanderDistance + atan2(entity.velocity[0], entity.velocity[1]));
+
     //project the target into world space
     /* targetWorld = PointToWorldSpace(targetLocal,￼entity.heading, entity.side, entity.position); */
     //and steer toward it

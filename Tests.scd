@@ -57,7 +57,7 @@
     };
     forceManager = ForceManager([\pathSteer, ~randForcePath.value]);
     ~entity.force_({ arg entity;
-      Wander.calculate(entity, 40,20,3);
+      Wander.calculate(entity, rrand(5, 30.0),rrand(2.0, 40.0),rrand(0.5, 30));
       /* forceManager.sum(entity); */ 
     });
 
@@ -424,3 +424,4 @@ a.remove(2)
 
 ~entity.isKindOf(Entity)
 5.isKindOf(Magnitude);
+RealVector2D[10, 10].normalize
