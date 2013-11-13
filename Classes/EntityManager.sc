@@ -85,6 +85,7 @@ EntityManager {
 
   clear { var listCopy;
     [freeList.copy, mobList.copy, staticList.copy].flat.do{arg i; i.remove};
+    this.clearWalls;
   }
 
   /* refresh can not happen simply by clearing all buckets because

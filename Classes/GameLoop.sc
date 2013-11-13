@@ -23,13 +23,12 @@ GameLoop{
   }
 
   switchSpace{ arg width = sceneWidth, height = sceneHeight, cell = cellSize;
+    this.clearEntities;
     entManager.newIndex(SpatialHashing(width, height, cell));
-
     sceneWidth = width;
     sceneHeight = height;
     cellSize = cell;
-
-    this.clearEntities;
+    this.changed(\switchSpace);
     this.resetCamera;
   }
 

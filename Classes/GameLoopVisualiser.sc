@@ -5,8 +5,9 @@ GameLoopVisualiser{
        var <entManager, <repManager;
        var <mainView, infoString;
        var width = 400, height = 400;
-       var <>meterInPixels = 10;
+       var <>meterInPixels;
        var leftRotationRoutine, rightRotationRoutine, fwdRotationRoutine, backRotationRoutine;
+       var sceneWidth, sceneHeight;
 
   *new{ arg entManager, repManager;
       if(instance.isNil,
@@ -21,6 +22,21 @@ GameLoopVisualiser{
     instance = this;
     CmdPeriod.add({this.clear});
     this.initCameraRoutines;
+    this.calculateMeterUnit;
+  }
+
+  update{ arg theChanged, message;
+    switch (message)
+    {\switchSpace}{this.calculateMeterUnit};
+  }
+
+  calculateMeterUnit{
+    sceneWidth = entManager.sceneWidth;
+    sceneHeight = entManager.sceneHeight;
+    if(sceneWidth >= sceneHeight,
+      { meterInPixels = width/sceneWidth},
+      { meterInPixels = height/sceneHeight }
+    );
   }
 
   camera{
@@ -81,14 +97,14 @@ GameLoopVisualiser{
   drawEntity{arg obstacle;
              var radiusInPixels, widthInPixels, obstacPos;
              var left, top;
-             var h = 400, w = 400;
+             /* var h = 400, w = 400; */
 
     obstacPos = obstacle.position;
     radiusInPixels = obstacle.radius * meterInPixels;
     widthInPixels = radiusInPixels + radiusInPixels;
 
     left = (obstacPos[0]*meterInPixels)-radiusInPixels;
-    top  = ((obstacPos[1]*meterInPixels).linlin(0, h, w, 0)) - radiusInPixels;
+    top  = ((obstacPos[1]*meterInPixels).linlin(0, height, width, 0)) - radiusInPixels;
 
     if (top > -4 and:{top < 396} and:{left > -4} and:{left<396})
     {
@@ -101,9 +117,10 @@ GameLoopVisualiser{
   }
 
   drawWalls{
-    entManager.wallList.do{arg i; var pointFrom, pointTo, from, to, sceneWidth, sceneHeight, halfSceneDimensions;
-      sceneWidth = entManager.sceneWidth;
-      sceneHeight = entManager.sceneHeight;
+    entManager.wallList.do{arg i; var pointFrom, pointTo, from, to,  halfSceneDimensions;
+      /* var sceneWidth, sceneHeight, */
+      /* sceneWidth = entManager.sceneWidth; */
+      /* sceneHeight = entManager.sceneHeight; */
       halfSceneDimensions = [sceneWidth, sceneHeight] * 0.5;
       i = i[0];
       from = i.from;
