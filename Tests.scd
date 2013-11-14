@@ -3,15 +3,9 @@
   //~decoder = GameLoopDecoder('ATK', 'newStereo');
   //~decoder = GameLoopDecoder('ATK', 'newListen');
   ~decoder = GameLoopDecoder('AmbIEM', 'binaural');
-  //Allow time for the decoder to be created
   ~gameloop = GameLoop(80, 80, 1).play(0.05);
-  //~gameloop.visualiser;
   ~gameloop.gui;
   ~gameloop.makeWalls;
-  /* a = Wall(RealVector2D[10,20], RealVector2D[13, 30]); */
-  /* b = Wall(RealVector2D[23,20], RealVector2D[40, 35]); */
-  /* ~gameloop.entManager.addWall(a); */
-  /* ~gameloop.entManager.addWall(b); */
 )
 
 ( // CAMERA SETUP
@@ -27,8 +21,6 @@
   ).shape_(1);
 
   ~camera.attach(~camrep);
-
-  /* ~camera.friction_(0.9); */
 );
 
 ( // ENTITY
@@ -64,88 +56,44 @@
   }.value;
 )
 
+
+~entity.detachAll;
+~gameloop.clearEntities;
+~gameloop.clearWalls;
+~camera.remove(true)
+
+//clear and close everything
+~gameloop.clear;
+
+//clear the Decoder
+GameLoopDecoder.instance.clear
+
+// VARIOUS TESTS
+
+( //CAMERA TESTS
+  ~camera.maxForce = 1000;
+  ~camera.mass= 0.05;
+  ~camera.maxSpeed = 10;
+  ~camera.motionAmount = 30;
+  ~camera.rotationAmount = 0.01pi;
+  ~camera.friction = 0.9;
+  ~camera.remove(true);
+  ~camera.moveFwd(2);
+  ~camera.moveBack(2);
+  ~camera.rotateRight(0.4pi);
+  ~camera.rotateLeft(0.4pi);
+  ~camera.remove
+  ~gameloop.resetCamera;
+)
+
+( // SWITCH SPACE TESTS
 ~gameloop.makeWalls;
 ~gameloop.switchSpace(20, 20, 0.5);
 ~gameloop.switchSpace(200, 200, 0.5);
 ~gameloop.switchSpace(40, 40, 1);
 ~gameloop.switchSpace(40, 30, 1);
 ~gameloop.switchSpace(80, 80, 0.5);
-
-~entity.detachAll;
-~gameloop.clear;
-GameLoopDecoder.instance.clear
-~gameloop.clearEntities;
-~gameloop.clearWalls;
-~camera.remove(true)
-
-~gameloop.entManager.mobList;
-~camera.maxForce = 1000;
-~camera.mass= 0.05;
-~camera.maxSpeed = 10;
-~camera.motionAmount = 30;
-~camera.rotationAmount = 0.01pi;
-~camera.friction = 0.9;
-~camera.remove(true);
-
-~camera.force_({arg ent; Arrive(ent, RealVector2D[24,20])});
-~entity.force_({ arg entity; Arrive(entity, RealVector2D[19,20.2]);});
-~cameraForcePath.value;
-~randForcePath.value;
-
-~entity.detachAll;
-~entity.detach(~rep);
-~entity.remove;
-~gameloop.repManager.repList;
-~camera.moveFwd(2);
-~camera.moveBack(2);
-~camera.reset;
-~camera.rotateRight(0.4pi);
-~camera.rotateLeft(0.4pi);
-~camera.remove
-
-~gameloop.visualisation;
-~gameloop.guiClose;
-
-~gameloop.resetCamera;
-//clear the entities
-~gameloop.clearEntities;
-//clear and close everything
-~gameloop.clear;
-~gameloop.removeCamera;
-
-~gameloop.repManager.repList
-GameLoopDecoder.instance.decoderBus.sources;
-GameLoopDecoder.instance.decoderProxy.sources
-
-Server.default.queryAllNodes;
-GroupManager.inGroup;
-GroupManager.tailGroup;
-GameLoop.instance.dt
-~gameloop.entManager.clear;
-~entity.do{arg i; i.remove;};
-~entity[1].remove
-
-~gameloop.cameraEntity.collisionType
-~gameloop.cameraEntity.moveFwd(4);
-~gameloop.cameraEntity.moveBack(4);
-~gameloop.cameraEntity.goto(RealVector2D[rrand(5.0, 35.0),rrand(6.0, 30.0)]);
-~gameloop.cameraEntity.rotateLeft(0.1pi);
-~gameloop.cameraEntity.rotateRight(0.1pi);
-~gameloop.cameraEntity.reset;
-~gameloop.clear;
-~gameloop.removeCamera;
-~gameloop.stop
-~gameloop.play
-~gameloop.world.freeList;
-~gameloop.staticList;
-~routiniaris.stop
-~gameloop.mainRoutine.play
-~gameloop.mainRoutine.stop
-CmdPeriod.run
-
-
-
-//VARIOUS TESTS
+)
 
 ( // WANDER TEST
   { var forceManager;
@@ -214,7 +162,7 @@ CmdPeriod.run
   }.value;
 )
 
-( //COLLISION TESTS
+( // COLLISION TESTS
   ~entity1 = Vehicle(
     ~gameloop.world,
     position: RealVector2D[25, 20.5],
@@ -265,7 +213,7 @@ CmdPeriod.run
   ~randForcePath.value(~entity2);
 )
 
-( //ASCII LOGO
+( // ASCII LOGO
 
 
 
@@ -293,7 +241,7 @@ CmdPeriod.run
                                                                                                                                                    ppppppppp
 )
 
-( //FORCE MANAGER TEST
+( // FORCE MANAGER TEST
   a = ForceManager();
   a.add(\test, { RealVector2D[0, 10]});
   a.add(\test1, { RealVector2D[10, 0]});
@@ -302,7 +250,7 @@ CmdPeriod.run
   a.list;
 )
 
-( //WALL TESTS
+( // WALL TESTS
   a = Wall(RealVector2D[5,10], RealVector2D[13, 29]);
   b = Wall(RealVector2D[20,20], RealVector2D[40, 35]);
   ~gameloop.entManager.addWall(a);
