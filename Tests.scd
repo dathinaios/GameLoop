@@ -45,15 +45,18 @@
       input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
     );
 
-    /* ~entity.collisionType_(\mobile); */
+    ~entity.collisionType_(\mobile);
+    ~entity.collisionFunc_({arg entity, entList;
+      NonPenetrationConstrain(entity,entList);
+    });
+
     ~entity.attach(~rep);
-    //and a visual representation
     ~visrep = SimpleVisual(~gameloop.repManager);
     ~entity.attach(~visrep);
 
     ~randForcePath = {var path;
       path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
-      { arg entity; PathFollowing.calculate(entity,path, 0.5); };
+      { arg entity; PathFollowing(entity,path, 0.5); };
     };
 
     ~entity.force_(~randForcePath.value);
@@ -84,8 +87,8 @@ GameLoopDecoder.instance.clear
 ~camera.friction = 0.9;
 ~camera.remove(true);
 
-~camera.force_({arg ent; Arrive.calculate(ent, RealVector2D[24,20])});
-~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[19,20.2]);});
+~camera.force_({arg ent; Arrive(ent, RealVector2D[24,20])});
+~entity.force_({ arg entity; Arrive(entity, RealVector2D[19,20.2]);});
 ~cameraForcePath.value;
 ~randForcePath.value;
 
@@ -166,7 +169,7 @@ CmdPeriod.run
 
     ~randForcePath = {var path;
       path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
-      { arg entity; PathFollowing.calculate(entity,path, 0.5); };
+      { arg entity; PathFollowing(entity,path, 0.5); };
     };
     forceManager = ForceManager([\pathSteer, ~randForcePath.value]);
 
@@ -192,7 +195,7 @@ CmdPeriod.run
     ~wanderJitter = 1;
 
     ~entity.force_({ arg entity;
-      Wander.calculate(entity,
+      Wander(entity,
         wanderRadius: ~wanderRadius,
         wanderDistance: ~wanderDistance,
         wanderJitter: ~wanderJitter
@@ -206,7 +209,7 @@ CmdPeriod.run
       /* forceManager.addTemp({arg ent; ent.velocity*RealVector2D[rrand(-200.0, -500),rrand(-200.0, -500)]};) */
     });
 
-    /* ~entity.force_({ arg entity; Arrive.calculate(entity, RealVector2D[10,11]);}); */
+    /* ~entity.force_({ arg entity; Arrive(entity, RealVector2D[10,11]);}); */
     /* ~randForcePath.value; */
   }.value;
 )
@@ -246,15 +249,15 @@ CmdPeriod.run
   );
   ~entity2.attach(~soundRep2);
 
-  ~entity1.force_({arg entity; Arrive.calculate(entity, RealVector2D[18, 20.5])});
-  ~entity2.force_({arg entity; Arrive.calculate(entity, RealVector2D[22, 20.5])});
+  ~entity1.force_({arg entity; Arrive(entity, RealVector2D[18, 20.5])});
+  ~entity2.force_({arg entity; Arrive(entity, RealVector2D[22, 20.5])});
 
     ~randForcePath = {arg entity; var path;
     /* steering bahavior */
     path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(5, 35.0), rrand(5.0, 35.0)]}), true);
     entity.force_(
       { arg entity;
-        PathFollowing.calculate(entity,path, 0.5);
+        PathFollowing(entity,path, 0.5);
       });
     };
 
