@@ -147,6 +147,9 @@ Camera2D : Vehicle {
     this.goto(arrivePosition);
   }
 
+  fastReset{
+    position = world.center;
+  }
 }
 
 Camera2DRepresentation : SimpleVisual{

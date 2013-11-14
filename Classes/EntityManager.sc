@@ -83,8 +83,16 @@ EntityManager {
       staticList.do{arg i; i.update};
   }
 
-  clear { var listCopy;
+  clearEntities{
     [freeList.copy, mobList.copy, staticList.copy].flat.do{arg i; i.remove};
+  }
+
+  entList{
+    ^[freeList.copy, mobList.copy, staticList.copy].flat;
+  }
+
+  clear {
+    this.clearEntities;
     this.clearWalls;
   }
 

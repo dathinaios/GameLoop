@@ -24,12 +24,13 @@ GameLoop{
 
   switchSpace{ arg width = sceneWidth, height = sceneHeight, cell = cellSize;
     this.clearEntities;
+    this.clearWalls;
     entManager.newIndex(SpatialHashing(width, height, cell));
     sceneWidth = width;
     sceneHeight = height;
     cellSize = cell;
-    this.changed(\switchSpace);
-    this.resetCamera;
+    this.changed([\switchSpace]);
+    this.fastResetCamera;
   }
 
   gui{var gui;
@@ -84,7 +85,11 @@ GameLoop{
   }
 
   clearEntities{
-    entManager.clear;
+    entManager.clearEntities;
+  }
+
+  clearWalls{
+    entManager.clearWalls;
   }
 
   currentCamera{
@@ -93,6 +98,10 @@ GameLoop{
 
   resetCamera{
     this.currentCamera.reset;
+  }
+
+  fastResetCamera{
+    this.currentCamera.fastReset;
   }
 
   removeCamera{

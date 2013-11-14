@@ -25,11 +25,6 @@ GameLoopVisualiser{
     this.calculateMeterUnit;
   }
 
-  update{ arg theChanged, message;
-    switch (message)
-    {\switchSpace}{this.calculateMeterUnit};
-  }
-
   calculateMeterUnit{
     sceneWidth = entManager.sceneWidth;
     sceneHeight = entManager.sceneHeight;
