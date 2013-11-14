@@ -138,7 +138,7 @@ Camera2D : Vehicle {
 
   goto{ arg target;
     arrivePosition = target;
-    this.force_({arg ent; Arrive.calculate(ent, arrivePosition)});
+    this.force_({arg ent; Arrive(ent, arrivePosition)});
   }
 
   reset{

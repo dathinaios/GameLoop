@@ -3,10 +3,7 @@
 
 Seek {
 
-  *new{ "You can not have an instance of this".error;
-  }
-
-  *calculate{ arg entity, targetPos = RealVector2D[10,13];
+  *new{ arg entity, targetPos = RealVector2D[10,13];
        var desiredVelocity;
 
     desiredVelocity = targetPos - entity.position;
@@ -21,10 +18,7 @@ Arrive {
 
   //Deceleration{slow = 3, normal = 2, fast = 1};
 
-  *new{ "You can not have an instance of this".error;
-  }
-
-  *calculate{ arg entity, targetPos = RealVector2D[10,13], deceleration = 2, tweak = 0.3;
+  *new{ arg entity, targetPos = RealVector2D[10,13], deceleration = 2, tweak = 0.3;
            var desiredVelocity, toTarget, speed, dist;
 
       toTarget = targetPos - entity.position;
@@ -50,10 +44,7 @@ Wander {
 
   //Deceleration{slow = 3, normal = 2, fast = 1};
 
-  *new{ "You can not have an instance of this".error;
-  }
-
-  *calculate{
+  *new{
 
     arg entity, wanderRadius = 20, wanderDistance = 5, wanderJitter = 10;
     var wanderTarget = RealVector2D[0, 0], targetLocal, targetWorld;
@@ -80,10 +71,7 @@ Wander {
 
   PathFollowing{
 
-    *new{ "You can not have an instance of this".error;
-    }
-
-  *calculate{ arg entity, path, seekDistance = 0.5;
+  *new{ arg entity, path, seekDistance = 0.5;
        var wayPoint;
       wayPoint = path.wayPoint;
 
@@ -91,10 +79,10 @@ Wander {
 
       if (path.finished,
         {
-        ^Arrive.calculate(entity, wayPoint);
+        ^Arrive.new(entity, wayPoint);
         },
         {
-        ^Seek.calculate(entity, wayPoint);
+        ^Seek.new(entity, wayPoint);
         }
       );
   }
@@ -151,24 +139,3 @@ PathsManager{
   }
 
 }
-
-
-//Red Universe extension
-
-RedSeek {
-
-  *new{ "You can not have an instance of this".error;
-  }
-
-  *calculate{ arg entity, targetPos = RedVector2D[10,13], maxSpeed; //^force
-       var desiredVelocity; //, maxSpeed = 30;
-
-    //seek steering behaviour
-    desiredVelocity = targetPos - entity.loc;
-    desiredVelocity = desiredVelocity.normalize;
-    desiredVelocity = desiredVelocity * maxSpeed;
-    ^(desiredVelocity - entity.vel);
-  }
-}
-
-
