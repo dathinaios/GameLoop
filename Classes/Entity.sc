@@ -110,7 +110,7 @@ Vehicle : MobileEntity {
 
   *new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 1.0,
             velocity = RealVector2D[0, 0], collisionType = \free, maxSpeed = 100,
-            maxForce = 40, heading, side, maxTurnRate = 2;
+            maxForce = 40, heading = 0, side = 0, maxTurnRate = 2;
       ^super.new(world,
            position,
            radius,
