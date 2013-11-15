@@ -36,35 +36,31 @@ Arrive {
   }
 }
 
-Wander {
-  *new{
-    arg entity, wanderRadius = 1.2, wanderDistance = 2.0, wanderJitter = 80;
-    var wanderTarget = RealVector2D[0, 0], targetLocal, targetWorld;
-    var theta;
+Wander { var entity, <>wanderRadius, <>wanderDistance, <>wanderJitter;
+         var wanderTarget;
 
-    //from java : this behavior is dependent on the update rate, so this line must
-    //be included when using time independent framerate.
-    //double JitterThisTimeSlice = m_dWanderJitter * m_pVehicle.getTimeElapsed();
+  *new { arg entity, wanderRadius, wanderDistance, wanderJitter;
 
-    //stuff for the wander behavior
-    theta = 1.0.rand *2pi;
-    //create a vector to a target position on the wander circle
-    /*java code --> wanderTarget = new Vector2D(wanderRadius * Math.cos(theta), wanderRadius * Math.sin(theta)); */
-    wanderTarget = RealVector2D[ wanderRadius * theta.cos, wanderRadius * theta.sin];
+    ^super.newCopyArgs(entity,
+      wanderRadius  = 1.2,
+      wanderDistance = 2.0,
+      wanderJitter = 80
+    ).init
+  }
 
-    //first, add a small random vector to the target's position
-    /*java:  m_vWanderTarget.add(new Vector2D(RandomClamped() * JitterThisTimeSlice, RandomClamped() * JitterThisTimeSlice)); */
-    wanderTarget = wanderTarget + RealVector2D[rrand(-1.0, 1.0) * wanderJitter, rrand(-1.0, 1.0) * wanderJitter];
+  init{
+    wanderTarget = RealVector2D[0, 0];
+  }
 
-    //reproject this new vector back on to a unit circle
+  calculate{ var targetLocal;//, targetWorld;
+
+    //first, add a small random vector to the target’s position
+    wanderTarget = wanderTarget + RealVector2D[rrand(-1.0, 1.0)*wanderJitter, rrand(-1.0, 1.0)*wanderJitter];
     wanderTarget = wanderTarget.normalize;
-
-    //increase the length of the vector to the same as the radius
-    //of the wander circle
     wanderTarget = wanderTarget * wanderRadius;
 
     //move the target into a position wanderDist in front of the agent
-    //This does not work as explained in the book as I am currently not
+    //This does notwork as explained in the book as I am currently not
     // using local space.
     //targetLocal = wanderTarget + RealVector2D[wanderDistance, 0];
 
@@ -75,7 +71,7 @@ Wander {
     /* targetWorld = PointToWorldSpace(targetLocal,￼entity.heading, entity.side, entity.position); */
     //and steer toward it
     ^targetLocal - entity.position;
-    }
+  }
 }
 
 PathFollowing{
