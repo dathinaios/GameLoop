@@ -2,7 +2,6 @@
 /* For implementation details refer to the book Game AI by example by Mat Buckland */
 
 Seek {
-
   *new{ arg entity, targetPos = RealVector2D[10,13];
        var desiredVelocity;
 
@@ -11,13 +10,10 @@ Seek {
     desiredVelocity = desiredVelocity * entity.maxSpeed;
     ^(desiredVelocity - entity.velocity);
   }
-
 }
 
 Arrive {
-
   //Deceleration{slow = 3, normal = 2, fast = 1};
-
   *new{ arg entity, targetPos = RealVector2D[10,13], deceleration = 2, tweak = 0.3;
            var desiredVelocity, toTarget, speed, dist;
 
@@ -41,17 +37,30 @@ Arrive {
 }
 
 Wander {
-
-  //Deceleration{slow = 3, normal = 2, fast = 1};
-
   *new{
-
-    arg entity, wanderRadius = 20, wanderDistance = 5, wanderJitter = 10;
+    arg entity, wanderRadius = 1.2, wanderDistance = 2.0, wanderJitter = 80;
     var wanderTarget = RealVector2D[0, 0], targetLocal, targetWorld;
+    var theta;
 
-    //first, add a small random vector to the target’s position
-    wanderTarget = wanderTarget +  RealVector2D[rrand(-1.0, 1.0), rrand(-1.0, 1.0)];
+    //from java : this behavior is dependent on the update rate, so this line must
+    //be included when using time independent framerate.
+    //double JitterThisTimeSlice = m_dWanderJitter * m_pVehicle.getTimeElapsed();
+
+    //stuff for the wander behavior
+    theta = 1.0.rand *2pi;
+    //create a vector to a target position on the wander circle
+    /*java code --> wanderTarget = new Vector2D(wanderRadius * Math.cos(theta), wanderRadius * Math.sin(theta)); */
+    wanderTarget = RealVector2D[ wanderRadius * theta.cos, wanderRadius * theta.sin];
+
+    //first, add a small random vector to the target's position
+    /*java:  m_vWanderTarget.add(new Vector2D(RandomClamped() * JitterThisTimeSlice, RandomClamped() * JitterThisTimeSlice)); */
+    wanderTarget = wanderTarget + RealVector2D[rrand(-1.0, 1.0) * wanderJitter, rrand(-1.0, 1.0) * wanderJitter];
+
+    //reproject this new vector back on to a unit circle
     wanderTarget = wanderTarget.normalize;
+
+    //increase the length of the vector to the same as the radius
+    //of the wander circle
     wanderTarget = wanderTarget * wanderRadius;
 
     //move the target into a position wanderDist in front of the agent
@@ -69,8 +78,7 @@ Wander {
     }
 }
 
-  PathFollowing{
-
+PathFollowing{
   *new{ arg entity, path, seekDistance = 0.5;
        var wayPoint;
       wayPoint = path.wayPoint;
@@ -91,7 +99,6 @@ Wander {
 /* related classes */
 
 Path{
-
   var <wayPoints, <>loop, curWayPoint = 0;
 
   *new { arg  wayPoints, loop = false;
@@ -123,9 +130,7 @@ Path{
 
 
 PathsManager{
-
   /* the manager is not currently used */
-
   classvar <paths;
 
   *initClass{
