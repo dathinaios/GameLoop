@@ -6,8 +6,8 @@ ForceManager { var <>forces;
     ^super.newCopyArgs(forces);
   }
 
-  add{ arg key, forceFunction;
-    key ?? {key = ("Force" ++ forces.size).asSymbol};
+  add{ arg forceFunction, key;
+    key ?? {key = ("Force_" ++ ( forces.size + 1 )).asSymbol};
     forces.add(key -> forceFunction);
   }
 
@@ -30,7 +30,7 @@ ForceManager { var <>forces;
   list{
     "\n=============================================".postln;
 
-    ( "| There are" + forces.size.asString + "forces in the manager:" ).postln;
+    ( "| Number of forces:" + forces.size.asString).postln;
     forces.keysValuesDo{ arg key, value;
       ( "|     " + key + " = " + value.value.asString).postln;
     };
