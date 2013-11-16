@@ -3,7 +3,7 @@
   //~decoder = GameLoopDecoder('ATK', 'newStereo');
   //~decoder = GameLoopDecoder('ATK', 'newListen');
   ~decoder = GameLoopDecoder('AmbIEM', 'binaural');
-  ~gameloop = GameLoop(40, 40, 1).play(0.05);
+  ~gameloop = GameLoop(100, 100, 1).play(0.05);
   ~gameloop.gui;
   ~gameloop.makeWalls;
 )

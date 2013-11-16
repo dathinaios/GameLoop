@@ -137,23 +137,3 @@ PathsManager{ /* the manager is not currently used */
   }
 
 }
-
-
-/* wander alternative try
-
-calculate{ var circlePos, wanderTarget;
-  circlePos = entity.velocity;
-  circlePos = circlePos.normalize;
-  circlePos = circlePos * wanderDistance;
-  circlePos = circlePos + entity.position;
-  wanderTheta = wanderTheta + ( rrand(-1.0, 1.0)*wanderJitter );
-  wanderTarget = RealVector2D[ wanderTheta.cos * wanderRadius, wanderTheta.sin  * wanderRadius];
-  wanderTarget = wanderTarget + circlePos;
-
-  ^Seek(entity, wanderTarget);
-}
-
-init{
-  wanderTheta = RealVector2D[0, 0];
-}
-*/
