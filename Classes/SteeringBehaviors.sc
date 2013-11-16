@@ -36,42 +36,43 @@ Arrive {
   }
 }
 
-Wander { var entity, <>wanderRadius, <>wanderDistance, <>wanderJitter;
-         var wanderTarget;
+Wander {
+  var entity, <>wanderRadius, <>wanderDistance, <>wanderJitter;
+  var wanderTarget;
 
   *new { arg entity, wanderRadius, wanderDistance, wanderJitter;
 
     ^super.newCopyArgs(entity,
-      wanderRadius  = 1.2,
-      wanderDistance = 2.0,
-      wanderJitter = 80
+      wanderRadius,
+      wanderDistance,
+      wanderJitter
     ).init
   }
 
-  init{
-    wanderTarget = RealVector2D[0, 0];
+  init { var theta;
+    theta = rrand(-1.0, 1.0) * 2pi;
+    //create a vector to a target position on the wander circle
+    wanderTarget = RealVector2D[wanderRadius * theta.cos, wanderRadius * theta.sin];
   }
 
-  calculate{ var targetLocal;//, targetWorld;
+  calculate{ var targetLocal, targetWorld;
 
     //first, add a small random vector to the target’s position
     wanderTarget = wanderTarget + RealVector2D[rrand(-1.0, 1.0)*wanderJitter, rrand(-1.0, 1.0)*wanderJitter];
     wanderTarget = wanderTarget.normalize;
     wanderTarget = wanderTarget * wanderRadius;
 
-    //move the target into a position wanderDist in front of the agent
-    //This does notwork as explained in the book as I am currently not
-    // using local space.
-    //targetLocal = wanderTarget + RealVector2D[wanderDistance, 0];
-
-    //instead I will try to use the current velocity
-    targetLocal = wanderTarget + (wanderDistance + atan2(entity.velocity[0], entity.velocity[1]));
+    //move the target into a position wanderDist in front of the agent (x is front)
+    targetLocal = wanderTarget + RealVector2D[wanderDistance, 0];
 
     //project the target into world space
-    /* targetWorld = PointToWorldSpace(targetLocal,￼entity.heading, entity.side, entity.position); */
+    targetWorld = PointToWorldSpace(targetLocal,￼entity.heading, entity.side, entity.position);
+    /* targetWorld.debug("target world"); */
+
     //and steer toward it
-    ^targetLocal - entity.position;
+    ^targetWorld - entity.position;
   }
+
 }
 
 PathFollowing{
@@ -91,8 +92,6 @@ PathFollowing{
       );
   }
 }
-
-/* related classes */
 
 Path{
   var <wayPoints, <>loop, curWayPoint = 0;
@@ -124,9 +123,7 @@ Path{
 
 }
 
-
-PathsManager{
-  /* the manager is not currently used */
+PathsManager{ /* the manager is not currently used */
   classvar <paths;
 
   *initClass{
@@ -140,3 +137,23 @@ PathsManager{
   }
 
 }
+
+
+/* wander alternative try
+
+calculate{ var circlePos, wanderTarget;
+  circlePos = entity.velocity;
+  circlePos = circlePos.normalize;
+  circlePos = circlePos * wanderDistance;
+  circlePos = circlePos + entity.position;
+  wanderTheta = wanderTheta + ( rrand(-1.0, 1.0)*wanderJitter );
+  wanderTarget = RealVector2D[ wanderTheta.cos * wanderRadius, wanderTheta.sin  * wanderRadius];
+  wanderTarget = wanderTarget + circlePos;
+
+  ^Seek(entity, wanderTarget);
+}
+
+init{
+  wanderTheta = RealVector2D[0, 0];
+}
+*/

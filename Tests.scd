@@ -3,7 +3,7 @@
   //~decoder = GameLoopDecoder('ATK', 'newStereo');
   //~decoder = GameLoopDecoder('ATK', 'newListen');
   ~decoder = GameLoopDecoder('AmbIEM', 'binaural');
-  ~gameloop = GameLoop(80, 80, 1).play(0.05);
+  ~gameloop = GameLoop(40, 40, 1).play(0.05);
   ~gameloop.gui;
   ~gameloop.makeWalls;
 )
@@ -23,7 +23,78 @@
   ~camera.attach(~camrep);
 );
 
-( // ENTITY
+( // WANDER TEST
+    ~entity = Vehicle(
+      ~gameloop.world,
+      position: RealVector2D[rrand(20.0, 20), rrand(20.0, 20)],
+      velocity: RealVector2D[0,0.1],
+      radius: 0.4,
+      maxSpeed: 2.6
+    );
+
+    ~rep = SoundRepresentation(
+      ~gameloop.repManager,
+      input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
+    );
+
+    ~entity.collisionType_(\mobile);
+    ~entity.collisionFunc_({arg entity, entList;
+      NonPenetrationConstrain(entity,entList);
+    });
+
+    ~entity.attach(~rep);
+    //and a visual representation
+    ~visrep = SimpleVisual(~gameloop.repManager);
+    ~entity.attach(~visrep);
+
+    //SLIDERS TO DEBUG WANDER
+    Slider(
+      GameLoopGUI.instance.mainView.view,
+      Rect(0, 200, 50, 200);
+    ).action_({ arg i; ~wander.wanderRadius =  (10 * i.value).postln });
+
+    Slider(
+      GameLoopGUI.instance.mainView.view,
+      Rect(100, 200, 50, 200);
+    ).action_({ arg i; ~wander.wanderDistance = (10 * i.value).postln });
+
+    Slider(
+      GameLoopGUI.instance.mainView.view,
+      Rect(200, 200, 50, 200);
+    ).action_({ arg i; ~wander.wanderJitter = (100  * i.value).postln });
+
+
+    ~wander = Wander(~entity,
+        wanderRadius:   3.2,
+        wanderDistance: 2,
+        wanderJitter:  2
+      );
+
+    ~entity.force_({ arg entity;
+      ~wander.calculate;
+    });
+)
+
+// ==================== ||---------=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-{-----> * <-----}[][][][][][][][][][][][-][--][---].oODC----
+
+( //PROCESS CONTROL
+  ~gameloop.clearEntities;
+  ~gameloop.clearWalls;
+  ~camera.remove(true)
+
+  //clear and close everything
+  ~gameloop.clear;
+
+  //clear the Decoder
+  GameLoopDecoder.instance.clear
+
+  //detach representations
+  ~entity.detachAll;
+)
+
+// ==================== ||---------=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-{-----> * <-----}[][][][][][][][][][][][-][--][---].oODC----
+
+( // ENTITY PATH
   { var forceManager;
     ~entity = Vehicle(
       ~gameloop.world,
@@ -47,28 +118,15 @@
     ~entity.attach(~visrep);
 
     ~randForcePath = {var path;
-      path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
-      { arg entity; PathFollowing(entity,path, 0.5); };
+      path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(5, 35.0), rrand(5.0, 35.0)]}), true);
+      /* path = Path([RealVector2D[25, 15], RealVector2D[10, 10]], true); */
+      { arg entity; entity.velocity; PathFollowing(entity,path, 0.5); };
     };
 
     ~entity.force_(~randForcePath.value);
 
   }.value;
 )
-
-
-~entity.detachAll;
-~gameloop.clearEntities;
-~gameloop.clearWalls;
-~camera.remove(true)
-
-//clear and close everything
-~gameloop.clear;
-
-//clear the Decoder
-GameLoopDecoder.instance.clear
-
-// VARIOUS TESTS
 
 ( //CAMERA TESTS
   ~camera.maxForce = 1000;
@@ -93,73 +151,6 @@ GameLoopDecoder.instance.clear
 ~gameloop.switchSpace(40, 40, 1);
 ~gameloop.switchSpace(40, 30, 1);
 ~gameloop.switchSpace(80, 80, 0.5);
-)
-
-( // WANDER TEST
-  { var forceManager;
-    ~entity = Vehicle(
-      ~gameloop.world,
-      position: RealVector2D[rrand(8.0, 32), rrand(8.0, 32)].debug("position"),
-      radius: 0.4,
-      maxSpeed: 5.6
-    );
-
-    ~rep = SoundRepresentation(
-      ~gameloop.repManager,
-      input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
-    );
-
-    ~entity.collisionType_(\mobile);
-    ~entity.attach(~rep);
-    //and a visual representation
-    ~visrep = SimpleVisual(~gameloop.repManager);
-    ~entity.attach(~visrep);
-
-    ~randForcePath = {var path;
-      path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(15, 25.0), rrand(15.0, 25.0)]}), true);
-      { arg entity; PathFollowing(entity,path, 0.5); };
-    };
-    forceManager = ForceManager([\pathSteer, ~randForcePath.value]);
-
-    //SLIDERS TO DEBUG WANDER
-    Slider(
-      GameLoopGUI.instance.mainView.view,
-      Rect(0, 200, 50, 200);
-    ).action_({ arg i; (~wanderRadius = 100 * i.value).postln });
-
-    Slider(
-      GameLoopGUI.instance.mainView.view,
-      Rect(100, 200, 50, 200);
-    ).action_({ arg i; (~wanderDistance = 100 * i.value).postln });
-
-    Slider(
-      GameLoopGUI.instance.mainView.view,
-      Rect(200, 200, 50, 200);
-    ).action_({ arg i; (~wanderJitter = 100 * i.value).postln });
-
-
-    ~wanderRadius = 1;
-    ~wanderDistance = 1;
-    ~wanderJitter = 1;
-
-    ~entity.force_({ arg entity;
-      Wander(entity,
-        wanderRadius: ~wanderRadius,
-        wanderDistance: ~wanderDistance,
-        wanderJitter: ~wanderJitter
-      );
-      0
-      /* forceManager.sum(entity); */
-    });
-
-    ~entity.collisionFunc_({arg entity, entList;
-      NonPenetrationConstrain(entity,entList);
-      /* forceManager.addTemp({arg ent; ent.velocity*RealVector2D[rrand(-200.0, -500),rrand(-200.0, -500)]};) */
-    });
-
-    /* ~entity.force_({ arg entity; Arrive(entity, RealVector2D[10,11]);}); */
-    /* ~randForcePath.value; */
-  }.value;
 )
 
 ( // COLLISION TESTS
@@ -263,3 +254,21 @@ GameLoopDecoder.instance.clear
   c.do{ arg item; ~gameloop.entManager.spatialIndex.getCell(item).postln }
 )
 
+( //Quarks
+  Quarks.gui;
+)
+
+(
+  PointToWorldSpace(
+    RealVector2D[2, 3],
+    RealVector2D[ 0.95020532808649, -0.3116245087859 ],
+    RealVector2D[ 0.3116245087859, 0.95020532808649 ],
+    RealVector2D[ 20.123526692651, 19.959488813858 ]
+  );
+)
+
+Matrix
+
+%s/\[1,1\]/\[0,0\]/g | %s/\[1,2\]/\[0,1\]/g | %s/\[1,3\]/\[0,2\]/g
+%s/\[2,1\]/\[1,0\]/g | %s/\[2,2\]/\[1,1\]/g | %s/\[2,3\]/\[1,2\]/g
+%s/\[3,1\]/\[2,0\]/g | %s/\[3,2\]/\[2,1\]/g | %s/\[3,3\]/\[2,2\]/g
