@@ -16,10 +16,18 @@
 
 }
 
++ AbstractVector {
+  normalize {
+    if(this[0] == 0 and:{this[1] == 0},
+      { ^this },
+      { ^this / this.norm }
+    );
+  }
+}
 /*
 (
-a = RealVector2D[2,3];
-b = RealVector2D[5,8];
+  a = RealVector2D[2,3];
+  b = RealVector2D[5,8];
 );
 
 bench{a.magSq.debug("magSq")}
