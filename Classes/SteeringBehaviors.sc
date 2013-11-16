@@ -1,10 +1,12 @@
 
 /* For implementation details refer to the book Game AI by example by Mat Buckland */
 
-Seek {
+Seek { var entity, <>targetPos;
   *new{ arg entity, targetPos = RealVector2D[10,13];
-       var desiredVelocity;
+    ^super.newCopyArgs(entity, targetPos);
+  }
 
+  calculate{ var desiredVelocity;
     desiredVelocity = targetPos - entity.position;
     desiredVelocity = desiredVelocity.normalize;
     desiredVelocity = desiredVelocity * entity.maxSpeed;
@@ -12,27 +14,30 @@ Seek {
   }
 }
 
-Arrive {
+Arrive { var entity, <>targetPos, <>deceleration, <>tweak;
   //Deceleration{slow = 3, normal = 2, fast = 1};
   *new{ arg entity, targetPos = RealVector2D[10,13], deceleration = 2, tweak = 0.3;
-           var desiredVelocity, toTarget, speed, dist;
+    ^super.newCopyArgs(entity,
+      targetPos,
+      deceleration,
+      tweak
+    );
+  }
 
-      toTarget = targetPos - entity.position;
-      dist = toTarget.norm;
-
-      if ( dist > 0,
-        {
+  calculate{ var desiredVelocity, toTarget, speed, dist;
+    toTarget = targetPos - entity.position;
+    dist = toTarget.norm;
+    if ( dist > 0,
+      {
         speed = dist / (deceleration * tweak);
         speed = speed.min(entity.maxSpeed);
         desiredVelocity = (toTarget*speed)/dist;
         ^(desiredVelocity - entity.velocity);
-        },
-        {
+      },
+      {
         ^RealVector2D[0,0];
-        }
-      );
-
-
+      }
+    );
   }
 }
 
@@ -75,20 +80,35 @@ Wander {
 
 }
 
-PathFollowing{
+PathFollowing{ 
+  var entity, <>path, <>seekDistance;
+  var arrive, seek;
+
   *new{ arg entity, path, seekDistance = 0.5;
-       var wayPoint;
+    ^super.newCopyArgs(
+      entity,
+      path,
+      seekDistance
+    ).init;
+  }
+
+  init{
+    arrive = Arrive(entity);
+    seek = Seek(entity);
+  }
+
+  calculate{
+             var wayPoint;
+
       wayPoint = path.wayPoint;
+      arrive.targetPos = wayPoint;
+      seek.targetPos = wayPoint;
 
       if (entity.position.distanceSq(wayPoint) < seekDistance) {path.setNextWayPoint};
 
       if (path.finished,
-        {
-        ^Arrive.new(entity, wayPoint);
-        },
-        {
-        ^Seek.new(entity, wayPoint);
-        }
+        {^arrive.calculate },
+        {^seek.calculate }
       );
   }
 }

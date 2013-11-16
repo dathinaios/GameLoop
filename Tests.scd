@@ -23,6 +23,25 @@
   ~camera.attach(~camrep);
 );
 
+// ==================== ||---------=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-{-----> * <-----}[][][][][][][][][][][][-][--][---].oODC----
+
+( //PROCESS CONTROL
+  ~gameloop.clearEntities;
+  ~gameloop.clearWalls;
+  ~camera.remove(true)
+
+  //clear and close everything
+  ~gameloop.clear;
+
+  //clear the Decoder
+  GameLoopDecoder.instance.clear
+
+  //detach representations
+  ~entity.detachAll;
+)
+
+// ==================== ||---------=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-{-----> * <-----}[][][][][][][][][][][][-][--][---].oODC----
+
 ( // WANDER TEST
     ~entity = Vehicle(
       ~gameloop.world,
@@ -51,17 +70,17 @@
     Slider(
       GameLoopGUI.instance.mainView.view,
       Rect(0, 200, 50, 200);
-    ).action_({ arg i; ~wander.wanderRadius =  (10 * i.value).postln });
+    ).action_({ arg i; ~wander.wanderRadius =  (20 * i.value).debug("Radius") });
 
     Slider(
       GameLoopGUI.instance.mainView.view,
       Rect(100, 200, 50, 200);
-    ).action_({ arg i; ~wander.wanderDistance = (10 * i.value).postln });
+    ).action_({ arg i; ~wander.wanderDistance = (20 * i.value).debug("Distance") });
 
     Slider(
       GameLoopGUI.instance.mainView.view,
       Rect(200, 200, 50, 200);
-    ).action_({ arg i; ~wander.wanderJitter = (100  * i.value).postln });
+    ).action_({ arg i; ~wander.wanderJitter = (100  * i.value).debug("Jitter") });
 
 
     ~wander = Wander(~entity,
@@ -74,25 +93,6 @@
       ~wander.calculate;
     });
 )
-
-// ==================== ||---------=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-{-----> * <-----}[][][][][][][][][][][][-][--][---].oODC----
-
-( //PROCESS CONTROL
-  ~gameloop.clearEntities;
-  ~gameloop.clearWalls;
-  ~camera.remove(true)
-
-  //clear and close everything
-  ~gameloop.clear;
-
-  //clear the Decoder
-  GameLoopDecoder.instance.clear
-
-  //detach representations
-  ~entity.detachAll;
-)
-
-// ==================== ||---------=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-{-----> * <-----}[][][][][][][][][][][][-][--][---].oODC----
 
 ( // ENTITY PATH
   { var forceManager;
@@ -117,10 +117,11 @@
     ~visrep = SimpleVisual(~gameloop.repManager);
     ~entity.attach(~visrep);
 
-    ~randForcePath = {var path;
+    ~randForcePath = {var path, pathFollowing;
       path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(5, 35.0), rrand(5.0, 35.0)]}), true);
       /* path = Path([RealVector2D[25, 15], RealVector2D[10, 10]], true); */
-      { arg entity; entity.velocity; PathFollowing(entity,path, 0.5); };
+      pathFollowing = PathFollowing(~entity, path, 0.5);
+      { arg entity; pathFollowing.calculate};
     };
 
     ~entity.force_(~randForcePath.value);
@@ -266,9 +267,3 @@
     RealVector2D[ 20.123526692651, 19.959488813858 ]
   );
 )
-
-Matrix
-
-%s/\[1,1\]/\[0,0\]/g | %s/\[1,2\]/\[0,1\]/g | %s/\[1,3\]/\[0,2\]/g
-%s/\[2,1\]/\[1,0\]/g | %s/\[2,2\]/\[1,1\]/g | %s/\[2,3\]/\[1,2\]/g
-%s/\[3,1\]/\[2,0\]/g | %s/\[3,2\]/\[2,1\]/g | %s/\[3,3\]/\[2,2\]/g
