@@ -6,7 +6,7 @@ Seek { var entity, <>targetPos;
     ^super.newCopyArgs(entity, targetPos);
   }
 
-  calculate{ var desiredVelocity;
+  value{ var desiredVelocity;
     desiredVelocity = targetPos - entity.position;
     desiredVelocity = desiredVelocity.normalize;
     desiredVelocity = desiredVelocity * entity.maxSpeed;
@@ -24,7 +24,7 @@ Arrive { var entity, <>targetPos, <>deceleration, <>tweak;
     );
   }
 
-  calculate{ var desiredVelocity, toTarget, speed, dist;
+  value{ var desiredVelocity, toTarget, speed, dist;
     toTarget = targetPos - entity.position;
     dist = toTarget.norm;
     if ( dist > 0,
@@ -60,7 +60,7 @@ Wander {
     wanderTarget = RealVector2D[wanderRadius * theta.cos, wanderRadius * theta.sin];
   }
 
-  calculate{ var targetLocal, targetWorld;
+  value{ var targetLocal, targetWorld;
 
     //first, add a small random vector to the target’s position
     wanderTarget = wanderTarget + RealVector2D[rrand(-1.0, 1.0)*wanderJitter, rrand(-1.0, 1.0)*wanderJitter];
@@ -97,7 +97,7 @@ PathFollowing{
     seek = Seek(entity);
   }
 
-  calculate{
+  value{
              var wayPoint;
 
       wayPoint = path.wayPoint;
@@ -107,8 +107,8 @@ PathFollowing{
       if (entity.position.distanceSq(wayPoint) < seekDistance) {path.setNextWayPoint};
 
       if (path.finished,
-        {^arrive.calculate },
-        {^seek.calculate }
+        {^arrive.value },
+        {^seek.value }
       );
   }
 }

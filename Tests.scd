@@ -23,6 +23,51 @@
   ~camera.attach(~camrep);
 );
 
+( // FORCEMANAGER TEST
+  { arg wander, forceManager;
+
+    ~entity = Vehicle(
+      ~gameloop.world,
+      position: RealVector2D[rrand(10.0, 70), rrand(10.0, 70)],
+      velocity: RealVector2D[0,0.1],
+      radius: 0.4,
+      maxSpeed: 2.6
+    );
+
+    ~entity.collisionType_(\mobile);
+    ~rep = SoundRepresentation(
+      ~gameloop.repManager,
+      input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
+    );
+
+
+    ~entity.attach(~rep);
+    //and a visual representation
+    ~visrep = SimpleVisual(~gameloop.repManager);
+    ~entity.attach(~visrep);
+
+    forceManager = ForceManager.new;
+
+    ~entity.collisionFunc_({arg entity, entList;
+      forceManager.addTemp(entity.velocity * (-40));
+      NonPenetrationConstrain(entity,entList);
+    });
+
+    wander = Wander(~entity,
+      wanderRadius:   3.2,
+      wanderDistance: 4,
+      wanderJitter:  2
+    );
+
+    forceManager.add({wander.value});
+
+    ~entity.force_({ arg entity;
+      //forceManager.list.postln;
+      forceManager.sum;
+    });
+  }.value;
+)
+
 // ==================== ||---------=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-{-----> * <-----}[][][][][][][][][][][][-][--][---].oODC----
 
 ( //PROCESS CONTROL
@@ -30,6 +75,8 @@
   ~gameloop.clearWalls;
   ~camera.remove(true)
 
+  ~camera.goto(RealVector2D[20, 30])
+  ~camera.reset;
   //clear and close everything
   ~gameloop.clear;
 
@@ -90,7 +137,7 @@
       );
 
     ~entity.force_({ arg entity;
-      ~wander.calculate;
+      ~wander.value;
     });
 )
 
@@ -121,7 +168,7 @@
       path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(5, 35.0), rrand(5.0, 35.0)]}), true);
       /* path = Path([RealVector2D[25, 15], RealVector2D[10, 10]], true); */
       pathFollowing = PathFollowing(~entity, path, 0.5);
-      { arg entity; pathFollowing.calculate};
+      { arg entity; pathFollowing.value};
     };
 
     ~entity.force_(~randForcePath.value);
