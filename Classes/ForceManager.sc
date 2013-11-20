@@ -40,8 +40,8 @@ ForceManager { var <>forces;
 
   sum{ arg entity,  addedForce = 0; var sum;
     sum = addedForce;
-    forces.do{arg value;
-      sum = sum + value.value(entity);
+    forces.do{arg item;
+      sum = sum + item.value(entity);
     };
     this.clearTemp;
     ^sum;
