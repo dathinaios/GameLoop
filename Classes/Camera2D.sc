@@ -28,13 +28,6 @@ Camera2D : Vehicle {
       );
   }
 
-  /* collisionType_{arg type; */
-  /*  if(type != \free) */
-  /*  { */
-  /*    "Collision type for Camera2D has to be \\free".error; */
-  /*  }; */
-  /* } */
-
   *active{
     if(instance.isNil,
       {^false},
@@ -156,3 +149,10 @@ Camera2DRepresentation : SimpleVisual{
     ^entity.world.center;
   }
 }
+
+  /* collisionType_{arg type; */
+  /*  if(type != \free) */
+  /*  { */
+  /*    "Collision type for Camera2D has to be \\free".error; */
+  /*  }; */
+  /* } */
