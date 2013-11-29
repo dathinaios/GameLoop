@@ -80,6 +80,8 @@
   //clear and close everything
   ~gameloop.clear;
 
+  ~gameloop.entManager.entList
+
   //clear the Decoder
   GameLoopDecoder.instance.clear
 
@@ -314,3 +316,4 @@
     RealVector2D[ 20.123526692651, 19.959488813858 ]
   );
 )
+
