@@ -144,8 +144,7 @@ EntityManager {
         {
         collidingWith = List.new;
         nearest = spatialIndex.getNearest(i);
-        //remove the static ones since we dont want to check the collisions between them
-        nearest = nearest.asArray.takeThese({arg i; staticList.includes(i)});
+        nearest = this.removeStaticEntitiesFromSet(nearest);
         //if there are objects left (mobile entities) check for collisions
         if(nearest.size>0, {
             nearest.do{arg i2;
@@ -176,6 +175,11 @@ EntityManager {
         );
       }
     }
+  }
+
+  removeStaticEntitiesFromSet{ arg set;
+    set.removeAllSuchThat({arg item; item.collisionType == \static});
+    ^set;
   }
 
   circlesCollide{ arg cA, cB; //circleA circleB
