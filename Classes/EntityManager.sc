@@ -139,28 +139,30 @@ EntityManager {
   }
 
   collisionCheckForStatic{
-    staticList.do{ arg i; var nearest, collidingWith;
-      if(i.colliding)
-        {
-        collidingWith = List.new;
-        nearest = spatialIndex.getNearest(i);
+    staticList.do{ arg entity; var nearest;
+        nearest = spatialIndex.getNearest(entity);
         nearest = this.removeStaticEntitiesFromSet(nearest);
         //if there are objects left (mobile entities) check for collisions
-        if(nearest.size>0, {
-            nearest.do{arg i2;
-              if(this.circlesCollide(i, i2)) {collidingWith = collidingWith.add(i2)};
-            };
-            if(collidingWith.size != 0,
-              {currentCollisionList.add([i, collidingWith])}, //form = [entity, [ListofCollidingWithEntities]]
-              {i.colliding_(false)}
-            );
-            },
-            {
-            i.colliding_(false)
-            }
+        if(nearest.size>0,
+          { this.checkForCollisionsWithObjects(entity, nearest)},
+          { entity.colliding_(false) }
         );
-        };
     };
+  }
+
+  checkForCollisionsWithObjects{ arg entity, potentiallyCollidingObjects; var collidingWith;
+
+    collidingWith = List.new;
+
+    potentiallyCollidingObjects.do{arg object;
+      if(this.circlesCollide(entity, object)) {collidingWith = collidingWith.add( object)};
+    };
+
+    if(collidingWith.size != 0,
+      {currentCollisionList.add([entity, collidingWith])}, //form = [entity, [ListofCollidingWithEntities]]
+      {entity.colliding_(false)}
+    );
+
   }
 
   collisionCheckForWalls{
