@@ -78,3 +78,45 @@ TestMobileEntity : UnitTest{ var entity, entManager;
   }
 
 }
+
+TestVehicle : UnitTest{var entity, entManager;
+
+  setUp {
+    entManager = EntityManager(SpatialHashing(20,20,0.1));
+    entity = Vehicle(
+      world: entManager,
+      position: RealVector2D[20.0, 20.0],
+      radius: 0.5,
+      mass: 0.3,
+      velocity: RealVector2D[2.0,2.0]
+    );
+  }
+
+  tearDown {
+    // this will be called after each test
+  }
+
+  test_integrateEuler{ var force, originalVel, originalPos, dt;
+
+    dt = entity.dt;
+    originalVel = entity.velocity;
+    originalPos = entity.position;
+
+    force = RealVector2D[0.5, 1.3];
+    entity.integrateEuler(force);
+
+    this.assert(
+      entity.velocity == ( originalVel + ((force/entity.mass) * dt) ).limit(entity.maxSpeed),
+      "should calculate the velocity change correctly"
+    );
+
+    this.assert(
+      entity.position == ( originalPos + (entity.velocity* dt) ),
+      "should calculate the position change correctly"
+    );
+
+    this.assert(entity.heading == entity.velocity.normalize, "the heading should be updated correctly");
+    this.assert(entity.side == entity.velocity.normalize.perp, "the side should be updated correctly");
+  }
+
+}
