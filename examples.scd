@@ -317,4 +317,3 @@
   );
 )
 
-UnitTest.runAll

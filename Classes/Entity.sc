@@ -91,8 +91,6 @@ MobileEntity : Entity {
     position = position + (velocity *this.dt);
   }
 
-  //implement update in subclass if needed. Typical:
-
   update {
     /* calling update on the dependants ensure that we always get set
     by the integration of the last cycle */
@@ -110,7 +108,7 @@ Vehicle : MobileEntity {
      var <>heading, <>side, <>maxSpeed, <>maxForce, <>maxTurnRate;
 
   *new{ arg world, position= RealVector2D[15,15], radius = 1.0, mass = 1.0, collisionType = \free,
-            velocity = RealVector2D[0, 0],  maxSpeed = 100, maxForce = 40, heading = RealVector2D[0, 0], 
+            velocity = RealVector2D[0, 0],  maxSpeed = 100, maxForce = 40, heading = RealVector2D[0, 0],
             side = RealVector2D[0,0], maxTurnRate = 2;
       ^super.new(world,
            position,
