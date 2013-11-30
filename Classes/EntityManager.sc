@@ -168,6 +168,7 @@ EntityManager {
       wall = item[0];
       cells = item[1];
       potentialCollidingEntities = spatialIndex.getObjectsFromCellSet(cells);
+      potentialCollidingEntities = this.removeStaticEntitiesFromSet(potentialCollidingEntities);
       potentialCollidingEntities.do{arg i; var offset;
         offset = this.checkEntityWallCollision(i, wall);
         if(offset != 0,
