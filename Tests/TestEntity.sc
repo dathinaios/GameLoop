@@ -9,24 +9,16 @@ TestEntity : UnitTest{ var entity, entManager;
     // this will be called after each test
   }
 
-  test_attach{
-    entity.attach("dep1");
-    this.assert(entity.dependants.size == 1, "after adding dependant the size is 1");
-  }
-
-  test_detach{ var attachment;
-    attachment = "dep1";
-    entity.attach(attachment);
-    entity.detach(attachment);
-    this.assert(entity.dependants.size == 0, "detaching dependants has the xpected results");
-  }
-
-  test_detachAll{
-    entity.attach("dep1");
+  test_attach_detach{ var attached1;
+    attached1 = "dep1";
+    entity.attach(attached1);
     entity.attach("dep2");
     entity.attach("dep3");
+    this.assert(entity.dependants.size == 3, "after adding dependant the size should increase");
+    entity.detach(attached1);
+    this.assert(entity.dependants.size == 2, "detaching dependants has the expected results");
     entity.detachAll;
-    this.assert(entity.dependants.size == 0, "dependants have been cleared correctly")
+    this.assert(entity.dependants.size == 0, "dependants are cleared correctly")
   }
 
   test_add_remove{
