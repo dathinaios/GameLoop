@@ -317,3 +317,4 @@
   );
 )
 
+UnitTest.runAll
