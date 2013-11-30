@@ -118,23 +118,9 @@ EntityManager {
   }
 
   collisionCheckForMobile{
-    mobList.do{ arg i; var nearest, collidingWith;
-      // a list to store the objects that are found to collide with the entity
-      collidingWith = List.new;
-      nearest = spatialIndex.getNearest(i);
-      if(nearest.size>0, {
-          nearest.do{arg i2;
-            if(this.circlesCollide(i, i2)) {collidingWith = collidingWith.add(i2)};
-          };
-          if(collidingWith.size != 0,
-            {currentCollisionList.add([i, collidingWith])}, //form is [entity, [ListofCollidingWithEntities]]
-            {i.colliding_(false)}
-          );
-          },
-          {
-          i.colliding_(false)
-          }
-      );
+    mobList.do{ arg entity; var nearest;
+      nearest = spatialIndex.getNearest(entity);
+      this.doForPotentialCollisions(entity, nearest);
     };
   }
 
@@ -142,27 +128,31 @@ EntityManager {
     staticList.do{ arg entity; var nearest;
         nearest = spatialIndex.getNearest(entity);
         nearest = this.removeStaticEntitiesFromSet(nearest);
-        //if there are objects left (mobile entities) check for collisions
-        if(nearest.size>0,
-          { this.checkForCollisionsWithObjects(entity, nearest)},
-          { entity.colliding_(false) }
-        );
+        this.doForPotentialCollisions(entity, nearest);
     };
   }
 
+  doForPotentialCollisions{ arg entity, nearest;
+    if(nearest.size>0,
+      { this.checkForCollisionsWithObjects(entity, nearest)},
+      { entity.colliding_(false) }
+    );
+  }
+
   checkForCollisionsWithObjects{ arg entity, potentiallyCollidingObjects; var collidingWith;
-
-    collidingWith = List.new;
-
-    potentiallyCollidingObjects.do{arg object;
-      if(this.circlesCollide(entity, object)) {collidingWith = collidingWith.add( object)};
-    };
-
+    collidingWith = this.collectCollidingObjects(entity, potentiallyCollidingObjects);
     if(collidingWith.size != 0,
       {currentCollisionList.add([entity, collidingWith])}, //form = [entity, [ListofCollidingWithEntities]]
       {entity.colliding_(false)}
     );
+  }
 
+  collectCollidingObjects{ arg entity, potentiallyCollidingObjects; var collidingWith;
+    collidingWith = List.new;
+    potentiallyCollidingObjects.do{arg object;
+      if(this.circlesCollide(entity, object)) {collidingWith = collidingWith.add( object)};
+    };
+    ^collidingWith;
   }
 
   collisionCheckForWalls{
