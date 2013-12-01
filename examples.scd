@@ -13,7 +13,6 @@
   ~gameloop.entManager.addWall(a);
   ~gameloop.entManager.addWall(b);
 )
-
 ( // CAMERA SETUP
   ~camera = Camera2D(
     ~gameloop.world,
@@ -28,38 +27,86 @@
 
   ~camera.attach(~camrep);
 );
+( // ALTERNATIVE INTERFACE OUTLINE
 
-~entity.colliding
+  // 1. Extract Integration into separate class
+  // 2. Remove any EntityManager dependencies from Entity and subclasses
+  // 3. Figure out how the entity and the representation are going to start in sync
 
-( // WALL COLLISION TEST
-    ~gameloop.clearEntities;
+  ~entity = Vehicle(
+    position: RealVector2D[25, 19],
+    velocity: RealVector2D[-1, 1],
+    radius: 0.4,
+    maxSpeed: 3.6
+  );
+  ~entity.collisionType_(\mobile);
 
-      ~entity = Vehicle(
-        ~gameloop.world,
-        position: RealVector2D[25, 19],
-        velocity: RealVector2D[-1,1],
-        radius: 0.4,
-        maxSpeed: 3.6
-      );
+  ~rep = SoundRepresentation(
+    ~gameloop.repManager,
+    input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
+  );
+  ~entity.attach(~rep);
 
-      ~entity.collisionType_(\mobile);
-      ~rep = SoundRepresentation(
-        ~gameloop.repManager,
-        input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
-      );
+  ~visrep = SimpleVisual(~gameloop.repManager);
+  ~entity.attach(~visrep);
 
-      ~entity.attach(~rep);
-      //and a visual representation
-      ~visrep = SimpleVisual(~gameloop.repManager);
-      /* ~visrep.collisionFunc = {arg rep, ent;}; */
-      ~entity.attach(~visrep);
-
-      ~entity.collisionFunc_({arg entity, entList;
-        /* NonPenetrationConstrain(entity,entList); */
-      });
-
+  ~gameloop.add(~entity);
 )
 
+// -----------------------\
+// ----------------------- \
+// --                  ---  \
+( //PROCESS CONTROL
+  ~gameloop.clearEntities;
+  ~gameloop.clearWalls;
+  ~camera.remove(true)
+
+  ~camera.goto(RealVector2D[20, 30])
+  ~camera.reset;
+  //clear and close everything
+  ~gameloop.clear;
+
+  ~gameloop.entManager.entList
+
+  //clear the Decoder
+  GameLoopDecoder.instance.clear
+
+  //detach representations
+  ~entity.detachAll;
+)
+// --                  ---  /
+// ----------------------- /
+// -----------------------/
+
+( // WALL COLLISION TEST
+
+  ~gameloop.clearEntities;
+
+  ~entity = Vehicle(
+    ~gameloop.world,
+    position: RealVector2D[25, 19],
+    velocity: RealVector2D[-1,1],
+    radius: 0.4,
+    maxSpeed: 3.6
+  );
+
+  ~entity.collisionType_(\mobile);
+  ~rep = SoundRepresentation(
+    ~gameloop.repManager,
+    input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
+  );
+
+  ~entity.attach(~rep);
+  //and a visual representation
+  ~visrep = SimpleVisual(~gameloop.repManager);
+  /* ~visrep.collisionFunc = {arg rep, ent;}; */
+  ~entity.attach(~visrep);
+
+  ~entity.collisionFunc_({arg entity, entList;
+    /* NonPenetrationConstrain(entity,entList); */
+  });
+
+)
 ( // FORCEMANAGER TEST
   20.do{
     { arg wander, forceManager;
@@ -107,30 +154,6 @@
     }.value;
   }
 )
-
-// ==================== ||---------=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-{-----> * <-----}[][][][][][][][][][][][-][--][---].oODC----
-
-( //PROCESS CONTROL
-  ~gameloop.clearEntities;
-  ~gameloop.clearWalls;
-  ~camera.remove(true)
-
-  ~camera.goto(RealVector2D[20, 30])
-  ~camera.reset;
-  //clear and close everything
-  ~gameloop.clear;
-
-  ~gameloop.entManager.entList
-
-  //clear the Decoder
-  GameLoopDecoder.instance.clear
-
-  //detach representations
-  ~entity.detachAll;
-)
-
-// ==================== ||---------=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-{-----> * <-----}[][][][][][][][][][][][-][--][---].oODC----
-
 ( // WANDER TEST
     ~entity = Vehicle(
       ~gameloop.world,
@@ -182,7 +205,6 @@
       ~wander.value;
     });
 )
-
 ( // ENTITY PATH
   { var forceManager;
     ~entity = Vehicle(
@@ -217,8 +239,7 @@
 
   }.value;
 )
-
-( //CAMERA TESTS
+( // CAMERA TESTS
   ~camera.maxForce = 1000;
   ~camera.mass= 0.05;
   ~camera.maxSpeed = 10;
@@ -233,7 +254,6 @@
   ~camera.remove
   ~gameloop.resetCamera;
 )
-
 ( // SWITCH SPACE TESTS
 ~gameloop.makeWalls;
 ~gameloop.switchSpace(20, 20, 0.5);
@@ -242,7 +262,6 @@
 ~gameloop.switchSpace(40, 30, 1);
 ~gameloop.switchSpace(80, 80, 0.5);
 )
-
 ( // COLLISION TESTS
   ~entity1 = Vehicle(
     ~gameloop.world,
@@ -293,7 +312,6 @@
   ~randForcePath.value(~entity1);
   ~randForcePath.value(~entity2);
 )
-
 ( // ASCII LOGO
 
 
@@ -321,7 +339,6 @@
                                                                                                                                                    p.::::::p
                                                                                                                                                    ppppppppp
 )
-
 ( // FORCE MANAGER TEST
   a = ForceManager();
   a.add(\test, { RealVector2D[0, 10]});
@@ -330,7 +347,6 @@
   a.sum;
   a.list;
 )
-
 ( // WALL TESTS
   a = Wall(RealVector2D[5,10], RealVector2D[13, 29]);
   b = Wall(RealVector2D[20,20], RealVector2D[40, 35]);
@@ -343,11 +359,9 @@
 
   /* c.do{ arg item; ~gameloop.entManager.spatialIndex.getCell(item).postln } */
 )
-
-( //Quarks
+( // QUARKS
   Quarks.gui;
 )
-
 (
   PointToWorldSpace(
     RealVector2D[2, 3],
