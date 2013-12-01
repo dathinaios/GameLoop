@@ -50,6 +50,7 @@
     ~entity.attach(~rep);
     //and a visual representation
     ~visrep = SimpleVisual(~gameloop.repManager);
+    ~visrep.collisionFunc = {arg rep, ent; };
     ~entity.attach(~visrep);
 
     forceManager = ForceManager.new;

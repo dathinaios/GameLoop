@@ -1,14 +1,13 @@
 
 SimpleVisual : EntityRepresentation {
 
-    var  >color, >collisionColor, >collisionFunc;
+    var  >color, >collisionColor;
     var <penWidth = 1.5, <>shape = 0;
 
-  *new { arg  repManager, color, collisionColor, collisionFunc;
-    ^super.new(repManager)
+  *new { arg  repManager,  collisionFunc, color, collisionColor;
+    ^super.new(repManager, collisionFunc)
           .color_(color)
-          .collisionColor_(collisionColor)
-          .collisionFunc_(collisionFunc);
+          .collisionColor_(collisionColor);
   }
 
   init {
@@ -28,7 +27,7 @@ SimpleVisual : EntityRepresentation {
       repManager.add(this);
   }
 
-  color { if(this.colliding, {^collisionColor },{^color})
+  color { if(this.colliding.debug("in color colliding"), {^collisionColor },{^color})
   }
 
   draw{arg rect;
