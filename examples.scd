@@ -29,50 +29,83 @@
   ~camera.attach(~camrep);
 );
 
+~entity.colliding
+
+( // WALL COLLISION TEST
+    ~gameloop.clearEntities;
+
+      ~entity = Vehicle(
+        ~gameloop.world,
+        position: RealVector2D[25, 19],
+        velocity: RealVector2D[-1,1],
+        radius: 0.4,
+        maxSpeed: 3.6
+      );
+
+      ~entity.collisionType_(\mobile);
+      ~rep = SoundRepresentation(
+        ~gameloop.repManager,
+        input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
+      );
+
+      ~entity.attach(~rep);
+      //and a visual representation
+      ~visrep = SimpleVisual(~gameloop.repManager);
+      /* ~visrep.collisionFunc = {arg rep, ent;}; */
+      ~entity.attach(~visrep);
+
+      ~entity.collisionFunc_({arg entity, entList;
+        /* NonPenetrationConstrain(entity,entList); */
+      });
+
+)
+
 ( // FORCEMANAGER TEST
-  { arg wander, forceManager;
+  20.do{
+    { arg wander, forceManager;
 
-    ~entity = Vehicle(
-      ~gameloop.world,
-      position: RealVector2D[rrand(10.0, 70), rrand(10.0, 70)],
-      velocity: RealVector2D[0,0.1],
-      radius: 0.4,
-      maxSpeed: 2.6
-    );
+      ~entity = Vehicle(
+        ~gameloop.world,
+        position: RealVector2D[rrand(10.0, 70), rrand(10.0, 70)],
+        velocity: RealVector2D[0,0.1],
+        radius: 0.4,
+        maxSpeed: 2.6
+      );
 
-    ~entity.collisionType_(\mobile);
-    ~rep = SoundRepresentation(
-      ~gameloop.repManager,
-      input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
-    );
+      ~entity.collisionType_(\mobile);
+      ~rep = SoundRepresentation(
+        ~gameloop.repManager,
+        input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
+      );
 
 
-    ~entity.attach(~rep);
-    //and a visual representation
-    ~visrep = SimpleVisual(~gameloop.repManager);
-    ~visrep.collisionFunc = {arg rep, ent; };
-    ~entity.attach(~visrep);
+      ~entity.attach(~rep);
+      //and a visual representation
+      ~visrep = SimpleVisual(~gameloop.repManager);
+      /* ~visrep.collisionFunc = {arg rep, ent;}; */
+      ~entity.attach(~visrep);
 
-    forceManager = ForceManager.new;
+      forceManager = ForceManager.new;
 
-    ~entity.collisionFunc_({arg entity, entList;
-      /* forceManager.addTemp(entity.velocity * (-40)); */
-      /* NonPenetrationConstrain(entity,entList); */
-    });
+      ~entity.collisionFunc_({arg entity, entList;
+        /* forceManager.addTemp(entity.velocity * (-40)); */
+        /* NonPenetrationConstrain(entity,entList); */
+      });
 
-    wander = Wander(~entity,
-      wanderRadius:   3.2,
-      wanderDistance: 4,
-      wanderJitter:  2
-    );
+      wander = Wander(~entity,
+        wanderRadius:   3.2,
+        wanderDistance: 4,
+        wanderJitter:  2
+      );
 
-    forceManager.add({wander.value});
+      forceManager.add({wander.value});
 
-    ~entity.force_({ arg entity;
-      //forceManager.list.postln;
-      forceManager.sum;
-    });
-  }.value;
+      ~entity.force_({ arg entity;
+        //forceManager.list.postln;
+        forceManager.sum;
+      });
+    }.value;
+  }
 )
 
 // ==================== ||---------=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-+-+-=-+-+-{-----> * <-----}[][][][][][][][][][][][-][--][---].oODC----

@@ -27,7 +27,7 @@ SimpleVisual : EntityRepresentation {
       repManager.add(this);
   }
 
-  color { if(this.colliding.debug("in color colliding"), {^collisionColor },{^color})
+  color { if(this.colliding, {^collisionColor },{^color})
   }
 
   draw{arg rect;
