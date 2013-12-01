@@ -15,4 +15,16 @@ TestEntityManager : UnitTest{ var entManager;
     this.assert(set.size == 0, "should remove static entities from set");
   }
 
+  test_doForPotentialCollisions{
+
+  }
+
+  test_checkForCollisionsWithObjects{
+
+  }
+
+  test_collectCollidingObjects{
+
+  }
+
 }

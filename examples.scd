@@ -6,6 +6,12 @@
   ~gameloop = GameLoop(100, 100, 1).play(0.05);
   ~gameloop.gui;
   ~gameloop.makeWalls;
+
+  //some mroe walls for tests
+  a = Wall(RealVector2D[5,10], RealVector2D[13, 29]);
+  b = Wall(RealVector2D[20,20], RealVector2D[40, 35]);
+  ~gameloop.entManager.addWall(a);
+  ~gameloop.entManager.addWall(b);
 )
 
 ( // CAMERA SETUP
@@ -49,8 +55,8 @@
     forceManager = ForceManager.new;
 
     ~entity.collisionFunc_({arg entity, entList;
-      forceManager.addTemp(entity.velocity * (-40));
-      NonPenetrationConstrain(entity,entList);
+      /* forceManager.addTemp(entity.velocity * (-40)); */
+      /* NonPenetrationConstrain(entity,entList); */
     });
 
     wander = Wander(~entity,
@@ -296,12 +302,12 @@
   b = Wall(RealVector2D[20,20], RealVector2D[40, 35]);
   ~gameloop.entManager.addWall(a);
   ~gameloop.entManager.addWall(b);
-  ~gameloop.entManager.removeWall(b);
-  ~gameloop.entManager.clearWalls;
+  /* ~gameloop.entManager.removeWall(b); */
+  /* ~gameloop.entManager.clearWalls; */
 
-  c = ~gameloop.entManager.spatialIndex.getCellsForLine(b);
+  /* c = ~gameloop.entManager.spatialIndex.getCellsForLine(b); */
 
-  c.do{ arg item; ~gameloop.entManager.spatialIndex.getCell(item).postln }
+  /* c.do{ arg item; ~gameloop.entManager.spatialIndex.getCell(item).postln } */
 )
 
 ( //Quarks

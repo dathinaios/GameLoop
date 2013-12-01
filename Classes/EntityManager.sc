@@ -161,10 +161,11 @@ EntityManager {
       cells = item[1];
       potentialCollidingEntities = spatialIndex.getObjectsFromCellSet(cells);
       potentialCollidingEntities = this.removeStaticEntitiesFromSet(potentialCollidingEntities);
-      potentialCollidingEntities.do{arg i; var offset;
-        offset = this.checkEntityWallCollision(i, wall);
+      potentialCollidingEntities.do{arg entity; var offset;
+        offset = this.checkEntityWallCollision(entity, wall);
         if(offset != 0,
-          {currentCollisionList.add([i, wall, offset])}
+          {currentCollisionList.add([entity, wall, offset])},
+          {entity.colliding_(false)}
         );
       }
     }
