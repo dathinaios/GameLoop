@@ -134,16 +134,14 @@ EntityManager {
 
   doForPotentialCollisions{ arg entity, nearest;
     if(nearest.size>0,
-      { this.checkForCollisionsWithObjects(entity, nearest)},
-      { entity.colliding_(false) }
+      { this.checkForCollisionsWithObjects(entity, nearest)}
     );
   }
 
   checkForCollisionsWithObjects{ arg entity, potentiallyCollidingObjects; var collidingWith;
     collidingWith = this.collectCollidingObjects(entity, potentiallyCollidingObjects);
     if(collidingWith.size != 0,
-      {currentCollisionList.add([entity, collidingWith])}, //form = [entity, [ListofCollidingWithEntities]]
-      {entity.colliding_(false)}
+      {currentCollisionList.add([entity, collidingWith])} //form = [entity, [ListofCollidingWithEntities]]
     );
   }
 
@@ -164,8 +162,7 @@ EntityManager {
       potentialCollidingEntities.do{arg entity; var offset;
         offset = this.checkEntityWallCollision(entity, wall);
         if(offset != 0,
-          {currentCollisionList.add([entity, wall, offset])},
-          {entity.colliding_(false)}
+          {currentCollisionList.add([entity, wall, offset])}
         );
       }
     }
@@ -215,7 +212,14 @@ EntityManager {
     ^offset;
   }
 
+
+  clearCollisionStateForAll{
+    mobList.do{arg i; i.colliding_(false)};
+    staticList.do{arg i; i.colliding_(false)};
+  }
+
   collisionResolution{
+    this.clearCollisionStateForAll;
     currentCollisionList.do{arg i;
       i[0].collision(i[1], i[2]); //entityColliding.collision(collidingWith, additionalInfo)
     };
