@@ -1,7 +1,7 @@
 
 Entity {
     var <>world, <>position, <>radius, <>mass, <>collisionType;
-    var <>colliding, <active, >collisionFunc;
+    var <>colliding, <active, <>queuedForAddition,  >collisionFunc;
 
   *new{ arg world, position = RealVector2D[15,15], radius = 1.0, mass = 1.0, collisionType = \free;
      ^super.newCopyArgs(world,
@@ -23,6 +23,7 @@ Entity {
       collisionType  = collisionType ?? {\free};
       colliding = false;
       active = false;
+      queuedForAddition = false;
       collisionFunc = {};
   }
 
@@ -44,6 +45,7 @@ Entity {
   add{
     world.add(this);
     active = true;
+    queuedForAddition = false;
     this.changed([\add]);
   }
 

@@ -61,8 +61,24 @@ EntityRepresentation { var repManager, <>collisionFunc;
     speed = entity.velocity.norm;
   }
 
-  addEntity{
-    if (entity.active.not){entity.add};
+  addAll{ arg delay = 0;
+    if(entity.queuedForAddition,
+      {this.addRepresentation},
+      {this.addEntityAndRepresentation(delay)}
+    );
+  }
+
+  addEntityAndRepresentation{ arg delay;
+    entity.queuedForAddition_(true);
+    Routine{
+      if(delay.notNil) {delay.wait};
+      if (entity.active.not){entity.add};
+      repManager.add(this);
+    }.play;
+  }
+
+  addRepresentation{
+      repManager.add(this);
   }
 
   storeEntity{ arg item;
@@ -78,7 +94,7 @@ EntityRepresentation { var repManager, <>collisionFunc;
   }
 
   add{
-    this.subclassResponsibility(thisMethod);
+    this.addAll;
   }
 
   remove{

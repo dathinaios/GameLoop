@@ -53,16 +53,8 @@ SoundRepresentation : EntityRepresentation {
   }
 
   add {
-    var latency;
-    latency = Server.default.latency;
-    Routine{
-      this.addSource;
-      /* wait for 'latency' before adding to managers so that everything is in sync. */
-      if(latency.notNil) {latency.wait};
-      /* Add everything at exactly the same time as the bundle */
-      this.addEntity;
-      repManager.add(this);
-    }.play;
+      this.addSource; //Using JitLib the source will be added after the Server's default latency
+      this.addAll(delay: Server.default.latency);
   }
 
   addSource{

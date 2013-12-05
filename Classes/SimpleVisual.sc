@@ -22,11 +22,6 @@ SimpleVisual : EntityRepresentation {
 
   }
 
-  add {
-      if (entity.active.not){entity.add};
-      repManager.add(this);
-  }
-
   color { if(this.colliding, {^collisionColor },{^color})
   }
 

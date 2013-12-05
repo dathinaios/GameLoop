@@ -4,7 +4,7 @@ categories:: Undocumented classes
 related:: Classes/SomeRelatedClass, Reference/SomeRelatedStuff, etc.
 
 DESCRIPTION::
-(put long description here)
+Reminder --> the rep is activated on attach so if I want to have synchronous start I need to add it before any visual reps that do not need a delay. If I add the cis rep before it is going to add the entity in the the system.
 
 
 CLASSMETHODS::
