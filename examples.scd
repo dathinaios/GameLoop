@@ -28,7 +28,7 @@
   ~camera.attach(~camrep);
 );
 ( // FORCEMANAGER TEST
-  20.do{
+  5.do{
     { arg wander, forceManager;
 
       ~entity = Vehicle(
