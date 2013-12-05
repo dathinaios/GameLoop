@@ -67,7 +67,7 @@ Camera2D : Vehicle {
 
   applyTransformation{ arg entity;
             var entPos;
-      if (entity.class != Camera2D,
+      if (entity != this,
         {
           entPos = entity.position;
           ^this.translatePosition(entPos);
