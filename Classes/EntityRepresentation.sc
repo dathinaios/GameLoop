@@ -13,17 +13,17 @@ EntityRepresentation { var repManager, <>collisionFunc;
   }
 
   /* dependant notification from entity */
-  update { arg theChanged, message;
+  update { arg entity, message;
     switch (message[0])
     {\preUpdate}
     { var transPosition;
-      transPosition = this.cameraTransform(theChanged);
-      this.preUpdate(theChanged, transPosition);
+      transPosition = this.cameraTransform(entity);
+      this.preUpdate(entity, transPosition);
     }
     {\update}
     {this.getData}
     {\attach}
-    {this.attach(theChanged) }
+    {this.attach(entity) }
     {\remove}
     {this.remove;}
     {\detach}
@@ -32,10 +32,10 @@ EntityRepresentation { var repManager, <>collisionFunc;
     {this.collision(message)};
   }
 
-  attach{ arg theChanged;
+  attach{ arg entity;
     if (attached.isNil or:{attached.not},
     { attached = true;
-      this.storeEntity(theChanged);
+      this.storeEntity(entity);
       this.init; }
     );
   }
@@ -44,19 +44,19 @@ EntityRepresentation { var repManager, <>collisionFunc;
       if (attached and:{message[1] == this}, {attached = false; this.remove;});
   }
 
-  cameraTransform{arg theChanged;
+  cameraTransform{arg entity;
     if (Camera2D.active,
-      {^(Camera2D.instance.applyTransformation(theChanged))},
+      {^(Camera2D.instance.applyTransformation(entity))},
       {^position}
     );
   }
 
-  preUpdate{ arg theChanged, transposition;
-    position = transposition + theChanged.world.center;
+  preUpdate{ arg entity, transposition;
+    position = transposition + entity.worldCenter;
   }
 
   getData{
-    position = entity.position - entity.world.center;
+    position = entity.position - entity.worldCenter;
     radius = entity.radius;
     speed = entity.velocity.norm;
   }

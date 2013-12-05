@@ -68,10 +68,7 @@ Camera2D : Vehicle {
   applyTransformation{ arg entity;
             var entPos;
       if (entity != this,
-        {
-          entPos = entity.position;
-          ^this.translatePosition(entPos);
-        },
+        {^this.translatePosition(entity.position)},
         {^entity.position}
       )
   }
@@ -146,7 +143,7 @@ Camera2D : Vehicle {
 Camera2DRepresentation : SimpleVisual{
 
   position{
-    ^entity.world.center;
+    ^entity.worldCenter;
   }
 }
 

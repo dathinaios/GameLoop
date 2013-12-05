@@ -64,6 +64,10 @@ Entity {
     ^world.dt;
   }
 
+  worldCenter{
+    ^world.center;
+  }
+
 }
 
 MobileEntity : Entity {

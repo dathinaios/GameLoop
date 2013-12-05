@@ -22,35 +22,57 @@
   ~camera.collisionType_(\mobile);
   ~camrep =Camera2DRepresentation(
     ~gameloop.repManager,
-    Color.white
+    color: Color.white
   ).shape_(1);
 
   ~camera.attach(~camrep);
 );
-( // ALTERNATIVE INTERFACE OUTLINE
+( // FORCEMANAGER TEST
+  20.do{
+    { arg wander, forceManager;
 
-  // 1. Extract Integration into separate class
-  // 2. Remove any EntityManager dependencies from Entity and subclasses
-  // 3. Figure out how the entity and the representation are going to start in sync
+      ~entity = Vehicle(
+        ~gameloop.world,
+        position: RealVector2D[rrand(10.0, 70), rrand(10.0, 70)],
+        velocity: RealVector2D[0,0.1],
+        radius: 0.4,
+        maxSpeed: 2.6
+      );
 
-  ~entity = Vehicle(
-    position: RealVector2D[25, 19],
-    velocity: RealVector2D[-1, 1],
-    radius: 0.4,
-    maxSpeed: 3.6
-  );
-  ~entity.collisionType_(\mobile);
+      ~entity.collisionType_(\mobile);
+      ~rep = SoundRepresentation(
+        ~gameloop.repManager,
+        input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
+      );
 
-  ~rep = SoundRepresentation(
-    ~gameloop.repManager,
-    input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
-  );
-  ~entity.attach(~rep);
 
-  ~visrep = SimpleVisual(~gameloop.repManager);
-  ~entity.attach(~visrep);
+      ~entity.attach(~rep);
+      //and a visual representation
+      ~visrep = SimpleVisual(~gameloop.repManager);
+      /* ~visrep.collisionFunc = {arg rep, ent;}; */
+      ~entity.attach(~visrep);
 
-  ~gameloop.add(~entity);
+      forceManager = ForceManager.new;
+
+      ~entity.collisionFunc_({arg entity, entList;
+        /* forceManager.addTemp(entity.velocity * (-40)); */
+        /* NonPenetrationConstrain(entity,entList); */
+      });
+
+      wander = Wander(~entity,
+        wanderRadius:   3.2,
+        wanderDistance: 4,
+        wanderJitter:  2
+      );
+
+      forceManager.add({wander.value});
+
+      ~entity.force_({ arg entity;
+        //forceManager.list.postln;
+        forceManager.sum;
+      });
+    }.value;
+  }
 )
 
 // -----------------------\
@@ -106,53 +128,6 @@
     /* NonPenetrationConstrain(entity,entList); */
   });
 
-)
-( // FORCEMANAGER TEST
-  20.do{
-    { arg wander, forceManager;
-
-      ~entity = Vehicle(
-        ~gameloop.world,
-        position: RealVector2D[rrand(10.0, 70), rrand(10.0, 70)],
-        velocity: RealVector2D[0,0.1],
-        radius: 0.4,
-        maxSpeed: 2.6
-      );
-
-      ~entity.collisionType_(\mobile);
-      ~rep = SoundRepresentation(
-        ~gameloop.repManager,
-        input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
-      );
-
-
-      ~entity.attach(~rep);
-      //and a visual representation
-      ~visrep = SimpleVisual(~gameloop.repManager);
-      /* ~visrep.collisionFunc = {arg rep, ent;}; */
-      ~entity.attach(~visrep);
-
-      forceManager = ForceManager.new;
-
-      ~entity.collisionFunc_({arg entity, entList;
-        /* forceManager.addTemp(entity.velocity * (-40)); */
-        /* NonPenetrationConstrain(entity,entList); */
-      });
-
-      wander = Wander(~entity,
-        wanderRadius:   3.2,
-        wanderDistance: 4,
-        wanderJitter:  2
-      );
-
-      forceManager.add({wander.value});
-
-      ~entity.force_({ arg entity;
-        //forceManager.list.postln;
-        forceManager.sum;
-      });
-    }.value;
-  }
 )
 ( // WANDER TEST
     ~entity = Vehicle(
