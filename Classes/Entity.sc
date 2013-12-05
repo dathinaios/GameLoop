@@ -95,11 +95,11 @@ MobileEntity : Entity {
     this.integratePosition(force);
   }
 
-  integrateVelocity{ arg force;
+  integrateVelocity{ arg force = 0;
     velocity = velocity + ((force/mass) * this.dt);
   }
 
-  integratePosition{ arg force;
+  integratePosition{ arg force = 0;
     position = position + (velocity *this.dt);
   }
 
@@ -143,9 +143,9 @@ Vehicle : MobileEntity {
   }
 
   integrateEuler{ arg force = 0;
-    this.integrateVelocity;
+    this.integrateVelocity(force);
     velocity = velocity.limit(maxSpeed);
-    this.integratePosition;
+    this.integratePosition(force);
     // update the heading and side (only if velocity is greater than *from AI by example book*)
     if (velocity.magSq > 0.00000001)
       {
