@@ -1,4 +1,9 @@
 
+/*
+ (C) 2013 Dionysis Athinaios
+ GPLv2 - http://www.gnu.org/licenses/gpl-2.0.html
+*/
+
 GameLoop{
 
     classvar <instance;
