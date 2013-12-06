@@ -57,7 +57,7 @@ GameLoop{
         if(rate != nil, {entManager.dt = rate});
         mainRoutine = Routine{
           inf.do{
-            entManager.doAll;
+            entManager.update;
             this.changed([\update]);
             entManager.dt.wait;
             }

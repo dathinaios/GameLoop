@@ -38,10 +38,10 @@ EntityManager {
     ^RealVector2D[sceneWidth * 0.5, sceneHeight*0.5];
   }
 
-  doAll{
+  update{
     this.collisionResolution;
     this.unregisterIndex;
-    this.update;
+    this.updateEntities;
     this.registerIndex;
     this.collisionCheck;
   }
@@ -77,7 +77,7 @@ EntityManager {
   clearWalls{ wallList.clear;
   }
 
-  update{
+  updateEntities{
       freeList.do{arg i; i.update};
       mobList.do{arg i; i.update};
       staticList.do{arg i; i.update};
