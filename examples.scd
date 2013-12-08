@@ -346,7 +346,4 @@
   );
 )
 
-entity(world, position etc)
-representation(repmanager, input etc)
-entity.attach(representation)
 

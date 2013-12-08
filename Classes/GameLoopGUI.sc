@@ -8,10 +8,8 @@ GameLoopGUI{
 
   *new{ arg gameloop;
       if(instance.isNil,
-        {
-        ^super.newCopyArgs(gameloop).init;
-        },
-        {"There is already an active instance of GameLoopGUI".error;}
+        { ^super.newCopyArgs(gameloop).init },
+        {"There is already an active instance of GameLoopGUI".error }
       );
   }
 
@@ -45,40 +43,53 @@ GameLoopGUI{
   }
 
   gui{
+    mainView ?? { var visButton;
+      this.createMainView;
+      this.createVisualiserButton;
 
-    mainView ?? {
+      //Pen.image("/Users/dathinaios/Develop/supercollider/gameloop/Classes/Logo.png");
+      mainView.drawFunc = { };
+      this.setWindowKeyActions;
+    }
+  }
 
-     var   h = 700, v = 400,run = true;
+  createMainView{
+     var   h = 700, v = 400, run = true;
      mainView = Window("GameLoop", Rect(-1350, 600, h, v), false);
      mainView.view.background = Color.black;
      mainView.onClose = { run = false; mainView = nil; }; // stop the thread on close
      mainView.front;
      mainView.alwaysOnTop = true;
-     this.createVisualiserButton;
-
-     //Pen.image("/Users/dathinaios/Develop/supercollider/gameloop/Classes/Logo.png");
-     mainView.drawFunc = { };
-     this.setWindowKeyActions;
-    }
   }
 
   createVisualiserButton{ var visButton;
-     visButton = Button(mainView, Rect(10,10,150,30)).states_([
+      visButton = Button(mainView, Rect(10,10,150,30));
+      this.visualiserButtonOption(visButton);
+      this.decideStateOfVisualiserButton(visButton);
+      this.assignActionToVisualiserButton(visButton);
+  }
+
+   visualiserButtonOption{ arg visButton;
+     visButton.states_([
            ["Visualiser",Color.grey,Color.black],
            ["Close Visualiser",Color.green,Color.black],
      ]);
+     visButton.canFocus = false;
+   }
 
+  assignActionToVisualiserButton{ arg visButton;
+    visButton.action_({arg butt;
+      switch (butt.value)
+      {1}{visualiser.gui}
+      {0}{visualiser.close};
+    });
+  }
+
+  decideStateOfVisualiserButton{ arg visButton;
      if (visualiser.mainView != nil,
         {visButton.value = 1},
         {visButton.value = 0}
       );
-
-     visButton.action_({arg butt;
-       switch (butt.value)
-       {1}{visualiser.gui}
-       {0}{visualiser.close};
-     });
-     ^visButton.canFocus = false;
   }
 
   initCameraRoutines{
