@@ -38,14 +38,12 @@ GameLoop{
     this.fastResetCamera;
   }
 
-  gui{var gui;
-      gui = GameLoopGUI(this);
-      this.addDependant(gui);
+  gui{
+      GameLoopGUI(this);
   }
 
   guiClose{
       GameLoopGUI.instance.clear;
-      this.removeDependant(gui);
   }
 
   world{
