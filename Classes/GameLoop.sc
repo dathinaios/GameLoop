@@ -45,6 +45,7 @@ GameLoop{
 
   guiClose{
       GameLoopGUI.instance.clear;
+      this.removeDependant(gui);
   }
 
   world{

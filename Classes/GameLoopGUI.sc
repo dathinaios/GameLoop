@@ -40,6 +40,7 @@ GameLoopGUI{
     if(mainView.notNil, {mainView.close});
     instance = nil;
     visualiser.clear;
+    gameloop.removeDependant(this);
   }
 
   gui{
