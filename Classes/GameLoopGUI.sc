@@ -48,11 +48,8 @@ GameLoopGUI{
     mainView ?? {
       this.createMainView;
 
-
       this.createVisualiserButton;
-      this.makeBoundaryWalls;
-
-
+      this.createWallButton;
 
       this.setWindowKeyActions;
     }
@@ -65,7 +62,7 @@ GameLoopGUI{
       this.decideStateOfVisualiserButton(button);
   }
 
-  makeBoundaryWalls{ var button;
+  createWallButton{ var button;
       button = this.createButton;
       this.assignActionToButton(button, {gameloop.makeWalls}, {gameloop.clearWalls});
       this.setButtonStates(button, "Add Walls", "Remove Walls");
