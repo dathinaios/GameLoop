@@ -1,7 +1,7 @@
 
 GameLoopGUI{
        classvar <instance;
-       var gameloop, <entManager, <repManager;
+       var <gameloop, <entManager, <repManager;
        var dimensions, gridSize, cellSize, <mainView;
        var leftRotationRoutine, rightRotationRoutine, fwdRotationRoutine, backRotationRoutine;
        var visualiser;
@@ -43,53 +43,68 @@ GameLoopGUI{
     gameloop.removeDependant(this);
   }
 
-  gui{
-    mainView ?? { var visButton;
+  gui{ var button;
+    gameloop.addDependant(this);
+    mainView ?? {
       this.createMainView;
-      this.createVisualiserButton;
 
-      //Pen.image("/Users/dathinaios/Develop/supercollider/gameloop/Classes/Logo.png");
-      mainView.drawFunc = { };
+
+      this.createVisualiserButton;
+      this.makeBoundaryWalls;
+
+
+
       this.setWindowKeyActions;
     }
+  }
+
+  createVisualiserButton{var button;
+      button = this.createButton;
+      this.assignActionToButton(button, {visualiser.gui}, {visualiser.close});
+      this.setButtonStates(button, "Visualiser", "Close Visualiser");
+      this.decideStateOfVisualiserButton(button);
+  }
+
+  makeBoundaryWalls{ var button;
+      button = this.createButton;
+      this.assignActionToButton(button, {gameloop.makeWalls}, {gameloop.clearWalls});
+      this.setButtonStates(button, "Add Walls", "Remove Walls");
   }
 
   createMainView{
      var   h = 700, v = 400, run = true;
      mainView = Window("GameLoop", Rect(-1350, 600, h, v), false);
+     mainView.addFlowLayout;
      mainView.view.background = Color.black;
      mainView.onClose = { run = false; mainView = nil; }; // stop the thread on close
      mainView.front;
      mainView.alwaysOnTop = true;
+     mainView.drawFunc = { };
   }
 
-  createVisualiserButton{ var visButton;
-      visButton = Button(mainView, Rect(10,10,150,30));
-      this.visualiserButtonOption(visButton);
-      this.decideStateOfVisualiserButton(visButton);
-      this.assignActionToVisualiserButton(visButton);
+  createButton{
+      ^Button(mainView, Rect(10,10,150,30)).canFocus_(false);
   }
 
-   visualiserButtonOption{ arg visButton;
-     visButton.states_([
-           ["Visualiser",Color.grey,Color.black],
-           ["Close Visualiser",Color.green,Color.black],
+   setButtonStates{ arg button, offStateString = "off", onStateString = "on";
+     button.states_([
+           [offStateString, Color.grey, Color.black],
+           [onStateString, Color.green, Color.black]
      ]);
-     visButton.canFocus = false;
    }
 
-  assignActionToVisualiserButton{ arg visButton;
-    visButton.action_({arg butt;
+  assignActionToButton{ arg button, onAction, offAction;
+    button.action_({arg butt;
       switch (butt.value)
-      {1}{visualiser.gui}
-      {0}{visualiser.close};
+      {1}{onAction.value}
+      {0}{offAction.value};
     });
   }
 
-  decideStateOfVisualiserButton{ arg visButton;
+  decideStateOfVisualiserButton{ arg button;
      if (visualiser.mainView != nil,
-        {visButton.value = 1},
-        {visButton.value = 0}
+        {button.value = 1},
+        {button.value = 0}
       );
   }
 
