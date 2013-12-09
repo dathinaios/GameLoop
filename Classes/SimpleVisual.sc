@@ -22,6 +22,8 @@ SimpleVisual : EntityRepresentation {
 
   }
 
+  /* Public */
+
   color { if(this.colliding, {^collisionColor },{^color})
   }
 

@@ -24,23 +24,14 @@ GameLoopGUI{
     this.gui;
   }
 
+  /* Public */
+
   update { arg theChanged, message;
     switch (message[0])
     {\update}
     {visualiser.render}
     {\switchSpace}
     {visualiser.calculateMeterUnit};
-  }
-
-  close {
-    if(mainView.notNil, {mainView.close}, {"There is no view open for GameLoopGUI".error});
-  }
-
-  clear{
-    if(mainView.notNil, {mainView.close});
-    instance = nil;
-    visualiser.clear;
-    gameloop.removeDependant(this);
   }
 
   gui{ var button;
@@ -55,6 +46,30 @@ GameLoopGUI{
     }
   }
 
+  close {
+    if(mainView.notNil, {mainView.close}, {"There is no view open for GameLoopGUI".error});
+  }
+
+  clear{
+    if(mainView.notNil, {mainView.close});
+    instance = nil;
+    visualiser.clear;
+    gameloop.removeDependant(this);
+  }
+
+  /* Private */
+
+  createMainView{
+     var   h = 700, v = 400, run = true;
+     mainView = Window("GameLoop", Rect(-1350, 600, h, v), false);
+     mainView.addFlowLayout;
+     mainView.view.background = Color.black;
+     mainView.onClose = { run = false; mainView = nil; }; // stop the thread on close
+     mainView.front;
+     mainView.alwaysOnTop = true;
+     mainView.drawFunc = { };
+  }
+
   createVisualiserButton{var button;
       button = this.createButton;
       this.assignActionToButton(button, {visualiser.gui}, {visualiser.close});
@@ -66,17 +81,6 @@ GameLoopGUI{
       button = this.createButton;
       this.assignActionToButton(button, {gameloop.makeWalls}, {gameloop.clearWalls});
       this.setButtonStates(button, "Add Walls", "Remove Walls");
-  }
-
-  createMainView{
-     var   h = 700, v = 400, run = true;
-     mainView = Window("GameLoop", Rect(-1350, 600, h, v), false);
-     mainView.addFlowLayout;
-     mainView.view.background = Color.black;
-     mainView.onClose = { run = false; mainView = nil; }; // stop the thread on close
-     mainView.front;
-     mainView.alwaysOnTop = true;
-     mainView.drawFunc = { };
   }
 
   createButton{
@@ -103,36 +107,6 @@ GameLoopGUI{
         {button.value = 1},
         {button.value = 0}
       );
-  }
-
-  initCameraRoutines{
-    leftRotationRoutine = Routine{
-      loop{
-      Camera2D.instance.rotateLeft;
-      0.05.wait;
-      };
-    };
-
-    rightRotationRoutine = Routine{
-      loop{
-      Camera2D.instance.rotateRight;
-      0.05.wait;
-      };
-    };
-
-    fwdRotationRoutine = Routine{
-      loop{
-      Camera2D.instance.forceFwd;
-      0.05.wait;
-      };
-    };
-
-    backRotationRoutine = Routine{
-      loop{
-      Camera2D.instance.forceBack;
-      0.05.wait;
-      };
-    };
   }
 
   setWindowKeyActions{
@@ -170,6 +144,36 @@ GameLoopGUI{
           {126}{fwdRotationRoutine.stop}
         };
 
+  }
+
+  initCameraRoutines{
+    leftRotationRoutine = Routine{
+      loop{
+      Camera2D.instance.rotateLeft;
+      0.05.wait;
+      };
+    };
+
+    rightRotationRoutine = Routine{
+      loop{
+      Camera2D.instance.rotateRight;
+      0.05.wait;
+      };
+    };
+
+    fwdRotationRoutine = Routine{
+      loop{
+      Camera2D.instance.forceFwd;
+      0.05.wait;
+      };
+    };
+
+    backRotationRoutine = Routine{
+      loop{
+      Camera2D.instance.forceBack;
+      0.05.wait;
+      };
+    };
   }
 
 }

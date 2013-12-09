@@ -28,13 +28,6 @@ Camera2D : Vehicle {
       );
   }
 
-  *active{
-    if(instance.isNil,
-      {^false},
-      {^true}
-    );
-  }
-
   init{
     super.init;
     this.setCollisionResolution;
@@ -50,11 +43,13 @@ Camera2D : Vehicle {
     });
   }
 
-  setCollisionResolution{
-    collisionFunc = {};
-    /* { arg entity, entList; */
-    /*  CollisionResolution.nonPenetrationConstrain(entity, entList, 1.6); */
-    /* }; */
+  /* public */
+
+  *active{
+    if(instance.isNil,
+      {^false},
+      {^true}
+    );
   }
 
   remove { arg confirm = false;
@@ -70,18 +65,6 @@ Camera2D : Vehicle {
         {^this.translatePosition(entity.position)},
         {^entity.position}
       );
-  }
-
-  translatePosition{ arg entPos;
-    var thetaSin, thetaCos, rad, x,y;
-    var xMinusx, yMinusy;
-    thetaSin = rotation.sin;
-    thetaCos = rotation.cos;
-    xMinusx = entPos[0] - position[0];
-    yMinusy = entPos[1] - position[1];
-    x = (xMinusx * thetaCos) - (yMinusy * thetaSin);
-    y = (xMinusx * thetaSin) + (yMinusy * thetaCos);
-    ^RealVector2D[x,y];
   }
 
   moveFwd{var theta, x, y;
@@ -137,6 +120,28 @@ Camera2D : Vehicle {
   fastReset{
     position = world.center;
   }
+
+  /* private */
+
+  setCollisionResolution{
+    collisionFunc = {};
+    /* { arg entity, entList; */
+    /*  CollisionResolution.nonPenetrationConstrain(entity, entList, 1.6); */
+    /* }; */
+  }
+
+  translatePosition{ arg entPos;
+    var thetaSin, thetaCos, rad, x,y;
+    var xMinusx, yMinusy;
+    thetaSin = rotation.sin;
+    thetaCos = rotation.cos;
+    xMinusx = entPos[0] - position[0];
+    yMinusy = entPos[1] - position[1];
+    x = (xMinusx * thetaCos) - (yMinusy * thetaSin);
+    y = (xMinusx * thetaSin) + (yMinusy * thetaCos);
+    ^RealVector2D[x,y];
+  }
+
 }
 
 Camera2DRepresentation : SimpleVisual{
@@ -144,11 +149,5 @@ Camera2DRepresentation : SimpleVisual{
   position{
     ^entity.worldCenter;
   }
-}
 
-  /* collisionType_{arg type; */
-  /*  if(type != \free) */
-  /*  { */
-  /*    "Collision type for Camera2D has to be \\free".error; */
-  /*  }; */
-  /* } */
+}

@@ -20,23 +20,7 @@ EntityManager {
     this.getDimensionsFromIndex;
   }
 
-  newIndex{ arg newIndex;
-    spatialIndex = newIndex;
-    this.getDimensionsFromIndex;
-  }
-
-  getDimensionsFromIndex{
-    sceneWidth = spatialIndex.sceneWidth;
-    sceneHeight = spatialIndex.sceneHeight;
-  }
-
-  activeEntities{
-    ^(freeList.size + mobList.size + staticList.size)
-  }
-
-  center{
-    ^RealVector2D[sceneWidth * 0.5, sceneHeight*0.5];
-  }
+  /* public */
 
   update{
     this.collisionResolution;
@@ -46,9 +30,14 @@ EntityManager {
     this.collisionCheck;
   }
 
-  /* EntityManager has three types of objects. Ones that dont collide,
-  ones that collide with everything and ones that collide but not
-  between each other.*/
+  clearEntities{
+    [freeList.copy, mobList.copy, staticList.copy].flat.do{arg i; i.remove};
+  }
+
+  clear {
+    this.clearEntities;
+    this.clearWalls;
+  }
 
   add{ arg entity;
     switch (entity.collisionType)
@@ -77,23 +66,34 @@ EntityManager {
   clearWalls{ wallList.clear;
   }
 
-  updateEntities{
-      freeList.do{arg i; i.update};
-      mobList.do{arg i; i.update};
-      staticList.do{arg i; i.update};
+  numberOfActiveEntities{
+    ^(freeList.size + mobList.size + staticList.size)
   }
 
-  clearEntities{
-    [freeList.copy, mobList.copy, staticList.copy].flat.do{arg i; i.remove};
+  center{
+    ^RealVector2D[sceneWidth * 0.5, sceneHeight*0.5];
   }
 
   entList{
     ^[freeList.copy, mobList.copy, staticList.copy].flat;
   }
 
-  clear {
-    this.clearEntities;
-    this.clearWalls;
+  /* private */
+
+  newIndex{ arg newIndex;
+    spatialIndex = newIndex;
+    this.getDimensionsFromIndex;
+  }
+
+  getDimensionsFromIndex{
+    sceneWidth = spatialIndex.sceneWidth;
+    sceneHeight = spatialIndex.sceneHeight;
+  }
+
+  updateEntities{
+      freeList.do{arg i; i.update};
+      mobList.do{arg i; i.update};
+      staticList.do{arg i; i.update};
   }
 
   /* refresh can not happen simply by clearing all buckets because
@@ -211,7 +211,6 @@ EntityManager {
     offset = distv / distvNorm * (circrad - distvNorm);
     ^offset;
   }
-
 
   clearCollisionStateForAll{
     mobList.do{arg i; i.colliding_(false)};

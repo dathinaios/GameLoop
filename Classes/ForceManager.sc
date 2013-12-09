@@ -6,6 +6,8 @@ ForceManager { var <>forces;
     ^super.newCopyArgs(forces);
   }
 
+  /* public */
+
   add{ arg forceFunction, key;
     key ?? {key = ("Force_" ++ ( forces.size + 1 )).asSymbol};
     forces.add(key -> forceFunction);

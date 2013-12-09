@@ -27,6 +27,8 @@ Entity {
       collisionFunc = {};
   }
 
+  /* public */
+
   attach{arg rep;
     this.addDependant(rep);
     this.changed([\attach])
@@ -62,12 +64,14 @@ Entity {
           this.changed([\collision, entitiesArray, msg]);
   }
 
-  dt{
-    ^world.dt;
-  }
-
   worldCenter{
     ^world.center;
+  }
+
+  /* private */
+
+  dt{
+    ^world.dt;
   }
 
 }
@@ -92,6 +96,21 @@ MobileEntity : Entity {
     velocity = velocity ?? {RealVector2D[0,0]};
   }
 
+  /* public */
+
+  update {
+    /* calling update on the dependants ensure that we always get set
+    by the integration of the last cycle */
+    this.changed([\update]);
+    this.integrateEuler(force.value(this));
+    /* and here we update with the future value in case we want to
+    use it for prediction as in the case of interpolation (lag) of sound
+    units */
+    this.changed([\preUpdate]);
+  }
+
+  /* private */
+
   integrateEuler{ arg force = 0;
     this.integrateVelocity(force);
     this.integratePosition(force);
@@ -105,16 +124,6 @@ MobileEntity : Entity {
     position = position + (velocity *this.dt);
   }
 
-  update {
-    /* calling update on the dependants ensure that we always get set
-    by the integration of the last cycle */
-    this.changed([\update]);
-    this.integrateEuler(force.value(this));
-    /* and here we update with the future value in case we want to
-    use it for prediction as in the case of interpolation (lag) of sound
-    units */
-    this.changed([\preUpdate]);
-  }
 
 }
 

@@ -25,17 +25,13 @@ GameLoopVisualiser{
     this.calculateMeterUnit;
   }
 
-  calculateMeterUnit{
-    sceneWidth = entManager.sceneWidth;
-    sceneHeight = entManager.sceneHeight;
-    if(sceneWidth >= sceneHeight,
-      { meterInPixels = width/sceneWidth},
-      { meterInPixels = height/sceneHeight }
-    );
-  }
+  /* Public */
 
-  camera{
-    ^Camera2D.instance;
+  gui{
+    this.createMainView;
+    this.setViewOptions;
+    this.setDrawFunction;
+    this.setWindowKeyActions;
   }
 
   render {
@@ -51,11 +47,19 @@ GameLoopVisualiser{
     instance = nil;
   }
 
-  gui{
-    this.createMainView;
-    this.setViewOptions;
-    this.setDrawFunction;
-    this.setWindowKeyActions;
+  /* Private */
+
+  calculateMeterUnit{
+    sceneWidth = entManager.sceneWidth;
+    sceneHeight = entManager.sceneHeight;
+    if(sceneWidth >= sceneHeight,
+      { meterInPixels = width/sceneWidth},
+      { meterInPixels = height/sceneHeight }
+    );
+  }
+
+  camera{
+    ^Camera2D.instance;
   }
 
   createMainView{
@@ -138,12 +142,10 @@ GameLoopVisualiser{
   }
 
   getInfoString{ var string;
-    string =   "Ents: " + entManager.activeEntities.asString +
-             "- Reps: " + repManager.activeReps.asString;
+    string =   "Ents: " + entManager.numberOfActiveEntities.asString +
+             "- Reps: " + repManager.numberOfActiveReps.asString;
     ^string;
   }
-
-  /* Shortcuts for control of camera from focused window */
 
   initCameraRoutines{
     leftRotationRoutine = Routine{

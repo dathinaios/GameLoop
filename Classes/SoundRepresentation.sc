@@ -38,6 +38,11 @@ SoundRepresentation : EntityRepresentation {
     }.play(TempoClock.default);
   }
 
+  add {
+      this.addSource; //Using JitLib the source will be added after the Server's default latency
+      this.addAll(delay: Server.default.latency);
+  }
+
   /* private */
 
   initializeDecoder{
@@ -50,11 +55,6 @@ SoundRepresentation : EntityRepresentation {
     /* Always put the new Node in an extra slot of the Summing nodeRpoxy */
     encoderProxyIndex = summingProxy.sources.size - 1;
     summingProxy.put(encoderProxyIndex, encoderProxy);
-  }
-
-  add {
-      this.addSource; //Using JitLib the source will be added after the Server's default latency
-      this.addAll(delay: Server.default.latency);
   }
 
   addSource{

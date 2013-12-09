@@ -12,7 +12,8 @@ EntityRepresentation { var repManager, <>collisionFunc;
     collisionFunc = collisionFunc ?? {{}};
   }
 
-  /* dependant notification from entity */
+/* public  */
+
   update { arg entity, message;
     switch (message[0])
     {\preUpdate}
@@ -43,6 +44,17 @@ EntityRepresentation { var repManager, <>collisionFunc;
   detach{ arg message;
       if (attached and:{message[1] == this}, {attached = false; this.remove;});
   }
+
+  add{
+    this.addAll;
+  }
+
+  remove{
+    repManager.remove(this);
+    attached = false;
+  }
+
+/* private */
 
   cameraTransform{arg entity;
     if (Camera2D.active,
@@ -91,15 +103,6 @@ EntityRepresentation { var repManager, <>collisionFunc;
 
   dt{
     ^entity.dt;
-  }
-
-  add{
-    this.addAll;
-  }
-
-  remove{
-    repManager.remove(this);
-    attached = false;
   }
 
   collision{ arg message;

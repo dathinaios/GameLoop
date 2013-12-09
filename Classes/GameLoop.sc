@@ -27,6 +27,8 @@ GameLoop{
     CmdPeriod.add({this.clear});
   }
 
+  /* public */
+
   switchSpace{ arg width = sceneWidth, height = sceneHeight, cell = cellSize;
     this.clearEntities;
     this.clearWalls;
@@ -118,5 +120,7 @@ GameLoop{
     entManager.addWall(Wall(RealVector2D[sceneWidth, 0], RealVector2D[sceneWidth, sceneHeight]));
     entManager.addWall(Wall(RealVector2D[sceneWidth, sceneHeight], RealVector2D[0, sceneHeight]));
   }
+
+  /* private */
 
 }
