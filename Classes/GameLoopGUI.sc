@@ -63,7 +63,7 @@ GameLoopGUI{
   createMainView{
      var   h = 700, v = 400, run = true;
      mainView = Window("GameLoop", Rect(-1350, 600, h, v), false);
-     mainView.addFlowLayout;
+     mainView.addFlowLayout(10@10, 10@10);
      mainView.view.background = Color.black;
      mainView.onClose = { run = false; mainView = nil; }; // stop the thread on close
      mainView.front;
