@@ -41,6 +41,7 @@ GameLoopGUI{
 
       this.createVisualiserButton;
       this.createWallButton;
+      this.createQuitButton;
 
       this.setWindowKeyActions;
     }
@@ -66,7 +67,7 @@ GameLoopGUI{
      mainView.view.background = Color.black;
      mainView.onClose = { run = false; mainView = nil; }; // stop the thread on close
      mainView.front;
-     mainView.alwaysOnTop = true;
+     /* mainView.alwaysOnTop = true; */
      mainView.drawFunc = { };
   }
 
@@ -81,6 +82,22 @@ GameLoopGUI{
       button = this.createButton;
       this.assignActionToButton(button, {gameloop.makeWalls}, {gameloop.clearWalls});
       this.setButtonStates(button, "Add Walls", "Remove Walls");
+  }
+
+  createQuitButton{ var button;
+      button = this.createButton;
+      this.assignActionToButton( button,
+        {this.displayQuitButtonConfirmationDialog(button)}
+      );
+      this.setButtonStates(button, "Quit", "");
+  }
+
+  displayQuitButtonConfirmationDialog{ arg button;
+    this.popUpWarning(
+      "Are you sure you want to quit GameLoop",
+      {this.clear; gameloop.clear; },
+      {button.value = 0}
+    );
   }
 
   createButton{
@@ -174,6 +191,28 @@ GameLoopGUI{
       0.05.wait;
       };
     };
+  }
+
+  popUpWarning {
+    arg string, action, cancelAction;
+    var dialog, buttonColor, buttonTextColor, destructiveButtonColor, destructiveButtonTextColor;
+
+    dialog = Window.new("",Rect((mainView.bounds.left)+200, (mainView.bounds.top)+120, 280, 112), border: false).front;
+    destructiveButtonColor = Color.new255(106,106,126);
+    destructiveButtonTextColor = Color.white;
+    buttonColor = Color.new255(106,106,126);
+    buttonTextColor = Color.white;
+
+    if(string.isNil, {string = "Are you sure?"});
+    StaticText.new(dialog,Rect(30, 10, 220, 50))
+    .string_(string)
+    .align_(\left);
+    Button.new(dialog,Rect(30, 70, 100, 20))
+    .states_([ [ "Do it", destructiveButtonTextColor, destructiveButtonColor] ])
+    .action_{|v| action.value; dialog.close};
+    Button.new(dialog,Rect(150, 70, 100, 20))
+    .states_([ [ "No thanks",buttonTextColor, buttonColor] ])
+    .action_{|v| cancelAction.value; dialog.close};
   }
 
 }
