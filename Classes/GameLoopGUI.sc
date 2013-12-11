@@ -80,8 +80,8 @@ GameLoopGUI{
 
   createWallButton{ var button;
       button = this.createButton;
-      this.assignActionToButton(button, {gameloop.makeWalls}, {gameloop.clearWalls});
-      this.setButtonStates(button, "Add Walls", "Remove Walls");
+      this.assignActionToButton(button, {gameloop.makeEdgeWalls}, {gameloop.clearEdgeWalls});
+      this.setButtonStates(button, "Add Fence", "Remove Fence");
   }
 
   createQuitButton{ var button;
@@ -121,6 +121,13 @@ GameLoopGUI{
 
   decideStateOfVisualiserButton{ arg button;
      if (visualiser.mainView != nil,
+        {button.value = 1},
+        {button.value = 0}
+      );
+  }
+
+  decideStateOfWallButton{ arg button;
+     if (entManager.edgeWalls.size != 0,
         {button.value = 1},
         {button.value = 0}
       );

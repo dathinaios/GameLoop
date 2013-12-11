@@ -10,6 +10,7 @@ GameLoop{
     var <sceneWidth, <sceneHeight, <cellSize;
     var <entManager, <repManager;
     var <mainRoutine;
+    var <edgeWalls;
 
   *new{ arg sceneWidth = 40, sceneHeight = 40, cellSize = 1;
       if(instance.isNil,
@@ -25,6 +26,8 @@ GameLoop{
     entManager = EntityManager(SpatialHashing(sceneWidth, sceneHeight, cellSize));
     repManager = RepresentationManager.new;
     CmdPeriod.add({this.clear});
+
+    edgeWalls = [];
   }
 
   /* public */
@@ -114,11 +117,16 @@ GameLoop{
     this.currentCamera.remove(true);
   }
 
-  makeWalls{
-    entManager.addWall(Wall(RealVector2D[0, sceneHeight], RealVector2D[0, 0]));
-    entManager.addWall(Wall(RealVector2D[0, 0], RealVector2D[sceneWidth, 0]));
-    entManager.addWall(Wall(RealVector2D[sceneWidth, 0], RealVector2D[sceneWidth, sceneHeight]));
-    entManager.addWall(Wall(RealVector2D[sceneWidth, sceneHeight], RealVector2D[0, sceneHeight]));
+  makeEdgeWalls{
+    edgeWalls = edgeWalls.add(Wall(RealVector2D[0, sceneHeight], RealVector2D[0, 0]));
+    edgeWalls = edgeWalls.add(Wall(RealVector2D[0, 0], RealVector2D[sceneWidth, 0]));
+    edgeWalls = edgeWalls.add(Wall(RealVector2D[sceneWidth, 0], RealVector2D[sceneWidth, sceneHeight]));
+    edgeWalls = edgeWalls.add(Wall(RealVector2D[sceneWidth, sceneHeight], RealVector2D[0, sceneHeight]));
+    edgeWalls.do{ arg wall; entManager.addWall(wall)}
+  }
+
+  clearEdgeWalls{
+    edgeWalls.do{arg wall; entManager.removeWall(wall)};
   }
 
   /* private */
