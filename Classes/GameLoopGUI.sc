@@ -41,6 +41,7 @@ GameLoopGUI{
 
       this.createVisualiserButton;
       this.createWallButton;
+      this.createClearEntitiesButton;
       this.createQuitButton;
 
       this.setWindowKeyActions;
@@ -82,6 +83,12 @@ GameLoopGUI{
       button = this.createButton;
       this.assignActionToButton(button, {gameloop.makeEdgeWalls}, {gameloop.clearEdgeWalls});
       this.setButtonStates(button, "Add Fence", "Remove Fence");
+  }
+
+  createClearEntitiesButton{ var button;
+      button = this.createButton;
+      this.assignActionToButton(button, {gameloop.clearEntities; button.value = 0});
+      this.setButtonStates(button, "ClearEntities", "");
   }
 
   createQuitButton{ var button;
