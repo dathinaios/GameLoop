@@ -2,7 +2,7 @@
 GameLoopVisualiser{
 
        classvar <instance;
-       var <entManager, <repManager;
+       var <>entManager, <>repManager;
        var <mainView, infoString;
        var width = 400, height = 400;
        var <>meterInPixels;

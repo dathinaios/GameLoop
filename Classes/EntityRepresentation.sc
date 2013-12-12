@@ -1,5 +1,5 @@
 EntityRepresentation { var repManager, <>collisionFunc;
-  var <position, <radius, <speed, entity, attached = false;
+  var <position, <radius, <speed, <entity, <attached = false;
   var <>type = 'sound';
 
   *new { arg repManager, collisionFunc;
@@ -41,10 +41,6 @@ EntityRepresentation { var repManager, <>collisionFunc;
     );
   }
 
-  detach{ arg message;
-      if (attached and:{message[1] == this}, {attached = false; this.remove;});
-  }
-
   add{
     this.addAll;
   }
@@ -55,6 +51,10 @@ EntityRepresentation { var repManager, <>collisionFunc;
   }
 
 /* private */
+
+  detach{ arg message;
+      if (attached and:{message[1] == this}, {attached = false; this.remove;});
+  }
 
   cameraTransform{arg entity;
     if (Camera2D.active,
@@ -85,7 +85,7 @@ EntityRepresentation { var repManager, <>collisionFunc;
     Routine{
       if(delay.notNil) {delay.wait};
       if (entity.active.not){entity.add};
-      repManager.add(this);
+      this.addRepresentation;
     }.play;
   }
 
