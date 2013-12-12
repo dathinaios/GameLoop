@@ -5,7 +5,7 @@
   ~decoder = GameLoopDecoder('AmbIEM', 'binaural');
   ~gameloop = GameLoop(100, 100, 1).play(0.05);
   ~gameloop.gui;
-  ~gameloop.makeWalls;
+  /* ~gameloop.makeEdgeWalls; */
 
   //some mroe walls for tests
   a = Wall(RealVector2D[5,10], RealVector2D[13, 29]);
@@ -28,36 +28,40 @@
   ~camera.attach(~camrep);
 );
 ( // FORCEMANAGER TEST
-  5.do{
+  50.do{
     { arg wander, forceManager;
 
       ~entity = Vehicle(
         ~gameloop.world,
         position: RealVector2D[rrand(10.0, 70), rrand(10.0, 70)],
-        velocity: RealVector2D[0,0.1],
+        velocity: RealVector2D[rrand(0.0, 1.2), rrand(0.0, 1.2)],
         radius: 0.4,
         maxSpeed: 2.6
       );
 
       ~entity.collisionType_(\mobile);
+
+      //a sound rep
       ~rep = SoundRepresentation(
         ~gameloop.repManager,
         input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
       );
-
-
       ~entity.attach(~rep);
+
       //and a visual representation
       ~visrep = SimpleVisual(~gameloop.repManager);
       /* ~visrep.collisionFunc = {arg rep, ent;}; */
       ~entity.attach(~visrep);
 
-      forceManager = ForceManager.new;
 
       ~entity.collisionFunc_({arg entity, entList;
         /* forceManager.addTemp(entity.velocity * (-40)); */
         /* NonPenetrationConstrain(entity,entList); */
       });
+
+      forceManager = ForceManager.new;
+
+      ~entity.add;
 
       wander = Wander(~entity,
         wanderRadius:   3.2,
@@ -345,5 +349,3 @@
     RealVector2D[ 20.123526692651, 19.959488813858 ]
   );
 )
-
-
