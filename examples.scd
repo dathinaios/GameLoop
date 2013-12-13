@@ -28,7 +28,7 @@
   ~camera.attach(~camrep);
 );
 ( // FORCEMANAGER TEST
-  50.do{
+  10.do{
     { arg wander, forceManager;
 
       ~entity = Vehicle(
@@ -349,3 +349,4 @@
     RealVector2D[ 20.123526692651, 19.959488813858 ]
   );
 )
+

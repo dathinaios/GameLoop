@@ -40,6 +40,7 @@ GameLoopGUI{
       this.createMainView;
 
       this.createVisualiserButton;
+      this.createShowEntitiesButton;
       this.createWallButton;
       this.createClearEntitiesButton;
       this.createQuitButton;
@@ -88,7 +89,26 @@ GameLoopGUI{
   createClearEntitiesButton{ var button;
       button = this.createButton;
       this.assignActionToButton(button, {gameloop.clearEntities; button.value = 0});
-      this.setButtonStates(button, "ClearEntities", "");
+      this.setButtonStates(button, "Clear Entities", "");
+  }
+
+  createShowEntitiesButton{ var button;
+      button = this.createButton;
+      this.assignActionToButton(button, {this.showEntitiesList}, {this.hideEntitiesList});
+      this.setButtonStates(button, "Show Entities List", "Hide Entities List");
+  }
+
+  showEntitiesList{ var window, listView, entitiesArray, entArray;
+    window = Window( "",
+      Rect((mainView.bounds.left)+200, (mainView.bounds.top)+120, 200, 300)
+    ).front;
+    entArray = entManager.entList;
+    listView = ListView(window, Rect(1,1,200,300));
+    listView.items_(entArray.collect({arg entity, index; index + "_" + entity.class.asString}));
+    /* listView.action_({arg item; entArray[item.at(0).asInteger].remove}) */
+  }
+
+  hideEntitiesList{
   }
 
   createQuitButton{ var button;
