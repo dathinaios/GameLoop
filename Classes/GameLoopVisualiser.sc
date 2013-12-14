@@ -136,7 +136,7 @@ GameLoopVisualiser{
       pointTo = RealVector2D[to[0], sceneHeight - to[1]];
       pointFrom = pointFrom * meterInPixels;
       pointTo = pointTo * meterInPixels;
-      Pen.color = Color.white;
+      Pen.color = Color.gray;
       Pen.line(pointFrom.asPoint, pointTo.asPoint);
     }
   }
