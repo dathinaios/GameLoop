@@ -5,6 +5,7 @@ GameLoopGUI{
        var dimensions, gridSize, cellSize, <mainView;
        var leftRotationRoutine, rightRotationRoutine, fwdRotationRoutine, backRotationRoutine;
        var visualiser;
+       var repsListViewWindow, repsListView, previousSelectionRepresentation, previousSelectionRepColor;
 
   *new{ arg gameloop;
       if(instance.isNil,
@@ -39,11 +40,11 @@ GameLoopGUI{
     mainView ?? {
       this.createMainView;
 
+      this.createQuitButton;
       this.createVisualiserButton;
-      this.createShowEntitiesButton;
       this.createWallButton;
       this.createClearEntitiesButton;
-      this.createQuitButton;
+      this.createShowVisualRepsButton;
 
       this.setWindowKeyActions;
     }
@@ -63,7 +64,7 @@ GameLoopGUI{
   /* Private */
 
   createMainView{
-     var   h = 700, v = 400, run = true;
+     var   h = 330, v = 300, run = true;
      mainView = Window("GameLoop", Rect(-1350, 600, h, v), false);
      mainView.addFlowLayout(10@10, 10@10);
      mainView.view.background = Color.black;
@@ -92,23 +93,37 @@ GameLoopGUI{
       this.setButtonStates(button, "Clear Entities", "");
   }
 
-  createShowEntitiesButton{ var button;
+  createShowVisualRepsButton{ var button;
       button = this.createButton;
-      this.assignActionToButton(button, {this.showEntitiesList}, {this.hideEntitiesList});
-      this.setButtonStates(button, "Show Entities List", "Hide Entities List");
+      this.assignActionToButton(button, {this.showRepresentationList}, {this.hideRepresentationList});
+      this.setButtonStates(button, "Representations", "Hide  ===>");
+      this.createRepsListView;
   }
 
-  showEntitiesList{ var window, listView, entitiesArray, entArray;
-    window = Window( "",
-      Rect((mainView.bounds.left)+200, (mainView.bounds.top)+120, 200, 300)
-    ).front;
-    entArray = entManager.entList;
-    listView = ListView(window, Rect(1,1,200,300));
-    listView.items_(entArray.collect({arg entity, index; index + "_" + entity.class.asString}));
-    /* listView.action_({arg item; entArray[item.at(0).asInteger].remove}) */
+  createRepsListView{
+      repsListView = ListView(mainView, Rect(100,150,150,100)).canFocus_(false).visible_(false);
+      repsListView.background = Color.clear;
+      repsListView.stringColor = Color.gray;
+      repsListView.selectedStringColor = Color.green;
+      repsListView.hiliteColor = Color();
   }
 
-  hideEntitiesList{
+  showRepresentationList{ var repArray;
+    repArray = repManager.repList.select({arg rep; rep.type == \visual});
+    /* repsListViewWindow = Window("Representations", Rect(-1350, 600, 150, 100), false); */
+    repsListView.visible = true;
+    repsListView.items_(repArray.collect({arg entity, index; (index + 1) + "_" + entity.class.asString}));
+    repsListView.action_({arg view;
+      previousSelectionRepresentation.tryPerform(\color_, previousSelectionRepColor);
+      previousSelectionRepresentation = repArray[view.value];
+      previousSelectionRepColor = previousSelectionRepresentation.color;
+      previousSelectionRepresentation.color_(Color.green)
+    });
+  }
+
+  hideRepresentationList{
+    repsListView.visible = false;
+    previousSelectionRepresentation.tryPerform(\color_, previousSelectionRepColor);
   }
 
   createQuitButton{ var button;
