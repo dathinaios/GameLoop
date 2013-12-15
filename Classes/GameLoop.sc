@@ -10,7 +10,7 @@ GameLoop{
     var <sceneWidth, <sceneHeight, <cellSize;
     var <entManager, <repManager;
     var <mainRoutine;
-    var <edgeWalls;
+    var <edgeWalls, <edgeWallsActive = false;
 
   *new{ arg sceneWidth = 40, sceneHeight = 40, cellSize = 1;
       if(instance.isNil,
@@ -118,15 +118,19 @@ GameLoop{
   }
 
   makeEdgeWalls{
-    edgeWalls = edgeWalls.add(Wall(RealVector2D[0, sceneHeight], RealVector2D[0, 0]));
-    edgeWalls = edgeWalls.add(Wall(RealVector2D[0, 0], RealVector2D[sceneWidth, 0]));
-    edgeWalls = edgeWalls.add(Wall(RealVector2D[sceneWidth, 0], RealVector2D[sceneWidth, sceneHeight]));
-    edgeWalls = edgeWalls.add(Wall(RealVector2D[sceneWidth, sceneHeight], RealVector2D[0, sceneHeight]));
-    edgeWalls.do{ arg wall; entManager.addWall(wall)}
+    if(edgeWallsActive.not){
+      edgeWalls = edgeWalls.add(Wall(RealVector2D[0, sceneHeight], RealVector2D[0, 0]));
+      edgeWalls = edgeWalls.add(Wall(RealVector2D[0, 0], RealVector2D[sceneWidth, 0]));
+      edgeWalls = edgeWalls.add(Wall(RealVector2D[sceneWidth, 0], RealVector2D[sceneWidth, sceneHeight]));
+      edgeWalls = edgeWalls.add(Wall(RealVector2D[sceneWidth, sceneHeight], RealVector2D[0, sceneHeight]));
+      edgeWalls.do{ arg wall; entManager.addWall(wall)};
+      edgeWallsActive = true;
+    }
   }
 
   clearEdgeWalls{
     edgeWalls.do{arg wall; entManager.removeWall(wall)};
+    edgeWallsActive = false;
   }
 
   /* private */

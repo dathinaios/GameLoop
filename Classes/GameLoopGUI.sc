@@ -40,13 +40,13 @@ GameLoopGUI{
     gameloop.addDependant(this);
     mainView ?? {
       this.createMainView;
-
+      //||||||||||||||||||-]
       this.createQuitButton;
       this.createVisualiserButton;
-      this.createWallButton;
+      this.createFenceButton;
       this.createClearEntitiesButton;
       this.createShowVisualRepsButton;
-
+      //||||||||||||||||||-]
       this.setWindowKeyActions;
     }
   }
@@ -90,10 +90,11 @@ GameLoopGUI{
     visualiser.bounds = Rect(mainView.bounds.left + w + 10, mainView.bounds.top - 65 - fineTuneHack, 400, 400);
   }
 
-  createWallButton{ var button;
+  createFenceButton{ var button;
       button = this.createButton;
       this.assignActionToButton(button, {gameloop.makeEdgeWalls}, {gameloop.clearEdgeWalls});
       this.setButtonStates(button, "Add Fence", "Remove Fence");
+      if(gameloop.edgeWallsActive){button.value = 1};
   }
 
   createClearEntitiesButton{ var button;
