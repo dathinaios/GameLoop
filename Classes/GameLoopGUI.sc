@@ -24,15 +24,9 @@ GameLoopGUI{
     CmdPeriod.add({this.clear});
     this.initCameraRoutines;
     this.gui;
-    this.setVisualiserBounds;
-    /* visualiser.gui; */
   }
 
   /* Public */
-
-  setVisualiserBounds{
-    visualiser.bounds = Rect(mainView.bounds.left + w + 10, mainView.bounds.top - 65, 400, 400);
-  }
 
   update { arg theChanged, message;
     switch (message[0])
@@ -85,7 +79,15 @@ GameLoopGUI{
       button = this.createButton;
       this.assignActionToButton(button, {this.setVisualiserBounds; visualiser.gui}, {visualiser.close});
       this.setButtonStates(button, "Visualiser", "Close Visualiser");
-      this.decideStateOfVisualiserButton(button);
+      //this.decideStateOfVisualiserButton(button);
+      /* button.valueAction = 1; */
+      this.setVisualiserBounds(22);
+      visualiser.gui;
+      button.value = 1;
+  }
+
+  setVisualiserBounds{ arg fineTuneHack = 0;
+    visualiser.bounds = Rect(mainView.bounds.left + w + 10, mainView.bounds.top - 65 - fineTuneHack, 400, 400);
   }
 
   createWallButton{ var button;
@@ -119,7 +121,7 @@ GameLoopGUI{
     repArray = repManager.repList.select({arg rep; rep.type == \visual});
     /* repsListViewWindow = Window("Representations", Rect(-1350, 600, 150, 100), false); */
     repsListView.visible = true;
-    repsListView.items_(repArray.collect({arg entity, index; (index + 1) + "_" + entity.class.asString}));
+    repsListView.items_(repArray.collect({arg entity, index; (index + 1) + ": " + entity.class.asString}));
     repsListView.action_({arg view;
       previousSelectionRepresentation.tryPerform(\color_, previousSelectionRepColor);
       previousSelectionRepresentation = repArray[view.value];
@@ -169,10 +171,11 @@ GameLoopGUI{
   }
 
   decideStateOfVisualiserButton{ arg button;
-     if (visualiser.mainView != nil,
-        {button.value = 1},
-        {button.value = 0}
-      );
+    button.value = 1;
+     /* if (visualiser.mainView != nil, */
+     /*    {button.value = 1}, */
+     /*    {button.value = 0} */
+     /*  ); */
   }
 
   decideStateOfWallButton{ arg button;
