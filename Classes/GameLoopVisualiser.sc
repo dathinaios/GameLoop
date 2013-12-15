@@ -2,27 +2,34 @@
 GameLoopVisualiser{
 
        classvar <instance;
-       var <>entManager, <>repManager;
+       var <>entManager, <>repManager, >bounds;
        var <mainView, infoString;
        var width = 400, height = 400;
        var <>meterInPixels;
        var leftRotationRoutine, rightRotationRoutine, fwdRotationRoutine, backRotationRoutine;
        var sceneWidth, sceneHeight;
 
-  *new{ arg entManager, repManager;
+  *new{ arg entManager, repManager, bounds;
       if(instance.isNil,
         {
-        ^super.newCopyArgs(entManager, repManager).init;
+        ^super.newCopyArgs(entManager, repManager, bounds).init;
         },
         {"There is already an active instance of GameLoopVisualiser".error;}
       );
   }
 
   init{
+
+    if (bounds.isNil,
+      { bounds = Rect(GUI.window.screenBounds.width*0.5, GUI.window.screenBounds.height*0.5, width, height); }
+    );
+
+
     instance = this;
     CmdPeriod.add({this.clear});
     this.initCameraRoutines;
     this.calculateMeterUnit;
+
   }
 
   /* Public */
@@ -64,7 +71,7 @@ GameLoopVisualiser{
 
   createMainView{
     mainView ?? { var text;
-      mainView = Window("Visualiser", Rect(-450, 400, width, height), scroll: false);
+      mainView = Window("Visualiser", bounds, scroll: false);
       infoString= StaticText(mainView, Rect(3, 3, 200, 20)).stringColor_(Color.grey);
     }
   }
@@ -73,7 +80,7 @@ GameLoopVisualiser{
     mainView.view.background = Color.black;
     mainView.onClose = {mainView = nil; };
     mainView.front;
-    mainView.alwaysOnTop = true;
+    /* mainView.alwaysOnTop = true; */
   }
 
   setDrawFunction{

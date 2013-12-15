@@ -1,4 +1,3 @@
-
 ( // GENERAL SETUP
   //~decoder = GameLoopDecoder('ATK', 'newStereo');
   //~decoder = GameLoopDecoder('ATK', 'newListen');
@@ -35,7 +34,7 @@
         ~gameloop.world,
         position: RealVector2D[rrand(10.0, 70), rrand(10.0, 70)],
         velocity: RealVector2D[rrand(0.0, 1.2), rrand(0.0, 1.2)],
-        radius: 0.4,
+        radius: 0.7,
         maxSpeed: 2.6
       );
 
@@ -49,7 +48,7 @@
       ~entity.attach(~rep);
 
       //and a visual representation
-      ~visrep = SimpleVisual(~gameloop.repManager);
+      ~visrep = SimpleVisual(~gameloop.repManager, color: Color.white);
       /* ~visrep.collisionFunc = {arg rep, ent;}; */
       ~entity.attach(~visrep);
 

@@ -2,7 +2,7 @@
 GameLoopGUI{
        classvar <instance;
        var <gameloop, <entManager, <repManager;
-       var dimensions, gridSize, cellSize, <mainView;
+       var dimensions, gridSize, cellSize, <mainView, mainBounds, w = 175, h = 335;
        var leftRotationRoutine, rightRotationRoutine, fwdRotationRoutine, backRotationRoutine;
        var visualiser;
        var repsListViewWindow, repsListView, previousSelectionRepresentation, previousSelectionRepColor;
@@ -15,17 +15,24 @@ GameLoopGUI{
   }
 
   init{
+    mainBounds = Rect(GUI.window.screenBounds.width*0.4, GUI.window.screenBounds.height*0.45, w, h);
     entManager = gameloop.entManager;
     repManager = gameloop.repManager;
-    visualiser   = GameLoopVisualiser(entManager,repManager);
+    visualiser = GameLoopVisualiser(entManager,repManager);
     instance = this;
+
     CmdPeriod.add({this.clear});
     this.initCameraRoutines;
-    visualiser.gui;
     this.gui;
+    this.setVisualiserBounds;
+    /* visualiser.gui; */
   }
 
   /* Public */
+
+  setVisualiserBounds{
+    visualiser.bounds = Rect(mainView.bounds.left + w + 10, mainView.bounds.top - 65, 400, 400);
+  }
 
   update { arg theChanged, message;
     switch (message[0])
@@ -64,8 +71,8 @@ GameLoopGUI{
   /* Private */
 
   createMainView{
-     var   h = 330, v = 300, run = true;
-     mainView = Window("GameLoop", Rect(-1350, 600, h, v), false);
+     var run = true;
+     mainView = Window("GameLoop", mainBounds, false);
      mainView.addFlowLayout(10@10, 10@10);
      mainView.view.background = Color.black;
      mainView.onClose = { run = false; mainView = nil; }; // stop the thread on close
@@ -76,7 +83,7 @@ GameLoopGUI{
 
   createVisualiserButton{var button;
       button = this.createButton;
-      this.assignActionToButton(button, {visualiser.gui}, {visualiser.close});
+      this.assignActionToButton(button, {this.setVisualiserBounds; visualiser.gui}, {visualiser.close});
       this.setButtonStates(button, "Visualiser", "Close Visualiser");
       this.decideStateOfVisualiserButton(button);
   }
