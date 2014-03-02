@@ -1,11 +1,39 @@
 SVUnit{ var gameloop, input, position, radius, mass, velocity, collisionType, maxSpeed;
-        var soundRep, visualRep;
+        var entity, soundRep, visualRep;
 
-  *new{ arg gameloop, input, position, radius, mass, velocity, collisionType, maxSpeed;
+  *new{ arg gameloop, input, position = RealVector2D[15, 15], radius = 1.0, mass = 1.0, velocity, collisionType = \free, maxSpeed = 100;
     ^super.newCopyArgs(gameloop, input, position, radius, mass, velocity, collisionType, maxSpeed).init;
   }
 
   init{
-       //implementation
+    this.makeEntity;
+    this.makeSoundRep;
+    this.makeVisualRep;
   }
+
+  makeEntity{
+    entity = Vehicle(
+      gameloop.world,
+      position: position,
+      radius: radius,
+      mass: mass,
+      velocity: velocity,
+      maxSpeed: maxSpeed
+    );
+    entity.collisionType_(collisionType);
+  }
+
+  makeSoundRep{ var rep;
+    rep = SoundRepresentation(
+      gameloop.repManager,
+      input: input
+    );
+    entity.attach(rep);
+  }
+
+  makeVisualRep{ var rep;
+    rep = SimpleVisual(gameloop.repManager, color: Color.green);
+    entity.attach(rep);
+  }
+
 }
