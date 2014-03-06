@@ -96,9 +96,6 @@ EntityManager {
       staticList.do{arg i; i.update};
   }
 
-  /* refresh can not happen simply by clearing all buckets because
-  we need to keep the registered static elements */
-
   unregisterIndex {
         mobList.do{arg i;
           spatialIndex.unregister(i);
