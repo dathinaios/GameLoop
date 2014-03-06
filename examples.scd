@@ -1,12 +1,12 @@
 ( // GENERAL SETUP
- //~decoder = GameLoopDecoder('ATK', 'newStereo');
+  //~decoder = GameLoopDecoder('ATK', 'newStereo');
   //~decoder = GameLoopDecoder('ATK', 'newListen');
   ~decoder = GameLoopDecoder('AmbIEM', 'binaural');
   ~gameloop = GameLoop(100, 100, 1).play(0.05);
   ~gameloop.makeEdgeWalls;
   ~gameloop.gui;
 
-  //some mroe walls for tests
+  //some more walls for tests
   a = Wall(RealVector2D[5,10], RealVector2D[13, 29]);
   b = Wall(RealVector2D[20,20], RealVector2D[40, 35]);
   ~gameloop.entManager.addWall(a);
@@ -27,7 +27,7 @@
   ~camera.attach(~camrep);
 );
 ( // FORCEMANAGER TEST
-  10.do{
+  3.do{
     { arg wander, forceManager;
 
       ~entity = Vehicle(
@@ -43,12 +43,12 @@
       //a sound rep
       ~rep = SoundRepresentation(
         ~gameloop.repManager,
-        input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)}
+        /* input:{BPF.ar(in:WhiteNoise.ar(0.2), freq: rrand(100, 19000.0), rq:0.3)} */
       );
       ~entity.attach(~rep);
 
       //and a visual representation
-      ~visrep = SimpleVisual(~gameloop.repManager, color: Color.white);
+      ~visrep = SimpleVisual(~gameloop.repManager, color: Color.green);
       /* ~visrep.collisionFunc = {arg rep, ent;}; */
       ~entity.attach(~visrep);
 
@@ -60,7 +60,7 @@
 
       forceManager = ForceManager.new;
 
-      ~entity.add;
+      /* ~entity.add; */
 
       wander = Wander(~entity,
         wanderRadius:   3.2,
@@ -77,6 +77,28 @@
     }.value;
   }
 )
+
+( // INTERFACE CLARIFICATION
+  ~decoder = GameLoopDecoder('AmbIEM', 'binaural');
+  ~gameloop = GameLoop(100, 100, 1).play(0.05);
+  ~gameloop.makeEdgeWalls;
+  ~gameloop.gui;
+)
+(
+  ~camera = CameraUnit(
+    ~gameloop,
+    position: RealVector2D[10, 10]
+  );
+)
+(
+  ~unit = SVUnit(
+    ~gameloop,
+    input: nil,
+    position: RealVector2D[10,10],
+    velocity: RealVector2D[0.5, 0.7],
+  );
+)
+
 
 // -----------------------\
 // ----------------------- \
