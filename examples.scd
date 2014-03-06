@@ -79,7 +79,7 @@
 )
 
 ( // INTERFACE CLARIFICATION
-  ~decoder = GameLoopDecoder('AmbIEM', 'binaural');
+  GameLoopDecoder('AmbIEM', 'binaural');
   ~gameloop = GameLoop(100, 100, 1).play(0.05);
   ~gameloop.makeEdgeWalls;
   ~gameloop.gui;

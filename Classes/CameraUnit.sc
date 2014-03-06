@@ -1,5 +1,5 @@
 CameraUnit{ var gameloop, position;
-            var entity, visualRep;
+            var <entity, <visualRep;
 
   *new{ arg gameloop, position;
     ^super.newCopyArgs(gameloop, position).init;
