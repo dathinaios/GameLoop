@@ -1,7 +1,7 @@
 SVUnit{ var gameloop, input, position, radius, mass, velocity, collisionType, maxSpeed;
         var entity, soundRep, visualRep;
 
-  *new{ arg gameloop, input, position = RealVector2D[15, 15], radius = 1.0, mass = 1.0, velocity, collisionType = \free, maxSpeed = 100;
+  *new{ arg gameloop, input, position = RealVector2D[15, 15], radius = 0.8, mass = 1.0, velocity, collisionType = \free, maxSpeed = 100;
     ^super.newCopyArgs(gameloop, input, position, radius, mass, velocity, collisionType, maxSpeed).init;
   }
 
