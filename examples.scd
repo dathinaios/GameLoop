@@ -48,7 +48,7 @@
       ~entity.attach(~rep);
 
       //and a visual representation
-      ~visrep = SimpleVisual(~gameloop.repManager, color: Color.green);
+      ~visrep = VisualRepresentation(~gameloop.repManager, color: Color.green);
       /* ~visrep.collisionFunc = {arg rep, ent;}; */
       ~entity.attach(~visrep);
 
@@ -80,7 +80,7 @@
 
 ( // INTERFACE CLARIFICATION
   GameLoopDecoder('AmbIEM', 'binaural');
-  ~gameloop = GameLoop(100, 100, 1).play(0.05);
+  ~gameloop = GameLoop(20, 20, 1).play(0.05);
   ~gameloop.makeEdgeWalls;
   ~gameloop.gui;
 )
@@ -145,7 +145,7 @@
 
   ~entity.attach(~rep);
   //and a visual representation
-  ~visrep = SimpleVisual(~gameloop.repManager);
+  ~visrep = VisualRepresentation(~gameloop.repManager);
   /* ~visrep.collisionFunc = {arg rep, ent;}; */
   ~entity.attach(~visrep);
 
@@ -175,7 +175,7 @@
 
     ~entity.attach(~rep);
     //and a visual representation
-    ~visrep = SimpleVisual(~gameloop.repManager);
+    ~visrep = VisualRepresentation(~gameloop.repManager);
     ~entity.attach(~visrep);
 
     //SLIDERS TO DEBUG WANDER
@@ -225,7 +225,7 @@
     });
 
     ~entity.attach(~rep);
-    ~visrep = SimpleVisual(~gameloop.repManager);
+    ~visrep = VisualRepresentation(~gameloop.repManager);
     ~entity.attach(~visrep);
 
     ~randForcePath = {var path, pathFollowing;
@@ -280,9 +280,9 @@
   ~entity1.collisionType_(\mobile);
   ~entity2.collisionType_(\mobile);
 
-  ~visrep1 = SimpleVisual(~gameloop.repManager);
+  ~visrep1 = VisualRepresentation(~gameloop.repManager);
   ~entity1.attach(~visrep1);
-  ~visrep2 = SimpleVisual(~gameloop.repManager);
+  ~visrep2 = VisualRepresentation(~gameloop.repManager);
   ~entity2.attach(~visrep2);
 
   ~soundRep1 = SoundRepresentation(
