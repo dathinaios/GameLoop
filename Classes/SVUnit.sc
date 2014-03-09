@@ -32,8 +32,16 @@ SVUnit{ var gameloop, input, position, radius, mass, velocity, collisionType, ma
   }
 
   makeVisualRep{ var rep;
-    rep = SimpleVisual(gameloop.repManager, color: Color.green);
+    rep = VisualRepresentation(gameloop.repManager, color: Color.white);
     entity.attach(rep);
+  }
+
+  force_{ arg force;
+    entity.force_(force)
+  }
+
+  remove{
+    entity.remove;
   }
 
 }
