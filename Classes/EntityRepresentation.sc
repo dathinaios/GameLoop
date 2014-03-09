@@ -8,7 +8,11 @@ EntityRepresentation { var repManager, <>collisionFunc;
 
   init{ var latency;
     /* initialize data */
-    this.getData;
+    /* this.getData; */
+    position = entity.position;
+    radius = entity.radius;
+    speed = entity.velocity.norm;
+
     collisionFunc = collisionFunc ?? {{}};
   }
 
