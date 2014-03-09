@@ -144,7 +144,7 @@ Camera2D : Vehicle {
 
 }
 
-Camera2DRepresentation : SimpleVisual{
+Camera2DRepresentation : VisualRepresentation{
 
   position{
     ^entity.worldCenter;
