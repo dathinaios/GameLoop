@@ -2,13 +2,13 @@
 GameLoopDecoder {
 
     classvar <instance, <active = false;
-    var <>library, <>type, <>dp, <encoderProxy, <decoderProxy, <summingProxy,
+    var <>library, <>type, <>doppler, <encoderProxy, <decoderProxy, <summingProxy,
     encoderChannels, decoderChannels, order, kernel;
 
-  *new{ arg library = 'AmbIEM', type = 'binaural', dp = true;
+  *new{ arg library = 'AmbIEM', type = 'binaural', doppler = true;
       if(instance.isNil,
         {
-        ^super.newCopyArgs(library, type, dp).init;
+        ^super.newCopyArgs(library, type, doppler).init;
         },
         {"There is already an active instance of GameLoopDecoder".error;}
       );
@@ -36,19 +36,19 @@ GameLoopDecoder {
   getEncoderClass{
     case
     {library =='AmbIEM' && (type == 'binaural')} {
-      if (dp == true,
+      if (doppler == true,
         {^SpacePolarAmbIEMDp},
         {^SpacePolarAmbIEM}
       );
     }
     {library =='ATK' && (type == 'newListen')} {
-      if (dp == true,
+      if (doppler == true,
         {^SpacePolarATKDp},
         {^SpacePolarATK}
       );
     }
     {library =='ATK' && (type == 'newStereo')} {
-      if (dp == true,
+      if (doppler == true,
         {^SpacePolarATKDp},
         {^SpacePolarATK}
       );
