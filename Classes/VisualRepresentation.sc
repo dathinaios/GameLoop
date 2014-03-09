@@ -1,5 +1,5 @@
 
-SimpleVisual : EntityRepresentation {
+VisualRepresentation : EntityRepresentation {
 
     var  >color, >collisionColor;
     var <penWidth = 1.5, <>shape = 0;
@@ -16,7 +16,7 @@ SimpleVisual : EntityRepresentation {
     collisionFunc = collisionFunc ?? {{}};
     type = 'visual';
 
-    color = color ?? {Color.green};
+    color = color ?? {Color.white};
     collisionColor = collisionColor ?? {Color.red};
     this.add;
 
