@@ -1,7 +1,7 @@
 TITLE:: GameLoop Quick Start Guide
 summary:: Quickly find out about GameLoop
 categories:: Guide
-related:: Overviews/GameLoop_Overview, Classes/GameLoop, SoundEntity
+related:: Overviews/GameLoop_Overview, Classes/GameLoop, SVUnit
 
 This guide is created as a step by step intro to the main features of the GameLoop library.
 
@@ -14,7 +14,7 @@ Quarks.install("VectorSpace");
 Quarks.install("MathLib");
 ::
 
-##Get the latest SuperCollider Plugins: http://sourceforge.net/projects/sc3-plugins/files/ The Plugins include the required MoogVCF UGen as well as the Ambisonic Toolkit. 
+##Get the latest SuperCollider Plugins: http://sourceforge.net/projects/sc3-plugins/files/ The Plugins include the required MoogVCF UGen as well as the Ambisonic Toolkit.
 ::
 These are the resources you need to run the examples. For a full list of resources and instructions see the first note at link::Overviews/GameLoop_Overview::.
 ::
@@ -34,28 +34,30 @@ GameLoopDecoder('ATK', 'newStereo');
 Now we need to create the environment for our sounds to live in. Let's assign it to the environment variable ~gameloop:
 
 code::
-~gameloop = GameLoop(40, 40, 1).play(0.05);
+(
+ ~gameloop = GameLoop(40, 40, 1).play(0.05);
+ ~gameloop.gui;
+)
 ::
 
 NOTE::The visuals are intended as a guidance. The environment is meant to be experienced aurally.::
 
-Now we will add a sound entity to our environment. At the most basic level an entity has a radius that describes its size and a position in space. We need to create it and activate it.
+Now we will add a unit to our environment. A unit is a convenience class that is comprised of an entity and one or more representations. For now we are not going to worry about the particulars. It's enough to know that the SVUnit stands for "Sound and Visual Unit" and that it creates for us an entity, a sound representation and a visual representation. At the most basic level an entity has a radius that describes its size and a position in space.
 
 code::
 (
-~entity1 = SoundEntity(
-	~gameloop.world, 
-	position: RealVector2D[18, 22], 
-	radius: 0.4, 
-); 
-~entity1.activate;
+~unit1 = SVUnit(
+  ~gameloop,
+  position: RealVector2D[18,22],
+  radius: 0.4
+);
 )
 ::
 
-Not very exciting but it is a start. Since we did not specify any input we can hear the default Impulse based sound (we are at the center of the space). Since the space is 40 x 40 the center is (20,20). The sounds appears 2 metres left and 2 metres forward. Notice that we had to pass the environment to the SoundEntity (using .world on the GameLoop instance) so that it knows where to add itself. And to remove the entity:
+Not very exciting but it is a start. Since we did not specify any input we can hear the default Impulse based sound (we are at the center of the space). Since the space is 40 x 40 the center is (20,20). The sound appears 2 metres left and 2 metres forward. Notice that we had to pass the environment(~gameloop) to the SVUnit so that it knows where to add itself. Also notice the number of representations on the visualisation counter.  To remove the entity:
 
 code::
-~entity1.remove;
+~unit1.remove;
 ::
 
 section::Motion and Interaction
@@ -64,126 +66,134 @@ Still working with the default sound let's make it move around.
 
 code::
 (
-~entity1 = SoundEntity(
-  ~gameloop.world, 
-  position: RealVector2D[18, 22], 
-  radius: 0.4, 
-  maxSpeed: 10.0, 
-  forceFunc: {arg entity; Arrive.calculate(entity, RealVector2D[20, 20.5])}
-); 
-~entity1.activate;
+~unit1 = SVUnit(
+  ~gameloop,
+  position: RealVector2D[18, 22],
+  radius: 0.4,
+  maxSpeed: 10.0
+);
+
+~steeringBehavior = Arrive(~unit1.entity, RealVector2D[20, 20.5]);
+
+~unit1.entity.force_({ arg entity;
+  ~steeringBehavior.value;
+});
 )
 ::
 
-The maxSpeed argument limits the maximum speed of the sound. The motion of the SoundEntity is defined in the forceFunc argument. The argument expects a function that is passed the entity. In this case the entity is used by the link::Class/Arrive:: Steering behavior. This behavior moves the entity from one place to the other, in this case from the starting position (18,22) to (20, 20.5). 
+The maxSpeed argument limits the maximum speed of the sound. The motion of the SVUnit is defined by calling the .force_ method on its contained entity. The method expects a function that is passed the entity. In this case that force is calculated by the link::Class/Arrive:: Steering behavior. This behavior moves the entity from one place to the other, in this case from the starting position (18,22) to (20, 20.5).
 
-We can change the forceFunc argument on the fly. Evaluate this a few time to move the entity to random points.
+We can change the target position of Arrive on the fly. Evaluate this a few time to move the entity to random points.
 
 code::
-( 
-var newVector; 
-newVector = RealVector2D[rrand(15.0, 24.0), rrand(15.0, 25.0)];
-~entity1.forceFunc_({arg entity; Arrive.calculate(entity, newVector)});
+(
+~steeringBehavior.targetPos = RealVector2D[rrand(15.0, 24.0), rrand(15.0, 25.0)];
 )
 
-~entity1.remove;
+~unit1.remove;
 ::
 
 We are going to have a look at the rest of the Steering behaviors a bit later. For now let's see how the entities can interact with each other. By default entities do not interact but this can be changed by setting their collisionType to \static or \mobile (the default is \free). \mobile entities interact with every other entity while \static entities only interact with \mobile ones. This distinction is useful for saving processing power by avoiding unneeded collision checks.
 
-Let's make two of our default sounding entities collide.
+Let's make two of our default sounding units collide.
 
 code::
 (
-~entity1 = SoundEntity(
-  ~gameloop.world, 
-  position: RealVector2D[25, 20.5], 
-  radius: 0.4, 
-  maxSpeed: 10.0, 
-  forceFunc: {arg entity; Arrive.calculate(entity, RealVector2D[18, 20.5])}
-); 
-~entity2 = SoundEntity(
-  ~gameloop.world, 
-  position: RealVector2D[15, 20.5], 
-  radius: 0.4, 
-  maxSpeed: 10.0, 
-  forceFunc: {arg entity; Arrive.calculate(entity, RealVector2D[22, 20.5])}
-); 
-~entity1.collisionType_(\mobile);
-~entity2.collisionType_(\mobile);
-~entity1.activate;
-~entity2.activate;
-)
+~unit1 = SVUnit(
+  ~gameloop,
+  position: RealVector2D[25, 20.5],
+  radius: 0.4,
+  maxSpeed: 10.0
+);
 
-~entity1.remove;
-~entity2.remove;
+~unit1.entity.collisionType_(\mobile);
+
+~steeringBehavior1 = Arrive(~unit1.entity, RealVector2D[18, 20.5]);
+
+~unit1.entity.force_({ arg entity;
+  ~steeringBehavior1.value;
+});
+
+~unit2 = SVUnit(
+  ~gameloop,
+  position: RealVector2D[15, 20.5],
+  radius: 0.4,
+  maxSpeed: 10.0
+);
+
+~unit2.entity.collisionType_(\mobile);
+
+~steeringBehavior2 = Arrive(~unit2.entity, RealVector2D[22, 20.5]);
+
+~unit2.entity.force_({ arg entity;
+  ~steeringBehavior2.value;
+});
+
+)
 ::
 
-Although we can see the visual feedback of the collision nothing happens in terms of sound. The reason is that if we want a result from a collision we also have to define the collisionFunc argument of the SoundEntity. Here is a simple example.
+Although we can see the visual feedback of the collision nothing happens in terms of sound. The reason is that if we want a result from a collision we also have to define the collisionFunc argument of the entities contained in our SVUnits. Here is a simple example.
 
 code::
-(
-~entity1 = SoundEntity(
-  ~gameloop.world, 
-  position: RealVector2D[25, 20.5], 
-  radius: 0.4, 
-  maxSpeed: 10.0, 
-  forceFunc: {arg entity; Arrive.calculate(entity, RealVector2D[18, 20.5])},
-	collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
-); 
-~entity2 = SoundEntity(
-  ~gameloop.world, 
-  position: RealVector2D[15, 20.5], 
-  radius: 0.4, 
-  maxSpeed: 10.0, 
-  forceFunc: {arg entity; Arrive.calculate(entity, RealVector2D[22, 20.5])},
-	collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
-); 
 
-~entity1.collisionType_(\mobile);
-~entity2.collisionType_(\mobile);
-~entity1.activate;
-~entity2.activate;
+(
+//first let's move the units to a different position
+~steeringBehavior1.targetPos = RealVector2D[25, 20.5];
+~steeringBehavior2.targetPos = RealVector2D[15, 20.5];
+)
+
+(
+//define the collision functions for the entities
+~unit1.entity.collisionFunc_({ arg entity, entList; entity.remove; entList.do{arg i; i.remove}});
+~unit2.entity.collisionFunc_({ arg entity, entList; entity.remove; entList.do{arg i; i.remove}});
+);
+
+(
+//And let's make them collide
+~steeringBehavior1.targetPos = RealVector2D[18, 20.5];
+~steeringBehavior2.targetPos = RealVector2D[22, 20.5];
 )
 ::
 
-The collisionFunc argument is passed a function that expects two arguments: 1) a list of the objects that our entity is colliding with 2) the entity itself. In the above example we simply remove all the entities involved in the collision.
+The collisionFunc argument is passed a function that expects two arguments: 1) the entity itself 2) a list of the objects that our entity is colliding with. In the above example we simply removed all the units involved in the collision.
 
 section::Custom Inputs
 
-GameLoop is using JitLib NodeProxies. The input of a SoundEntity is defined in the input argument. The argument expects a function that is passed the current speed as an argument. This is very important as it allows us to shape the sound accordingly. As we've already seen if nothing is provided the input defaults to 'Jack the Mosquito' but let's try as an input a slightly modified example taken from PlayBuf's help file.
+GameLoop is using JitLib NodeProxies. The input of a SVUnit is defined in the input argument. The argument expects a function that is passed the current speed as an argument. This is very important as it allows us to shape the sound accordingly. As we've already seen if nothing is provided the input defaults to 'Jack the Mosquito' but let's try as an input a slightly modified example taken from PlayBuf's help file.
 code::
 
 // read a whole sound into memory
 b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav"); // remember to free the buffer later.
 
 (
-~entity1 = SoundEntity(
-  ~gameloop.world, 
-  position: RealVector2D[25, 20.5], 
-  radius: 0.4, 
-  maxSpeed: 10.0, 
+~unit1 = SVUnit(
+  ~gameloop,
+  position: RealVector2D[25, 20.5],
+  radius: 0.4,
+  maxSpeed: 10.0,
   input: {arg speed; var trig, bufnum;
     bufnum = b.bufnum;
     //speed is used to modulate the rate of the trigger and the startPosition
     trig = Impulse.kr(speed.linlin(0.0, 10.0, 2.0, 60.0 ));
     PlayBuf.ar(1, bufnum, BufRateScale.kr(bufnum), trig,speed.linlin(0, 10.0, 5000, BufFrames.kr(bufnum)), 0)*0.5
-  },
-  forceFunc: {arg entity; Arrive.calculate(entity, RealVector2D[18, 20.5])},
-	collisionFunc: {arg entList, entity; entity.remove; entList.do{arg i; i.remove}}
-); 
-~entity1.activate;
+  }
+);
+
+~steeringBehavior1 = Arrive(~unit1.entity, RealVector2D[18, 20.5]);
+
+~unit1.entity.force_({ arg entity;
+  ~steeringBehavior1.value;
+});
+
 )
 
 // Like before we can change the forceFunc to move it around.
 
-( 
-var newVector; 
-newVector = RealVector2D[rrand(15.0, 24.0), rrand(15.0, 25.0)];
-~entity1.forceFunc_({arg entity; Arrive.calculate(entity, newVector)});
+(
+~steeringBehavior.targetPos = RealVector2D[rrand(15.0, 24.0), rrand(15.0, 25.0)];
 )
 
-~entity1.remove;
+~unit1.remove;
 
 ::
 
@@ -196,7 +206,12 @@ section::Navigating the Environment
 We can move around the virtual space by adding a camera.
 
 code::
-~gameloop.addCamera;
+(
+  ~camera = CameraUnit(
+    ~gameloop,
+    position: RealVector2D[10, 10]
+  );
+)
 ::
 
 Focus on the viusalisation window and use the left/right arrows to rotate and front/back to move forward and backwards.
