@@ -1,7 +1,7 @@
 TITLE:: GameLoop
 summary:: (put short description here)
 categories:: Undocumented classes
-related:: Overviews/GameLoop_Overview, Classes/SoundEntity, EntityManager
+related:: Overviews/GameLoop_Overview, Classes/SoundRepresentation, EntityManager
 
 DESCRIPTION::
 NOTE::

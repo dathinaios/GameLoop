@@ -1,7 +1,7 @@
 TITLE:: The GameLoop Library
 summary:: A Sound Oriented Game Engine
 categories:: Library
-related:: Classes/GameLoop, SoundEntity
+related:: Classes/GameLoop, SoundRepresentation
 
 DESCRIPTION::
 
@@ -42,8 +42,8 @@ LIST::
 section::Overviews
 LIST::
 ## link::Guides/QuickStart##Quick Start Guide::
+## link::Guides/GameLoopTutorial##GameLoop Tutorial::
 ## link::Reference/SteeringBehaviors##About Steering Behaviors::
-## link::Guides/ClassStructure##The Structure of the Class Hierarchy::
 ::
 
 section::Main Classes
@@ -54,7 +54,7 @@ LIST::
 ## link::Classes/Entity::
 ## link::Classes/EntityManager::
 ## link::Classes/RepresentationManager::
-## link::Classes/SoundEntity::
+## link::Classes/SoundRepresentation::
 ## link::Classes/SpatialHashing::
 ::
 

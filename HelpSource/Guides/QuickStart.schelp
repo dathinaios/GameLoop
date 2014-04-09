@@ -21,7 +21,7 @@ These are the resources you need to run the examples. For a full list of resourc
 
 section::Basics
 
-We will start simple so be patient until we reach the interesting sounding part. We will need a decoder for the sound output.You can choose from a selction of different decoders but for now let's use the simple stereo decoder from the AmbIEM Quark:
+We will start simple so be patient until we reach the interesting sounding part. We will need a decoder for the sound output.You can choose from a selection of different decoders but for now let's use the simple stereo decoder from the AmbIEM Quark:
 
 NOTE:: In GameLoop you can choose between the AmbIEM (3d order Ambisonic to Binaural) and Ambisonic Toolkit (First order Ambisonics - Stereo, Binaural and other configurations). Regarding Binaural the Ambisonic Toolkit produces less artifacts but AmbIEM delivers (according to my subjective comparison) a superior spatial image. The newStereo decoder used here is inferior to both but it does not require you to download the Kernels for ATK or the HRTF's for AmbIEM. See link::Classes/GameLoopDecoder:: if you want to try other decoder configurations.
 ::
@@ -171,11 +171,12 @@ b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav"); // remember 
   position: RealVector2D[25, 20.5],
   radius: 0.4,
   maxSpeed: 10.0,
-  input: {arg speed; var trig, bufnum;
+  input: {arg speed; var trig, bufnum, in;
     bufnum = b.bufnum;
     //speed is used to modulate the rate of the trigger and the startPosition
-    trig = Impulse.kr(speed.linlin(0.0, 10.0, 2.0, 60.0 ));
-    PlayBuf.ar(1, bufnum, BufRateScale.kr(bufnum), trig,speed.linlin(0, 10.0, 5000, BufFrames.kr(bufnum)), 0)*0.5
+    trig = Impulse.ar(speed.linlin(0.0, 10.0, 2.0, 60.0 ));
+    in = PlayBuf.ar(1, bufnum, BufRateScale.kr(bufnum), trig, speed.linlin(0, 10.0, 5000, BufFrames.kr(bufnum)), 0)*0.5;
+    Decay2.ar(trig, 0.01, 0.2, in);
   }
 );
 
@@ -190,16 +191,12 @@ b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav"); // remember 
 // Like before we can change the forceFunc to move it around.
 
 (
-~steeringBehavior.targetPos = RealVector2D[rrand(15.0, 24.0), rrand(15.0, 25.0)];
+~steeringBehavior1.targetPos = RealVector2D[rrand(15.0, 24.0), rrand(15.0, 25.0)];
 )
 
 ~unit1.remove;
 
 ::
-
-section::More on Steering Behaviors
-
-(coming soon...)
 
 section::Navigating the Environment
 
@@ -214,5 +211,14 @@ code::
 )
 ::
 
-Focus on the viusalisation window and use the left/right arrows to rotate and front/back to move forward and backwards.
+Focus the viusalisation window by clicking on it and use the left/right arrows to rotate and front/back to move forward and backwards.
 
+To remove the camera we need to do it slightly differently. The reason is to avoid the camera being removed when we remove the entities.
+
+code::
+~camera.remove(true);
+::
+
+section::More on Steering Behaviors
+
+Let's now have a look at the rest of the available steering behaviors. 
