@@ -14,6 +14,9 @@ EntityRepresentation { var repManager, <>collisionFunc;
     speed = entity.velocity.norm;
 
     collisionFunc = collisionFunc ?? {{}};
+
+    //Do transformation in case there is a camera
+    position = this.cameraTransform(entity) + entity.worldCenter;
   }
 
 /* public  */
