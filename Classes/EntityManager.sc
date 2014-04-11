@@ -3,7 +3,7 @@ EntityManager {
        var <spatialIndex;
        var <freeList, <mobList, <staticList, <wallList;
        var <>dt;
-       var <sceneWidth, <sceneHeight, <repManager;
+       var <sceneWidth, <sceneHeight;
        var <currentCollisionList;
 
   *new { arg spatialIndex = SpatialHashing(20, 20, 0.5);
