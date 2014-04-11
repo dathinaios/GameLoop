@@ -159,7 +159,7 @@ The collisionFunc argument is passed a function that expects two arguments: 1) t
 
 section::Custom Inputs
 
-GameLoop is using JitLib NodeProxies. The input of a SVUnit is defined in the input argument. The argument expects a function that is passed the current speed as an argument. This is very important as it allows us to shape the sound accordingly. As we've already seen if nothing is provided the input defaults to 'Jack the Mosquito' but let's try as an input a slightly modified example taken from PlayBuf's help file.
+GameLoop is using JitLib NodeProxies. The input of a SVUnit is defined in the input argument. The argument expects a function that is passed the current speed as an argument. This is very important as it allows us to shape the sound accordingly. As we've already seen if nothing is provided the input defaults to 'Jack the Mosquito' but let's try as an input a slightly modified example from PlayBuf's help file.
 code::
 
 // read a whole sound into memory
@@ -170,13 +170,13 @@ b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav"); // remember 
   ~gameloop,
   position: RealVector2D[25, 20.5],
   radius: 0.4,
-  maxSpeed: 10.0,
+  maxSpeed: 5.0,
   input: {arg speed; var trig, bufnum, in;
     bufnum = b.bufnum;
     //speed is used to modulate the rate of the trigger and the startPosition
-    trig = Impulse.ar(speed.linlin(0.0, 10.0, 2.0, 60.0 ));
-    in = PlayBuf.ar(1, bufnum, BufRateScale.kr(bufnum), trig, speed.linlin(0, 10.0, 5000, BufFrames.kr(bufnum)), 0)*0.5;
-    Decay2.ar(trig, 0.01, 0.2, in);
+    trig = Impulse.ar(speed.linlin(0.0, 10.0, 15.0, 60.0 ));
+    in = PlayBuf.ar(1, bufnum, BufRateScale.kr(bufnum), trig, speed.linlin(0, 10.0, 5000, BufFrames.kr(bufnum)), 0)*0.2;
+    Decay2.ar(trig, 0.01, 0.1, in);
   }
 );
 
@@ -190,11 +190,7 @@ b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav"); // remember 
 
 // Like before we can change the forceFunc to move it around.
 
-(
 ~steeringBehavior1.targetPos = RealVector2D[rrand(15.0, 24.0), rrand(15.0, 25.0)];
-)
-
-~unit1.remove;
 
 ::
 
@@ -211,14 +207,40 @@ code::
 )
 ::
 
-Focus the viusalisation window by clicking on it and use the left/right arrows to rotate and front/back to move forward and backwards.
+Focus the viusalisation window by clicking on it and use the left/right arrows to rotate and front/back to move forward and backwards. You can click the add Fence button in the GUI to get a better sense of the boundaries of the space.
 
 To remove the camera we need to do it slightly differently. The reason is to avoid the camera being removed when we remove the entities.
 
 code::
-~camera.remove(true);
+~camera.entity.remove(true);
 ::
 
 section::More on Steering Behaviors
 
-Let's now have a look at the rest of the available steering behaviors. 
+Let's now have a look at the rest of the available steering behaviors. A very useful one is the PathFollowing steering behavior. With it we can define a path for our unit to follow.
+
+code::
+(
+ ~path = Path([RealVector2D[15, 24], RealVector2D[23, 23], RealVector2D[17, 17], RealVector2D[20, 21]]);
+ ~pathFollowing= PathFollowing(~unit1.entity, ~path);
+
+ ~unit1.entity.force_({ arg entity;
+   ~pathFollowing.value;
+   });
+)
+::
+
+Notice how the unit stops at the last location. The path takes a second argument that allows us to close the path into a loop. By default it is set to false but let's change it to see what happens.
+
+code::
+~path.loop = true;
+::
+
+We can change the loop on the fly. Let's define a random one with the loop parameter set to true.
+
+code::
+(
+ ~path = Path(Array.fill(rrand(2.0, 38.0), {RealVector2D[rrand(5, 35.0), rrand(5.0, 35.0)]}), true);
+ ~pathFollowing= PathFollowing(~unit1.entity, ~path);
+)
+::
