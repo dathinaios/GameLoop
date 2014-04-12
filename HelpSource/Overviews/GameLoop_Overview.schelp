@@ -55,13 +55,8 @@ LIST::
 ## link::Classes/EntityManager::
 ## link::Classes/RepresentationManager::
 ## link::Classes/SoundRepresentation::
+## link::Classes/GameLoopDecoder::
 ## link::Classes/SpatialHashing::
-::
-
-UGens:
-LIST::
-##link::Classes/SpacePolarAmbIEM::
-##link::Classes/SpacePolarAmbIEMDp::
 ::
 
 Steering Behaviours:
@@ -72,8 +67,8 @@ LIST::
 ##link::Classes/PathFollowing::
 ::
 
-EXAMPLES::
-
-code::
-(some example code)
+UGens:
+LIST::
+##link::Classes/SpacePolarAmbIEM::
+##link::Classes/SpacePolarAmbIEMDp::
 ::
