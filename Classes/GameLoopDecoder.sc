@@ -2,7 +2,7 @@
 GameLoopDecoder {
 
     classvar <instance, <active = false;
-    var <>library, <>type, <>doppler, <encoderProxy, <decoderProxy, <summingProxy,
+    var <>library, <>type, <>doppler, <decoderProxy, <summingProxy,
     encoderChannels, decoderChannels, order, kernel;
 
   *new{ arg library = 'AmbIEM', type = 'binaural', doppler = true;
