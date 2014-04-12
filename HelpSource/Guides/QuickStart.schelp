@@ -81,7 +81,7 @@ code::
 )
 ::
 
-The maxSpeed argument limits the maximum speed of the sound. The motion of the SVUnit is defined by calling the .force_ method on its contained entity. The method expects a function that is passed the entity. In this case that force is calculated by the link::Class/Arrive:: Steering behavior. This behavior moves the entity from one place to the other, in this case from the starting position (18,22) to (20, 20.5).
+The maxSpeed argument limits the maximum speed of the sound. The motion of the SVUnit is defined by calling the .force_ method on its contained entity. The method expects a function that is passed the entity. In this case that force is calculated by the link::Classes/Arrive:: Steering behavior. This behavior moves the entity from one place to the other, in this case from the starting position (18,22) to (20, 20.5).
 
 We can change the target position of Arrive on the fly. Evaluate this a few time to move the entity to random points.
 
@@ -217,7 +217,9 @@ code::
 
 section::More on Steering Behaviors
 
-Let's now have a look at the rest of the available steering behaviors. A very useful one is the PathFollowing steering behavior. With it we can define a path for our unit to follow.
+Let's now have a look at the rest of the available steering behaviors. I am going to provide a brief demonstration. For details about individual paramateres refer to the help files for each behavior.
+
+A very useful steering behavior is the link::Classes/PathFollowing:: steering behavior. With it we can define a path for our unit to follow. You can think of it as a kind of automation but instead of defining exact movement you are guiding the sound towards a path which it follows based on its internal characteristics (maxSpeed, mass etc).
 
 code::
 (
@@ -244,3 +246,40 @@ code::
  ~pathFollowing= PathFollowing(~unit1.entity, ~path);
 )
 ::
+
+The Steering behavior link::Classes/Seek:: works in the same way as link::Classes/Arrive:: but does not deccelarate when reaching its destination. This makes sense when our unit is chasing something.
+
+code::
+(
+~seek = Seek(~unit1.entity, RealVector2D[18, 20.5]);
+~unit1.entity.force_({ arg entity;
+  ~seek.value;
+});
+)
+::
+
+Let's now change the seek value. Notice how the unit moves aroung the spot instead of stopping at it.
+
+code::
+~seek.targetPos = RealVector2D[rrand(15.0, 24.0), rrand(15.0, 25.0)];
+::
+
+Another useful steering behavior is link::Classes/Wander:: that allows us to send our unit in a random but natural looking walk. Before we start though let's make our unit a bit slower to have a chance to observe it before it wanders out of the screen.
+
+code::
+~unit1.entity.maxSpeed = 1.2;
+::
+
+And here is the example:
+
+code::
+(
+ ~wander = Wander(~unit1.entity, 2.2, 4, 2);
+ ~unit1.entity.force_({ arg entity;
+   ~wander.value;
+   });
+)
+::
+
+Bear in mind that steering behaviors can be combined. At the moment a very simple implementation has been realised with the .sum method of link::Classes/ForceManager::. In the future I am hoping to add some more advanced methods for ombining steering behaviors FOOTNOTE::If you are interested to know about these methods (or even better would like to implement them) a useful resource can be found in the book 'Programming Game AI by Example' by Matt Buckland.::.
+

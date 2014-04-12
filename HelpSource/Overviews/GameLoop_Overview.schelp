@@ -5,7 +5,7 @@ related:: Classes/GameLoop, SoundRepresentation
 
 DESCRIPTION::
 
-NOTE:: 
+NOTE::
 If you need a quick introduction without going through the trouble of getting everything go to link::Guides/QuickStart:: and follow the instruction of the first note.
 
 For full functionality:
@@ -19,12 +19,12 @@ Quarks.install("MathLib");
 ::
 
 
-##Get the latest SuperCollider Plugins: link::http://sourceforge.net/projects/sc3-plugins/files/::. The Plugins include the required MoogVCF UGen as well as the Ambisonic Toolkit. 
+##Get the latest SuperCollider Plugins: link::http://sourceforge.net/projects/sc3-plugins/files/::. The Plugins include the required MoogVCF UGen as well as the Ambisonic Toolkit.
 
-##For AmbIEM you need the HRTF measurements from http://sound.media.mit.edu/resources/KEMAR.html . Get full.tar.Z, unzip, and rename the folder as KemarHRTF. The default directory does not seem to work. I recommend you add 
+##For AmbIEM you need the HRTF measurements from http://sound.media.mit.edu/resources/KEMAR.html . Get full.tar.Z, unzip, and rename the folder as KemarHRTF. The default directory does not seem to work. I recommend you add
 code::
 BinAmbi3O.kemarPath_(Platform.userAppSupportDir ++ '/KemarHRTF');
-:: 
+::
 to your startup file and place the Kemar folder in the Application Support directory of your platform.
 ##Get the Kernel's for the more advanced decoding methods of the ATK Library. You can find them in the downloads section of the website at link::http://www.ambisonictoolkit.net/wiki/tiki-index.php?page=Downloads::.
 ::
@@ -34,9 +34,9 @@ GameLoop is a library for the creation of virtual sound environments inspired by
 
 The library includes:
 LIST::
-## UGens for spatialisation according to cartesian or polar coordinates using Ambisonics  
-## Classes implementing Steering Behaviors. 
-## A  spatial index for efficient collision detection (SpatialHashing), 
+## UGens for spatialisation according to cartesian or polar coordinates using Ambisonics.
+## Classes implementing Steering Behaviors.
+## A  spatial index for efficient collision detection (SpatialHashing).
 ::
 
 section::Overviews
@@ -60,17 +60,17 @@ LIST::
 
 UGens:
 LIST::
-##link::Clases/SpacePolarAmbIEM::
-##link::Clases/SpacePolarAmbIEMDp::
-##link::Clases/Fade            ::
-##link::Clases/Fade2           ::
+##link::Classes/SpacePolarAmbIEM::
+##link::Classes/SpacePolarAmbIEMDp::
+##link::Classes/Fade            ::
+##link::Classes/Fade2           ::
 ::
 
 Steering Behaviours:
 LIST::
-##link::Clases/Seek::
-##link::Clases/Arrive::
-##link::Clases/PathFollowing::
+##link::Classes/Seek::
+##link::Classes/Arrive::
+##link::Classes/PathFollowing::
 ::
 
 EXAMPLES::
