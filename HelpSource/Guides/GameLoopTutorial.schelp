@@ -5,6 +5,8 @@ related:: Overviews/GameLoop_Overview, Classes/GameLoop, SVUnit
 
 In this document we will learn how to use GameLoop without the convenience classes (Units). If you haven't done so yet, go to link::Guides/QuickStart:: for a quick intro as this tutorial will go through the same material but with explicit creation of entities and representations. I will assume that you have completed the quick start guide where some of the concepts are introduced.
 
+NOTE::If you are looking for an in dpeth look of setting up the environment as well (EntityManager, RepresentationManager and the game loop) have a look at the code in the GameLoop class. The game loop can be found in the play method.::
+
 section::Basics
 
 Before we start making sound let's have a look at entities and representations in more detail. As we saw on the quick start guide we first create an environment. In this environment/world we are going to add certain elements that can move around, interact etc. These elements we call Entities. As we saw at the most basic level an entity has a radius that describes its size and a position in space. For a full list of attributes that entities can have check the link::Classes/Entity.schelp##Entity help::.

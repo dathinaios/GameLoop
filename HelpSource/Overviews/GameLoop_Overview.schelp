@@ -62,14 +62,13 @@ UGens:
 LIST::
 ##link::Classes/SpacePolarAmbIEM::
 ##link::Classes/SpacePolarAmbIEMDp::
-##link::Classes/Fade            ::
-##link::Classes/Fade2           ::
 ::
 
 Steering Behaviours:
 LIST::
 ##link::Classes/Seek::
 ##link::Classes/Arrive::
+##link::Classes/Wander::
 ##link::Classes/PathFollowing::
 ::
 

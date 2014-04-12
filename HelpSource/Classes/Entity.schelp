@@ -16,7 +16,7 @@ ARGUMENT:: world
 an instance of link::Classes/EntityManager::
 
 ARGUMENT:: position
-an instance of link::RealVector2D::
+an instance of RealVector2D
 
 ARGUMENT:: radius
 radius in meters
@@ -62,7 +62,7 @@ METHOD:: add
 Add the entity to the manager. Usually we let this happen automatically the moment we attach the first representation. The entity is going to be added synchronously with the first attached representation.
 
 METHOD:: world
-Get the link::EntityManager::
+Get the link::Classes/EntityManager::
 
 METHOD:: detachAll
 Detach all representations.

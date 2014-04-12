@@ -209,10 +209,10 @@ code::
 
 Focus the viusalisation window by clicking on it and use the left/right arrows to rotate and front/back to move forward and backwards. You can click the add Fence button in the GUI to get a better sense of the boundaries of the space.
 
-To remove the camera we need to do it slightly differently. The reason is to avoid the camera being removed when we remove the entities.
+Remove the camera.
 
 code::
-~camera.entity.remove(true);
+~gameloop.removeCamera;
 ::
 
 section::More on Steering Behaviors
