@@ -69,6 +69,8 @@ LIST::
 
 UGens:
 LIST::
+##link::Classes/SpacePolarATK::
+##link::Classes/SpacePolarATKDp::
 ##link::Classes/SpacePolarAmbIEM::
 ##link::Classes/SpacePolarAmbIEMDp::
 ::
