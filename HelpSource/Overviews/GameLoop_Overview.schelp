@@ -18,7 +18,6 @@ Quarks.install("AmbIEM");
 Quarks.install("MathLib");
 ::
 
-
 ##Get the latest SuperCollider Plugins: link::http://sourceforge.net/projects/sc3-plugins/files/::. The Plugins include the required MoogVCF UGen as well as the Ambisonic Toolkit.
 
 ##For AmbIEM you need the HRTF measurements from http://sound.media.mit.edu/resources/KEMAR.html . Get full.tar.Z, unzip, and rename the folder as KemarHRTF. The default directory does not seem to work. I recommend you add
@@ -30,13 +29,24 @@ to your startup file and place the Kemar folder in the Application Support direc
 ::
 ::
 
-GameLoop is a library for the creation of virtual sound environments inspired by video game techniques.footnote::The design of the library was partly based on the article 'The Guerrilla Guide to Game Code' that can be found at http://www.gamasutra.com/view/feature/2280/the_guerrilla_guide_to_game_code.php::
+-------------------------------------------------------------------------------------------------------------------------------------------------
 
-The library includes:
+strong::DEVELOPMENT STATUS:::
 LIST::
-## UGens for spatialisation according to cartesian or polar coordinates using Ambisonics.
-## Classes implementing Steering Behaviors.
-## A  spatial index for efficient collision detection (SpatialHashing).
+## First version. Not tested beyond simple examples.
+## Possibility of changes in the interface of the classes.
+::
+strong::Contributions, Issues, Feature Requests:::
+link::https://github.com/dathinaios/gameloop##github.com/dathinaios/gameloop::
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+GameLoop is a library for the creation of virtual sound environments inspired by video game techniques.footnote::The design of the library was partly based on the article 'The Guerrilla Guide to Game Code' that can be found at http://www.gamasutra.com/view/feature/2280/the_guerrilla_guide_to_game_code.php:: It provides:
+LIST::
+## An agent based system for the creation of interactive sound units.
+## Spatialisation according to cartesian or polar coordinates using Ambisonics.
+## Steering behaviors.
+## A spatial index for efficient collision detection (SpatialHashing).
 ::
 
 section::Overviews
