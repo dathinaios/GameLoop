@@ -1,7 +1,6 @@
 ( // GENERAL SETUP
-  //~decoder = GameLoopDecoder('ATK', 'newStereo');
-  //~decoder = GameLoopDecoder('ATK', 'newListen');
-  ~decoder = GameLoopDecoder('AmbIEM', 'binaural');
+  //~decoder = GameLoopDecoder.newStereo;
+  ~decoder = GameLoopDecoder.binauralAmbIEM;
   ~gameloop = GameLoop(100, 100, 1).play(0.05);
   ~gameloop.makeEdgeWalls;
   ~gameloop.gui;

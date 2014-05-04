@@ -28,7 +28,7 @@ NOTE:: In GameLoop you can choose between the AmbIEM (3d order Ambisonic to Bina
 
 
 code::
-GameLoopDecoder('ATK', 'newStereo');
+GameLoopDecoder.newStereo;
 ::
 
 Now we need to create the environment for our sounds to live in. Let's assign it to the environment variable ~gameloop:
@@ -175,7 +175,7 @@ b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav"); // remember 
     bufnum = b.bufnum;
     //speed is used to modulate the rate of the trigger and the startPosition
     trig = Impulse.ar(speed.linlin(0.0, 10.0, 15.0, 60.0 ));
-    in = PlayBuf.ar(1, bufnum, BufRateScale.kr(bufnum), trig, speed.linlin(0, 10.0, 5000, BufFrames.kr(bufnum)), 0)*0.2;
+    in = PlayBuf.ar(1, bufnum, BufRateScale.kr(bufnum), trig, speed.linlin(0, 10.0, 5000, BufFrames.kr(bufnum)), 0)*0.7;
     Decay2.ar(trig, 0.01, 0.1, in);
   }
 );
@@ -281,5 +281,5 @@ code::
 )
 ::
 
-Bear in mind that steering behaviors can be combined. At the moment a very simple implementation has been realised with the .sum method of link::Classes/ForceManager::. In the future I am hoping to add some more advanced methods for ombining steering behaviors FOOTNOTE::If you are interested to know about these methods (or even better would like to implement them) a useful resource can be found in the book 'Programming Game AI by Example' by Matt Buckland.::.
+Bear in mind that steering behaviors can be combined. At the moment a very simple implementation has been realised with the .sum method of link::Classes/ForceManager::. In the future I am hoping to add some more advanced methods for combining steering behaviors FOOTNOTE::If you are interested to know about these methods (or even better would like to implement them) a useful resource can be found in the book 'Programming Game AI by Example' by Matt Buckland.::.
 

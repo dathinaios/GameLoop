@@ -46,12 +46,12 @@ SoundRepresentation : EntityRepresentation {
   /* private */
 
   initializeDecoder{
-    encoderClass = GameLoopDecoder.instance.getEncoderClass;
+    encoderClass = GameLoopDecoder.getEncoderClass;
     /* get the right proxy from the GameLoopDecoder class */
-    encoderProxy = GameLoopDecoder.instance.getEncoderProxy;
+    encoderProxy = GameLoopDecoder.getEncoderProxy;
     encoderProxy.clock = TempoClock.default;
     /* plug the proxy to the proxy acting as summing bus */
-    summingProxy = GameLoopDecoder.instance.summingProxy;
+    summingProxy = GameLoopDecoder.summingProxy;
     /* Always put the new Node in an extra slot of the Summing nodeRpoxy */
     encoderProxyIndex = summingProxy.sources.size - 1;
     summingProxy.put(encoderProxyIndex, encoderProxy);

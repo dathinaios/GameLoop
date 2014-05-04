@@ -12,24 +12,17 @@ NOTE::At the moment only binaural and stereo encoders/decoders have been impleme
 
 CLASSMETHODS::
 
-METHOD:: new
+METHOD:: binauralAmbIEM
+Create a 3d order Ambisonic to binaural decoder using the AmbIEM library.
 
-ARGUMENT:: library
-a symbol, 'AmbIEM 'or 'ATK'
+METHOD:: newStereo
+ATK stereo decoder.
 
-ARGUMENT:: type
-a symbol, at the moment only 'binaural' for AmbIEM or 'newListen', 'newStereo' for ATK
-
-ARGUMENT:: doppler
-true or false
+METHOD:: newListen
+ATK binaural decoder.
 
 METHOD:: active
 Returns true or false.
-
-METHOD:: instance
-Returns the GameLoopDecoder instance. GameLoopDecoder is a singleton (can have only one instance).
-
-INSTANCEMETHODS::
 
 METHOD:: getEncoderProxy
 Get the relevant encoder proxy. Used in SoundRepresentation.

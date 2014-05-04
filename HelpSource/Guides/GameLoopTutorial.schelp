@@ -16,7 +16,7 @@ It is important to understand that an entity is an abstract thing. When we add a
 First let's create our decoder.
 
 code::
-GameLoopDecoder('ATK', 'newStereo');
+GameLoopDecoder.newStereo;
 ::
 
 and the environment.
