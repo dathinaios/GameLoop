@@ -1,5 +1,5 @@
 
-#DEVELOPMENT STATUS
+# Development Status
 * First version. Not tested beyond simple examples.
 * Possibility of changes in the interface of the classes.
 
