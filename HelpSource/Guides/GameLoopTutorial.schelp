@@ -39,8 +39,7 @@ code::
 );
 
 ~visrep = VisualRepresentation(
-  ~gameloop.repManager,
-  color: Color.green
+  ~gameloop.repManager
 );
 ~entity.attach(~visrep);
 
