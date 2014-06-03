@@ -1,12 +1,11 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
-strong::DEVELOPMENT STATUS:::
-LIST::
-## First version. Not tested beyond simple examples.
-## Possibility of changes in the interface of the classes.
-::
-strong::Contributions, Issues, Feature Requests:::
+**DEVELOPMENT STATUS**
+* First version. Not tested beyond simple examples.
+* Possibility of changes in the interface of the classes.
+
+**Contributions, Issues, Feature Requests**
 link::https://github.com/dathinaios/gameloop##github.com/dathinaios/gameloop::
 
 -------------------------------------------------------------------------------------------------------------------------------------------------
