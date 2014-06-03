@@ -4,7 +4,7 @@
 * Possibility of changes in the interface of the classes.
 
 **Contributions, Issues, Feature Requests**
-[Click here] (https://github.com/dathinaios/gameloop##github.com/dathinaios/gameloop/issues)
+[on GitHub] (https://github.com/dathinaios/gameloop##github.com/dathinaios/gameloop/issues)
 
 # For Manual Installation
 
