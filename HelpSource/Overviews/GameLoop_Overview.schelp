@@ -10,7 +10,7 @@ If you need a quick introduction without going through the trouble of getting ev
 
 For full functionality:
 NUMBEREDLIST::
-##Install the VectorSpace, MathLib and the AmbIEM Quark (See 3. for how to get the AmbIEM resources). Evaluate the following to install the Quarks:
+##Install the VectorSpace, MathLib and the AmbIEM Quark (See 3. for how to get the AmbIEM resources). Evaluate the following to install the Quarks (note that Quarks need SVN to be installed):
 
 code::
 Quarks.install("VectorSpace");

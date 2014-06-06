@@ -7,7 +7,7 @@ This guide is created as a step by step intro to the main features of the GameLo
 
 NOTE:: To run these examples you will need to:
 LIST::
-##Install the VectorSpace and MathLib Quarks. Evaluate the following to install:
+##Install the VectorSpace and MathLib Quarks. Evaluate the following to install (note that Quarks need SVN to be installed):
 
 code::
 Quarks.install("VectorSpace");
