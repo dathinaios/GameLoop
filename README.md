@@ -8,8 +8,6 @@
 
 # Installation
 
-**NOT READY** (for now follow the manual installation instructions): 
-
 * GameLoop is available as a Quark. In superCollider run `Quarks.gui` for the Quarks interface.
 
 # Manual Installation
