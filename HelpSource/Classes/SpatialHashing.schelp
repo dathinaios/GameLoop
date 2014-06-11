@@ -1,5 +1,6 @@
 TITLE:: SpatialHashing
 summary:: A spatial index for efficient collision detection
+categories:: Class
 related:: Overviews/Gameloop_Overview
 
 DESCRIPTION::
