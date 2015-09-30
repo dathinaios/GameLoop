@@ -33,6 +33,8 @@ GameLoop{
   /* public */
 
   switchSpace{ arg width = sceneWidth, height = sceneHeight, cell = cellSize;
+    this.removeCamera;
+    this.clearEdgeWalls;
     this.clearEntities;
     this.clearWalls;
     entManager.newIndex(SpatialHashing(width, height, cell));
@@ -40,7 +42,7 @@ GameLoop{
     sceneHeight = height;
     cellSize = cell;
     this.changed([\switchSpace]);
-    this.fastResetCamera;
+    /* this.fastResetCamera; */
   }
 
   gui{
@@ -129,8 +131,11 @@ GameLoop{
   }
 
   clearEdgeWalls{
+    if(edgeWallsActive){
     edgeWalls.do{arg wall; entManager.removeWall(wall)};
+    edgeWalls = [];
     edgeWallsActive = false;
+    }
   }
 
   /* private */

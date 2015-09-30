@@ -6,6 +6,7 @@ GameLoopGUI{
        var leftRotationRoutine, rightRotationRoutine, fwdRotationRoutine, backRotationRoutine;
        var visualiser;
        var repsListViewWindow, repsListView, previousSelectionRepresentation, previousSelectionRepColor;
+       var <fenceButton;
 
   *new{ arg gameloop;
       if(instance.isNil,
@@ -33,7 +34,10 @@ GameLoopGUI{
     {\update}
     {visualiser.render}
     {\switchSpace}
-    {visualiser.calculateMeterUnit};
+    {
+      visualiser.calculateMeterUnit;
+      fenceButton.valueAction = 0;
+    };
   }
 
   gui{ var button;
@@ -90,11 +94,11 @@ GameLoopGUI{
     visualiser.bounds = Rect(mainView.bounds.left + w + 10, mainView.bounds.top - 65 - fineTuneHack, 400, 400);
   }
 
-  createFenceButton{ var button;
-      button = this.createButton;
-      this.assignActionToButton(button, {gameloop.makeEdgeWalls}, {gameloop.clearEdgeWalls});
-      this.setButtonStates(button, "Add Fence", "Remove Fence");
-      if(gameloop.edgeWallsActive){button.value = 1};
+  createFenceButton{
+      fenceButton = this.createButton;
+      this.assignActionToButton(fenceButton, {gameloop.makeEdgeWalls}, {gameloop.clearEdgeWalls});
+      this.setButtonStates(fenceButton, "Add Fence", "Remove Fence");
+      if(gameloop.edgeWallsActive){fenceButton.value = 1};
   }
 
   createClearEntitiesButton{ var button;
