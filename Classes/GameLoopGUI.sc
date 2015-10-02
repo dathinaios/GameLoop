@@ -1,22 +1,24 @@
 
 GameLoopGUI{
        classvar <instance;
-       var <gameloop, <entManager, <repManager;
+       var <gameloop, <x, <y, <entManager, <repManager;
        var dimensions, gridSize, cellSize, <mainView, mainBounds, w = 175, h = 335;
        var leftRotationRoutine, rightRotationRoutine, fwdRotationRoutine, backRotationRoutine;
        var visualiser;
        var repsListViewWindow, repsListView, previousSelectionRepresentation, previousSelectionRepColor;
        var <fenceButton;
 
-  *new{ arg gameloop;
+  *new{ arg gameloop, x, y;
       if(instance.isNil,
-        { ^super.newCopyArgs(gameloop).init },
+        { ^super.newCopyArgs(gameloop, x, y).init },
         {"There is already an active instance of GameLoopGUI".error }
       );
   }
 
   init{
-    mainBounds = Rect(GUI.window.screenBounds.width*0.4, GUI.window.screenBounds.height*0.45, w, h);
+    if (x == nil){x = GUI.window.screenBounds.width*0.4};
+    if (y == nil){y = GUI.window.screenBounds.height*0.45};
+    mainBounds = Rect(x, y, w, h);
     entManager = gameloop.entManager;
     repManager = gameloop.repManager;
     visualiser = GameLoopVisualiser(entManager,repManager);
