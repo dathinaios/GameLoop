@@ -27,10 +27,7 @@
   ~camera.attach(~camrep);
 );
 
-~gameloop.edgeWalls
-
 ( // SWITCH SPACE TESTS
-~gameloop.makeEdgeWalls;
 ~gameloop.switchSpace(20, 20, 0.5);
 ~gameloop.switchSpace(200, 200, 0.5);
 ~gameloop.switchSpace(40, 40, 1);
