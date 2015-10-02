@@ -45,8 +45,8 @@ GameLoop{
     /* this.fastResetCamera; */
   }
 
-  gui{
-      GameLoopGUI(this);
+  gui{ arg x, y;
+      GameLoopGUI(this, x, y);
   }
 
   guiClose{
