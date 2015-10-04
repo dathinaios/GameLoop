@@ -9,7 +9,7 @@ Like SoundRepresentation but without the space. For internal sounds of the playe
 FPSoundRepresentation : EntityRepresentation {
 
   var >input, >release = 0.2;
-  var nodeProxy;
+  var <nodeProxy;
 
   *new { arg  repManager, collisionFunc, input, release;
     ^super.new(repManager, collisionFunc)
@@ -37,7 +37,6 @@ FPSoundRepresentation : EntityRepresentation {
       nodeProxy.clear(release);
       //wait for the release to finish
       release.wait;
-      //remove the node from the summing bus
       repManager.remove(this);
       attached = false;
     }.play(TempoClock.default);
