@@ -192,6 +192,8 @@ GameLoopGUI{
       );
   }
 
+  // override the below to add more key actions
+
   setWindowKeyActions{
       mainView.view.keyDownAction =
         {arg view, char, modifiers, unicode, keycode;
