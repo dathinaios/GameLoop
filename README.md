@@ -1,7 +1,5 @@
 
-# Development Status
-* First version. Not tested beyond simple examples.
-* Possibility of changes in the interface of the classes.
+###v0.1.4 
 
 **Contributions, Issues, Feature Requests**
 [on GitHub] (https://github.com/dathinaios/gameloop##github.com/dathinaios/gameloop/issues)
