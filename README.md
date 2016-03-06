@@ -12,7 +12,7 @@ After installation start SuperCollider, press `Cmd-D` to get the help browser an
 
 # GameLoop Quick Start Guide
 
-**NOTE: This guide is provided here as a quick look on the library but you should follow it from within SuperCollider where you can evaluate the examples.**
+**NOTE: This guide is provided here as a quick look at the library but you should follow it from within SuperCollider where you can evaluate the examples.**
 
 ---
 
