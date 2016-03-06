@@ -32,17 +32,17 @@ These are the resources you need to run the examples. For a full list of resourc
 
 ## Basics
 
-We will start simple so be patient until we reach the interesting sounding part. We will need a decoder for the sound output.You can choose from a selection of different decoders but for now let's use the simple stereo decoder from the `AmbIEM` Quark:
+We will start simple so be patient until we reach the interesting sounding part. We will need a decoder for the sound output.You can choose from a selection of different decoders but for now let's use the simple stereo decoder from the AmbIEM Quark:
 
 ---
 
-NOTE: In GameLoop you can choose between the `AmbIEM` (3d order Ambisonic to Binaural) and Ambisonic Toolkit (First order Ambisonics - Stereo, Binaural and other configurations). Regarding Binaural the Ambisonic Toolkit produces less artifacts but `AmbIEM` delivers (according to my subjective comparison) a superior spatial image. The newStereo decoder used here is inferior to both but it does not require you to download the Kernels for `ATK` or the HRTF's for `AmbIEM`. See GameLoopDecoder if you want to try other decoder configurations.
+NOTE: In GameLoop you can choose between the AmbIEM (3d order Ambisonic to Binaural) and Ambisonic Toolkit (First order Ambisonics - Stereo, Binaural and other configurations). Regarding Binaural the Ambisonic Toolkit produces less artifacts but AmbIEM delivers (according to my subjective comparison) a superior spatial image. The newStereo decoder used here is inferior to both but it does not require you to download the Kernels for ATK or the HRTF's for AmbIEM. See the `GameLoopDecoder` help file if you want to try other decoder configurations.
 
 ---
 
     GameLoopDecoder.newStereo;
 
-Now we need to create the environment for our sounds to live in. Let's assign it to the environment variable ~gameloop:
+Now we need to create the environment for our sounds to live in. Let's assign it to the environment variable `~gameloop`:
 
     (
     ~gameloop = GameLoop(40, 40, 1).play(0.05);
