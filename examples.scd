@@ -5,6 +5,7 @@
   /* ~gameloop.makeEdgeWalls; */
   ~gameloop.gui;
 
+
   //some more walls for tests
   a = Wall(RealVector2D[5,10], RealVector2D[13, 29]);
   b = Wall(RealVector2D[20,20], RealVector2D[40, 35]);
