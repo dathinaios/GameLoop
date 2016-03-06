@@ -1,3 +1,10 @@
+
+/*
+These example are for development and should not be used as a reference. For actual 
+examples refer to the proper help files :)
+*/
+
+
 ( // GENERAL SETUP
   //~decoder = GameLoopDecoder.newStereo;
   ~decoder = GameLoopDecoder.binauralAmbIEM;
