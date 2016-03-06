@@ -6,12 +6,8 @@
 
 # Installation
 
-* GameLoop is available as a Quark. In superCollider run `Quarks.gui` for the Quarks interface.
-
-# Manual Installation
-
-1. Put in `~/Library/Application Support/SuperCollider/quarks` (or equivalent directory if you are on Linux/Windows) and it should appear as a quark. Alternatively, place the GameLoop folder in `~/Library/Application Support/SuperCollider/Extensions`.
-2. Start SuperCollider, press `Cmd-D` to get the help browser and search for GameLoop
+GameLoop is available as a Quark. In superCollider run `Quarks.gui` for the Quarks interface.
+After installation start SuperCollider, press `Cmd-D` to get the help browser and search for GameLoop
 
 
 # GameLoop Quick Start Guide
