@@ -1,8 +1,8 @@
 
-###v0.1.4
+### v0.1.4
 
 **Contributions, Issues, Feature Requests**
-[on GitHub] (https://github.com/dathinaios/gameloop##github.com/dathinaios/gameloop/issues)
+[on GitHub](https://github.com/dathinaios/gameloop##github.com/dathinaios/gameloop/issues)
 
 # Installation
 
